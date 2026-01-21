@@ -3,3 +3,62 @@
 button {
   border: 1px solid #000;
 }
+
+/* font */
+@font-face {
+  font-family: 'Inter';
+  src: url('@/assets/fonts/Inter-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+  unicode-range: U+0041-005A, U+0061-007A;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('@/assets/fonts/Inter-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-display: swap;
+  unicode-range: U+0041-005A, U+0061-007A;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('@/assets/fonts/Inter-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-display: swap;
+  unicode-range: U+0041-005A, U+0061-007A;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('@/assets/fonts/Inter-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-display: swap;
+  unicode-range: U+0041-005A, U+0061-007A;
+}
+@font-face {
+  font-family: 'Pretendard';
+  src: url('@/assets/fonts/Pretendard-Regular.subset.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Pretendard';
+  src: url('@/assets/fonts/Pretendard-Medium.subset.woff2') format('woff2');
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Pretendard';
+  src: url('@/assets/fonts/Pretendard-SemiBold.subset.woff2') format('woff2');
+  font-weight: 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Pretendard';
+  src: url('@/assets/fonts/Pretendard-Bold.subset.woff2') format('woff2');
+  font-weight: 700;
+  font-display: swap;
+}
+
+body {
+  font-family: 'Inter', 'Pretendard', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
