@@ -18,6 +18,8 @@ function App() {
         <span>수정</span>
       </button>
       <SortingIcon />
+      <p className="text-[32px] font-bold text-[#121212]">질의응답</p>
+      <p className="text-[32px] font-bold text-[#121212]">print</p>
     </>
   )
 }
