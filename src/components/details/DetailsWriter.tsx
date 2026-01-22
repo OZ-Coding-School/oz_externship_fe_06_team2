@@ -1,4 +1,4 @@
-import Button from '@/components/Button'
+import Button from '@/components/common/Button'
 import ProfileImage from '@/assets/images/svg/ProfileThumb.svg'
 export default function DetailsWriter() {
   return (

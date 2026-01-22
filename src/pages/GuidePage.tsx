@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import Button from '@/components/Button'
+import Button from '@/components/common/Button'
 import FilterIcon from '@/assets/images/svg/Filter.svg?react'
 import SearchIcon from '@/assets/images/svg/Search.svg?react'
 import PencilIcon from '@/assets/images/svg/Pencil.svg?react'
@@ -12,9 +12,9 @@ import SearchClearIcon from '@/assets/images/svg/SearchClear.svg?react'
 import ChevronRightPupleIcon from '@/assets/images/svg/Chevron-right-puple.svg?react'
 import TitleQ from '@/assets/images/svg/TitleQ.svg?react'
 
-import TextArea from '@/components/TextArea'
-import IconButton from '@/components/IconButton'
-import InputSearch from '@/components/InputSearch'
+import TextArea from '@/components/common/TextArea'
+import IconButton from '@/components/common/IconButton'
+import InputSearch from '@/components/common/InputSearch'
 // 탭 데이터 정의
 const TABS = [
   { id: 'button', label: '버튼' },

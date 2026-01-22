@@ -1,6 +1,6 @@
 import ProfileImage from '@/assets/images/svg/ProfileThumb.svg'
-import Button from '@/components/Button'
-import TextArea from '@/components/TextArea'
+import Button from '@/components/common/Button'
+import TextArea from '@/components/common/TextArea'
 import DetailsComment from '@/components/details/DetailsComment'
 
 export default function DetailsAnswerItem() {
