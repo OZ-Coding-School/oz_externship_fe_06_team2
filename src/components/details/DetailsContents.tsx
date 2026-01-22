@@ -1,4 +1,4 @@
-import IconButton from '@/components/IconButton'
+import IconButton from '@/components/common/IconButton'
 import LinkShareIcon from '@/assets/images/svg/Link-share.svg?react'
 export default function DetailsContents() {
   return (

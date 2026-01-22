@@ -1,6 +1,6 @@
 import SortIcon from '@/assets/images/svg/Sorting.svg?react'
 import CommentIcon from '@/assets/images/svg/Comment.svg?react'
-import IconButton from '@/components/IconButton'
+import IconButton from '@/components/common/IconButton'
 import DetailsCommentItem from '@/components/details/DetailsCommentItem'
 
 export default function DetailsCommentSection() {
