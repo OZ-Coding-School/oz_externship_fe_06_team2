@@ -13,7 +13,7 @@ export default function DetailsWriter() {
             </p>
           </div>
         </div>
-        <Button size="md" style="purple_bg round" disabled={false}>
+        <Button className="md purple_bg round" disabled={false}>
           등록하기
         </Button>
       </div>

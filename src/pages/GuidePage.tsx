@@ -58,38 +58,28 @@ export default function GuidePage() {
               Button Components
             </h2>
             <div className="flex flex-wrap items-center gap-4">
-              <Button size="sm" style="purple_line round">
+              <Button className="sm purple_line round">등록</Button>
+              <Button disabled={true} className="sm purple_line round">
                 등록
               </Button>
-              <Button size="sm" disabled={true} style="purple_line round">
-                등록
-              </Button>
-              <Button size="sm" style="purple_bg round">
-                등록
-              </Button>
-              <Button size="md" style="purple_line round">
-                등록
-              </Button>
-              <IconButton style="bg">
+              <Button className="sm purple_bg round">등록</Button>
+              <Button className="md purple_line round">등록</Button>
+              <IconButton className="bg">
                 <PencilIcon />
                 질문하기
               </IconButton>
-              <IconButton style="border">
+              <IconButton className="border">
                 <LinkShareIcon />
                 공유하기
               </IconButton>
-              <IconButton style="text">
+              <IconButton className="text">
                 최신순 <SortIcon />
               </IconButton>
             </div>
             <div className="w-[300px]">
-              <Button size="full" style="purple_line round">
-                등록
-              </Button>
+              <Button className="full purple_line round">등록</Button>
             </div>
-            <Button size="lg" style="purple_bg square">
-              등록하기
-            </Button>
+            <Button className="lg purple_bg square">등록하기</Button>
           </section>
         )}
 

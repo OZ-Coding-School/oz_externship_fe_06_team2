@@ -11,9 +11,7 @@ export default function TextArea() {
         onChange={(e) => setText(e.target.value)}
       ></textarea>
       <Button
-        className="absolute right-[20px] bottom-[20px]"
-        size="sm"
-        style="purple_line round"
+        className="sm purple_line round absolute right-[20px] bottom-[20px]"
         disabled={isInputEmpty}
       >
         등록
