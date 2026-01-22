@@ -77,7 +77,7 @@ export default function Footer() {
             {/* Policy row: 원본은 1200 x 64, 반응형에서는 w-full로 */}
             <div className="flex min-h-[64px] w-full flex-col gap-[16px] sm:flex-row sm:items-center sm:justify-between">
               {/* 정책 링크: 16px / 140% / -3% / #CECECE, gap 28 */}
-              <div className="font-pretendard flex flex-wrap items-center gap-x-[28px] gap-y-[10px] text-[16px] leading-[22.4px] font-[400] tracking-[-0.03em] text-[#CECECE]">
+              <div className="font-pretendard flex flex-wrap items-center gap-x-[28px] gap-y-[10px] leading-[22.4px] font-[400] tracking-[-0.03em] text-[#CECECE]">
                 <a href="#" className="hover:text-white">
                   개인정보처리방침
                 </a>
@@ -134,7 +134,7 @@ export default function Footer() {
             </div>
 
             {/* Company info: 16px / 140% / -3% / #9D9D9D, width 640 (작은 화면에선 자동 줄바꿈) */}
-            <div className="font-pretendard mt-[16px] w-full max-w-[640px] text-[16px] leading-[22px] font-[200] tracking-[-0.05em] text-[#9D9D9D]">
+            <div className="font-pretendard mt-[16px] w-full max-w-[640px] leading-[22px] font-[200] tracking-[-0.05em] text-[#9D9D9D]">
               <p>
                 대표자 : 이한별 | 사업자 등록번호 : 540-86-00384 | 통신판매업
                 신고번호 : 2020-경기김포-3725호

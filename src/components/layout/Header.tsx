@@ -73,7 +73,7 @@ export default function Header() {
           </div>
 
           {/* 오른쪽 메뉴 */}
-          <div className="flex items-center gap-2 font-[Pretendard] text-[16px] text-gray-500">
+          <div className="flex items-center gap-2 font-[Pretendard] text-gray-500">
             <a
               href="#"
               className="transition-colors duration-200 hover:text-gray-900"

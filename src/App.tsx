@@ -1,6 +1,6 @@
 import '@/App.css'
 import { lazy, Suspense } from 'react'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route } from 'react-router'
 import Layout from '@/components/layout/Layout'
 
 const GuidePage = lazy(() => import('@/pages/GuidePage'))
@@ -16,9 +16,9 @@ function App() {
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route path="/qna" element={<QnaListPage />} />
-            <Route path="/qna/:id" element={<QnaDetailsPage />} />
-            <Route path="/qna/create" element={<QnaCreatePage />} />
-            <Route path="/qna/:id/update" element={<QnaUpdatePage />} />
+            <Route path="/qnadetails" element={<QnaDetailsPage />} />
+            <Route path="/qnacreate" element={<QnaCreatePage />} />
+            <Route path="/qnaupdate" element={<QnaUpdatePage />} />
           </Route>
           <Route path="/guide" element={<GuidePage />} />
         </Routes>
