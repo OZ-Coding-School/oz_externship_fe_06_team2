@@ -23,7 +23,9 @@ export default function DetailsAnswerItem() {
           </div>
         </div>
 
-        <Button className="md purple_bg round">채택하기</Button>
+        <button type="button" className="md purple_bg round">
+          채택하기
+        </button>
       </div>
 
       {/* 답변 본문 */}

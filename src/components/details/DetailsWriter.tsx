@@ -1,4 +1,3 @@
-import Button from '@/components/common/Button'
 import ProfileImage from '@/assets/images/svg/ProfileThumb.svg'
 export default function DetailsWriter() {
   return (
@@ -13,9 +12,9 @@ export default function DetailsWriter() {
             </p>
           </div>
         </div>
-        <Button className="md purple_bg round" disabled={false}>
+        <button type="button" className="md purple_bg round">
           등록하기
-        </Button>
+        </button>
       </div>
       <div className="write_box h-[677px]">에디터 들어갈 자리</div>
     </section>
