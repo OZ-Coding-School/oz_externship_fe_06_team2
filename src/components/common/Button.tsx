@@ -1,11 +1,9 @@
 interface ButtonProps {
   children: React.ReactNode
-  size?: string
   onClick?: () => void
   type?: 'button' | 'submit' | 'reset'
   className?: string
   disabled?: boolean
-  style?: string
 }
 
 export default function Button({

@@ -1,6 +1,5 @@
 import SortIcon from '@/assets/images/svg/Sorting.svg?react'
 import CommentIcon from '@/assets/images/svg/Comment.svg?react'
-import IconButton from '@/components/common/IconButton'
 import DetailsCommentItem from '@/components/details/DetailsCommentItem'
 import { useState } from 'react'
 
@@ -19,9 +18,13 @@ export default function DetailsComment() {
 
         {/* 드롭다운 */}
         <div className="relative">
-          <IconButton style="text" onClick={() => setIsOpen(!isOpen)}>
+          <button
+            type="button"
+            className="icon_button"
+            onClick={() => setIsOpen(!isOpen)}
+          >
             {sortType} <SortIcon />
-          </IconButton>
+          </button>
 
           {/* 드롭다운 레이어 */}
           {isOpen && (

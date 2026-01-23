@@ -1,4 +1,3 @@
-import Button from '@/components/common/Button'
 import { useState } from 'react'
 export default function TextArea() {
   const [text, setText] = useState('')
@@ -10,12 +9,13 @@ export default function TextArea() {
         value={text}
         onChange={(e) => setText(e.target.value)}
       ></textarea>
-      <Button
+      <button
+        type="button"
         className="sm purple_line round absolute right-[20px] bottom-[20px]"
         disabled={isInputEmpty}
       >
         등록
-      </Button>
+      </button>
     </div>
   )
 }
