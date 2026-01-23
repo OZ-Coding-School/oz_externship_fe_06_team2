@@ -69,6 +69,9 @@ body {
   .flex-center-between {
     @apply flex items-center justify-between;
   }
+  .flex-start-between {
+    @apply flex items-start justify-between;
+  }
   .flex-center {
     @apply flex items-center;
   }
@@ -115,7 +118,10 @@ body {
   }
 
   .answer_icon {
-    @apply flex h-[48px] w-[48px] items-center justify-center rounded-full bg-[#6201E0] text-center text-[12px] text-[28px] font-bold font-semibold text-white;
+    @apply flex h-[48px] w-[48px] items-center justify-center rounded-full bg-[#6201E0] text-center text-[28px] font-bold text-white;
+  }
+  .comment-icon {
+    @apply flex h-[24px] w-[24px] items-center justify-center rounded-full bg-[#04c43d] text-[14px] font-semibold text-white;
   }
   .answer_title {
     @apply mb-[40px] flex items-center gap-[12px] text-[32px] font-bold text-[#121212];
