@@ -195,6 +195,9 @@ body {
   .tab_button {
     @apply relative h-[56px] text-[18px] font-bold transition-colors;
   }
+  .pagi_control button:disabled {
+    @apply bg-transparent;
+  }
   /* 버튼 끝 */
 
   /* 모달 */
