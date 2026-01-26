@@ -16,7 +16,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route path="/qna" element={<QnaListPage />} />
-            <Route path="/qnadetails" element={<QnaDetailsPage />} />
+            <Route path="/qnadetails/:id" element={<QnaDetailsPage />} />
             <Route path="/qnacreate" element={<QnaCreatePage />} />
             <Route path="/qnaupdate" element={<QnaUpdatePage />} />
           </Route>
