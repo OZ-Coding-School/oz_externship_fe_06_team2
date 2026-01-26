@@ -28,12 +28,12 @@ export default function DetailsComment() {
 
           {/* 드롭다운 레이어 */}
           {isOpen && (
-            <ul className="absolute top-[110%] right-0 z-10 overflow-hidden rounded-[8px] bg-white p-[16px_20px] whitespace-nowrap shadow-[0px_0px_16px_0px_#A0A0A040]">
+            <ul className="dropdown">
               {['최신순', '오래된 순'].map((type) => (
                 <li key={type}>
                   <button
                     type="button"
-                    className={`w-full p-[10px_20px] text-[#4D4D4D] hover:bg-[#ECECEC] ${sortType === type ? 'bg-[#EFE6FC] font-bold text-[#6201E0] hover:bg-[#EFE6FC]' : 'text-[#6B7280]'}`}
+                    className={`${sortType === type ? 'bg-[#EFE6FC] font-bold text-[#6201E0] hover:bg-[#EFE6FC]' : 'text-[#6B7280]'}`}
                     onClick={() => {
                       setSortType(type)
                       setIsOpen(false)

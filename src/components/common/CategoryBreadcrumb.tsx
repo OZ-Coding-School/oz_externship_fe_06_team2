@@ -15,12 +15,9 @@ export default function CategoryBreadcrumb({
         return (
           <div key={index} className="flex items-center gap-2">
             {isLast ? (
-              <a
-                href={`/category/${name}`}
-                className="text-[12px] text-[#4D4D4D] underline"
-              >
+              <span className="text-[12px] text-[#4D4D4D] underline">
                 {name}
-              </a>
+              </span>
             ) : (
               <>
                 <span className="text-[12px] text-[#4D4D4D]">{name}</span>

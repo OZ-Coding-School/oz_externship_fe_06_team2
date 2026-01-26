@@ -10,10 +10,7 @@ interface ListItemsProps {
 
 export default function ListItems({ item }: ListItemsProps) {
   return (
-    <li
-      key={item.id}
-      className="flex-start-between relative h-[211px] gap-4 rounded-[10px] border-b border-[#E5E7EB] p-[24px] hover:bg-[#fafafa]"
-    >
+    <li key={item.id} className="list_items flex-start-between">
       <div>
         {/* 카테고리 */}
         <CategoryBreadcrumb categories={item.category.names} />
@@ -21,13 +18,13 @@ export default function ListItems({ item }: ListItemsProps) {
         {/* 질문 제목 */}
         <Link
           to={`/qnadetails`}
-          className="mb-[12px] text-[18px] font-semibold text-black"
+          className="text-[18px] font-semibold text-black"
         >
           {item.title}
         </Link>
 
         {/* 질문 내용 */}
-        <p className="line-clamp-2 text-[14px] text-[#9d9d9d]">
+        <p className="mt-[12px] line-clamp-2 text-[14px] text-[#9d9d9d]">
           {item.content_preview}
         </p>
 
