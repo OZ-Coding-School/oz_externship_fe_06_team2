@@ -234,4 +234,15 @@ body {
   .list_items {
     @apply h-[211px] gap-4 rounded-[10px] border-b border-[#E5E7EB] p-[24px] hover:bg-[#fafafa];
   }
+  /* 질의응답 리스트 페이지 끝 */
+  /* 페이지네이션 */
+  .pagination {
+    @apply flex items-center justify-center gap-[12px];
+  }
+  .pagi_control {
+    @apply h-[20px] w-[20px];
+  }
+  .pagi_item {
+    @apply flex h-[32px] w-[32px] items-center justify-center rounded-[8px] bg-[#6201E0] text-white hover:bg-[#efe6fc] hover:text-[#6201E0];
+  }
 }

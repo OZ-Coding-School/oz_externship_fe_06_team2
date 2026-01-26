@@ -12,6 +12,7 @@ import TitleQ from '@/assets/images/svg/TitleQ.svg?react'
 
 import TextArea from '@/components/common/TextArea'
 import InputSearch from '@/components/common/InputSearch'
+import Pagination from '@/components/common/Pagination'
 
 interface CodeBlockProps {
   code: string
@@ -22,6 +23,7 @@ const TABS = [
   { id: 'svg', label: 'SVG' },
   { id: 'textarea', label: '텍스트에어리어' },
   { id: 'input', label: '인풋' },
+  { id: 'pagination', label: '페이지네이션' },
 ]
 
 export default function GuidePage() {
@@ -202,6 +204,17 @@ export default function GuidePage() {
               <InputSearch />
             </div>
             <CodeBlock code={`<InputSearch />`} />
+          </section>
+        )}
+        {activeTab === 'pagination' && (
+          <section>
+            <h2 className="mb-6 text-[32px] font-bold text-[#121212]">
+              Pagination
+            </h2>
+            <div className="mb-2">
+              <Pagination />
+            </div>
+            <CodeBlock code={`<Pagination />`} />
           </section>
         )}
       </main>
