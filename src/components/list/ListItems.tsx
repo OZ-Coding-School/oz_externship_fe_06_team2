@@ -17,7 +17,7 @@ export default function ListItems({ item }: ListItemsProps) {
 
         {/* 질문 제목 */}
         <Link
-          to={`/qnadetails`}
+          to={`/qnadetails/${item.id}`}
           className="text-[18px] font-semibold text-black"
         >
           {item.title}
