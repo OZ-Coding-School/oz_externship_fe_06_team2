@@ -81,7 +81,57 @@ export const handlers = [
         nickname: '한솔_회장',
         profile_image_url: null,
       },
-      answers: [],
+      answers: [
+        {
+          id: 501,
+          content:
+            'related_name을 지정하면 역참조 시 해당 이름으로 접근할 수 있습니다. 예를 들어 `post.comments.all()` 형태로 사용합니다.',
+          created_at: '2025-03-01 11:30:00',
+          is_adopted: true,
+          author: {
+            id: 102,
+            nickname: 'django_master',
+            profile_image_url:
+              'https://cdn.ozcodingschool.com/profile/user102.png',
+          },
+          comments: [
+            {
+              id: 1001,
+              content: '답변 감사합니다! 덕분에 이해됐어요.',
+              created_at: '2025-03-01 12:00:00',
+              author: {
+                id: 211,
+                nickname: '한솔_회장',
+                profile_image_url: null,
+              },
+            },
+            {
+              id: 1002,
+              content: '추가로 prefetch_related도 같이 쓰시면 좋아요.',
+              created_at: '2025-03-01 12:15:00',
+              author: {
+                id: 102,
+                nickname: 'django_master',
+                profile_image_url:
+                  'https://cdn.ozcodingschool.com/profile/user102.png',
+              },
+            },
+          ],
+        },
+        {
+          id: 502,
+          content:
+            'select_related와 prefetch_related 차이도 알아두시면 좋습니다.',
+          created_at: '2025-03-01 14:00:00',
+          is_adopted: false,
+          author: {
+            id: 305,
+            nickname: 'orm_lover',
+            profile_image_url: null,
+          },
+          comments: [],
+        },
+      ],
     }
 
     return HttpResponse.json(mockData)

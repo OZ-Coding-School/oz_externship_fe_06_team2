@@ -8,16 +8,25 @@ import { useParams } from 'react-router'
 export default function QnaDetailsPage() {
   const { id } = useParams<{ id: string }>()
   const { data, isLoading, isError } = useQuery({
-    queryKey: ['qnaDetails'],
+    queryKey: ['qnaDetails', id],
     queryFn: () => FetchQnaDetails(Number(id)),
   })
+
+  if (isLoading) return <div>로딩</div>
+  if (isError || !data) return <div>에러</div>
   console.log(data)
   return (
     <div className="inner">
-      <DetailsHeader />
-      <DetailsContents />
+      <DetailsHeader
+        title={data.title}
+        category={data.category}
+        viewCount={data.view_count}
+        created={data.created_at}
+        name={data.author.nickname}
+      />
+      <DetailsContents content={data.content} />
       <DetailsWriter />
-      <DetailsAnswerList />
+      <DetailsAnswerList answers={data.answers} />
     </div>
   )
 }
