@@ -2,12 +2,14 @@ import SortIcon from '@/assets/images/svg/Sorting.svg?react'
 import CommentIcon from '@/assets/images/svg/Comment.svg?react'
 import DetailsCommentItem from '@/components/details/DetailsCommentItem'
 import { useState } from 'react'
-
-export default function DetailsComment() {
-  //임시
-  const comments = [{ id: 1 }, { id: 2 }, { id: 3 }]
+import type { QnaComment } from '@/types'
+interface Props {
+  comments: QnaComment[]
+}
+export default function DetailsComment({ comments }: Props) {
   const [isOpen, setIsOpen] = useState(false)
   const [sortType, setSortType] = useState('최신순')
+
   return (
     <div>
       <div className="flex-center-between mt-[40px] mb-[20px]">
@@ -50,7 +52,7 @@ export default function DetailsComment() {
 
       <ul className="flex flex-col gap-[20px]">
         {comments.map((c) => (
-          <DetailsCommentItem key={c.id} />
+          <DetailsCommentItem comment={c} key={c.id} />
         ))}
       </ul>
     </div>

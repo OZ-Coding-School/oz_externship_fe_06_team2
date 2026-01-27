@@ -1,7 +1,7 @@
 import ProfileThumb from '@/assets/images/svg/ProfileThumb.svg?react'
 
 interface ProfileImageProps {
-  imageUrl?: string
+  imageUrl?: string | null | undefined
   alt?: string
   size?: number
 }

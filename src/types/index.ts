@@ -7,7 +7,7 @@ export interface QnaCategory {
 export interface QnaAuthor {
   id: number
   nickname: string
-  profile_image_url: string
+  profile_image_url: string | null
 }
 
 export interface QnaItem {
@@ -19,7 +19,7 @@ export interface QnaItem {
   answer_count: number
   view_count: number
   created_at: string
-  thumbnail_img_url: string
+  thumbnail_img_url: string | null
 }
 
 export interface QnaListResponse {
@@ -35,24 +35,26 @@ export interface QnaImage {
 export interface QnaAnswer {
   id: number
   content: string
-  author: QnaAuthor
   created_at: string
+  is_adopted: boolean
+  author: QnaAuthor
+  comments: QnaComment[]
+}
+export interface QnaComment {
+  id: number
+  content: string
+  created_at: string
+  author: QnaAuthor
 }
 export interface QnaDetailResponse {
   id: number
   title: string
   content: string
   category: QnaCategory
-  author: {
-    id: number
-    nickname: string
-    profile_image_url: string | null
-  }
-  images: QnaImage[] // mockData에 있는 이미지 리스트
+  author: QnaAuthor
+  images: QnaImage[]
   view_count: number
   created_at: string
   answers: QnaAnswer[]
-  // 썸네일은 리스트용일 경우가 많으나, 상세에서도 필요하다면 유지합니다.
-  // mockData에 맞추어 optional(?) 또는 null 허용 처리를 합니다.
   thumbnail_img_url?: string | null
 }

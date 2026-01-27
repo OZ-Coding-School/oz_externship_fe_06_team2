@@ -1,7 +1,9 @@
 import DetailsAnswerItem from '@/components/details/DetailsAnswerItem'
-export default function DetailsAnswerList() {
-  // 임시
-  const answers = [{ id: 1 }, { id: 2 }]
+import type { QnaAnswer } from '@/types'
+interface DetailsAnswerListProps {
+  answers: QnaAnswer[]
+}
+export default function DetailsAnswerList({ answers }: DetailsAnswerListProps) {
   return (
     <section className="answer_area mt-[52px]">
       <h3 className="answer_title">
@@ -11,7 +13,7 @@ export default function DetailsAnswerList() {
 
       <div className="flex flex-col gap-[24px]">
         {answers.map((answer) => (
-          <DetailsAnswerItem key={answer.id} />
+          <DetailsAnswerItem key={answer.id} answer={answer} />
         ))}
       </div>
     </section>

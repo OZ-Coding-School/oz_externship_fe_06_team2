@@ -1,9 +1,11 @@
 import ProfileImage from '@/assets/images/svg/ProfileThumb.svg'
-import Button from '@/components/common/Button'
 import TextArea from '@/components/common/TextArea'
 import DetailsComment from '@/components/details/DetailsComment'
-
-export default function DetailsAnswerItem() {
+import type { QnaAnswer } from '@/types'
+interface Props {
+  answer: QnaAnswer
+}
+export default function DetailsAnswerItem({ answer }: Props) {
   return (
     <div className="answer_box">
       {/* 답변 헤더 */}
@@ -11,7 +13,7 @@ export default function DetailsAnswerItem() {
         <div className="flex-center gap-[12px]">
           <img src={ProfileImage} alt="프로필 이미지" />
           <div>
-            <span className="answer_name">{'랑이'}</span>
+            <span className="answer_name">{answer.author.nickname}</span>
             <p className="answer_info">
               <span>
                 IT스타트업 실무형 풀스택 웹 개발 부트캠프 (React + Node.js) &lt;
@@ -39,7 +41,7 @@ export default function DetailsAnswerItem() {
       <TextArea />
 
       {/* 댓글 영역 */}
-      <DetailsComment />
+      <DetailsComment comments={answer.comments} />
     </div>
   )
 }

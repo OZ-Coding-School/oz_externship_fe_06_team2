@@ -1,7 +1,7 @@
 import imgListThumb from '@/assets/images/imgListThumb.png'
 
 interface ThumbnailImageProps {
-  imageUrl?: string
+  imageUrl?: string | null | undefined
   alt?: string
   className?: string
 }
