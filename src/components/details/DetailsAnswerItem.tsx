@@ -32,7 +32,7 @@ export default function DetailsAnswerItem({ answer }: Props) {
 
       {/* 답변 본문 */}
       <div className="editor_content">
-        이렇게는 쓸 수 있을 것 같습니당.
+        {answer.content}
         <div className="editor_code">에디터 코드 추후 수정</div>
         <p className="mt-[40px] text-right text-[#9d9d9d]">11 시간 전</p>
       </div>

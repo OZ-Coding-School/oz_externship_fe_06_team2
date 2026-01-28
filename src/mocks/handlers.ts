@@ -129,7 +129,29 @@ export const handlers = [
             nickname: 'orm_lover',
             profile_image_url: null,
           },
-          comments: [],
+          comments: [
+            {
+              id: 1001,
+              content: '답변 감사합니다! 덕분에 이해됐어요.',
+              created_at: '2025-03-01 12:00:00',
+              author: {
+                id: 211,
+                nickname: '한솔_회장',
+                profile_image_url: null,
+              },
+            },
+            {
+              id: 1002,
+              content: '추가로 prefetch_related도 같이 쓰시면 좋아요.',
+              created_at: '2025-03-01 12:15:00',
+              author: {
+                id: 102,
+                nickname: 'django_master',
+                profile_image_url:
+                  'https://cdn.ozcodingschool.com/profile/user102.png',
+              },
+            },
+          ],
         },
       ],
     }
