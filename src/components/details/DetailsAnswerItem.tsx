@@ -1,4 +1,4 @@
-import ProfileImage from '@/assets/images/svg/ProfileThumb.svg'
+import ProfileImage from '@/components/common/ProfileImage'
 import TextArea from '@/components/common/TextArea'
 import DetailsComment from '@/components/details/DetailsComment'
 import type { QnaAnswer } from '@/types'
@@ -7,11 +7,11 @@ interface Props {
 }
 export default function DetailsAnswerItem({ answer }: Props) {
   return (
-    <div className="answer_box">
+    <div className={`${answer.is_adopted ? 'choice' : ''} answer_box`}>
       {/* 답변 헤더 */}
       <div className="flex-center-between mb-[40px]">
         <div className="flex-center gap-[12px]">
-          <img src={ProfileImage} alt="프로필 이미지" />
+          <ProfileImage imageUrl={answer.author.profile_image_url} size={48} />
           <div>
             <span className="answer_name">{answer.author.nickname}</span>
             <p className="answer_info">

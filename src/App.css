@@ -130,6 +130,9 @@ body {
   .answer_box {
     @apply rounded-[20px] border border-[#cecece] p-[44px_38px];
   }
+  .answer_box.choice {
+    @apply relative border-2 border-[#6201e0] before:absolute before:-top-4 before:left-12 before:rounded-full before:bg-[#6210E0] before:px-3 before:py-1 before:text-[16px] before:text-white before:content-["질문자_채택"];
+  }
 
   .answer_name {
     @apply font-semibold text-[#4d4d4d];
