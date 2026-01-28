@@ -3,6 +3,7 @@ import ListContents from '@/components/list/ListContents'
 import ListHeader from '@/components/list/ListHeader'
 import { fetchQnaList } from '@/hooks/FetchQnaList'
 import Loading from '@/components/common/Loading'
+import Error from '@/pages/Error'
 
 export default function QnaListPage() {
   const { data, isLoading, isError } = useQuery({
@@ -15,7 +16,7 @@ export default function QnaListPage() {
     return <Loading />
   }
   if (isError) {
-    return <div>Error</div>
+    return <Error />
   }
   return (
     <div className="inner">
