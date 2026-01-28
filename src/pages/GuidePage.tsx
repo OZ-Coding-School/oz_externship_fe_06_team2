@@ -13,6 +13,7 @@ import TitleQ from '@/assets/images/svg/TitleQ.svg?react'
 import TextArea from '@/components/common/TextArea'
 import InputSearch from '@/components/common/InputSearch'
 import Pagination from '@/components/common/Pagination'
+import Loading from '@/components/common/Loading'
 
 interface CodeBlockProps {
   code: string
@@ -24,6 +25,7 @@ const TABS = [
   { id: 'textarea', label: '텍스트에어리어' },
   { id: 'input', label: '인풋' },
   { id: 'pagination', label: '페이지네이션' },
+  { id: 'loading', label: '로딩' },
 ]
 
 export default function GuidePage() {
@@ -206,6 +208,7 @@ export default function GuidePage() {
             <CodeBlock code={`<InputSearch />`} />
           </section>
         )}
+        {/* pagination */}
         {activeTab === 'pagination' && (
           <section>
             <h2 className="mb-6 text-[32px] font-bold text-[#121212]">
@@ -215,6 +218,18 @@ export default function GuidePage() {
               <Pagination />
             </div>
             <CodeBlock code={`<Pagination />`} />
+          </section>
+        )}
+        {/* loading */}
+        {activeTab === 'loading' && (
+          <section>
+            <h2 className="mb-6 text-[32px] font-bold text-[#121212]">
+              Loading
+            </h2>
+            <div className="mb-4">
+              <Loading />
+            </div>
+            <CodeBlock code={`<Loading />`} />
           </section>
         )}
       </main>
@@ -235,7 +250,7 @@ function CodeBlock({ code }: CodeBlockProps) {
     <div className="relative rounded-[8px] bg-[#111827] p-2 pr-[64px] text-sm text-white">
       <button
         onClick={handleCopy}
-        className="absolute top-3 right-3 rounded bg-white/10 px-2 py-1 text-xs hover:bg-white/20"
+        className="absolute top-1.5 right-3 rounded bg-white/10 px-2 py-1 text-xs hover:bg-white/20"
       >
         {copied ? '복사됨' : '복사'}
       </button>
