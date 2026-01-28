@@ -254,4 +254,30 @@ body {
   .pagi_item.active {
     @apply bg-[#d0b3f6] text-[#6201E0];
   }
+  /* 로딩 */
+  .loading_dots {
+    @apply h-[8px] w-[8px] rounded-full bg-[#6210E0];
+  }
+}
+@keyframes jump {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-bounce {
+  animation: jump 1s infinite ease-in-out;
+}
+.delay-1 {
+  animation-delay: 0.1s;
+}
+.delay-2 {
+  animation-delay: 0.3s;
+}
+.delay-3 {
+  animation-delay: 0.5s;
 }

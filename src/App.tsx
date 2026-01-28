@@ -2,6 +2,7 @@ import '@/App.css'
 import { lazy, Suspense } from 'react'
 import { Routes, Route } from 'react-router'
 import Layout from '@/components/layout/Layout'
+import Loading from '@/components/common/Loading'
 
 const GuidePage = lazy(() => import('@/pages/GuidePage'))
 const QnaListPage = lazy(() => import('@/pages/QnaListPage'))
@@ -12,7 +13,7 @@ const QnaUpdatePage = lazy(() => import('@/pages/QnaUpdatePage'))
 function App() {
   return (
     <>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<Loading />}>
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route path="/qna" element={<QnaListPage />} />
