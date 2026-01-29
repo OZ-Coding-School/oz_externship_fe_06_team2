@@ -75,7 +75,7 @@ export const handlers = [
         },
       ],
       view_count: 88,
-      created_at: '2025-03-01 10:25:33',
+      created_at: '2026-01-20 10:25:33',
       author: {
         id: 211,
         nickname: '한솔_회장',
@@ -86,7 +86,7 @@ export const handlers = [
           id: 501,
           content:
             'related_name을 지정하면 역참조 시 해당 이름으로 접근할 수 있습니다. 예를 들어 `post.comments.all()` 형태로 사용합니다.',
-          created_at: '2025-03-01 11:30:00',
+          created_at: '2026-01-20 11:30:00',
           is_adopted: true,
           author: {
             id: 102,
@@ -98,7 +98,7 @@ export const handlers = [
             {
               id: 1001,
               content: '답변 감사합니다! 덕분에 이해됐어요.',
-              created_at: '2025-03-01 12:00:00',
+              created_at: '2026-01-20 12:00:00',
               author: {
                 id: 211,
                 nickname: '한솔_회장',

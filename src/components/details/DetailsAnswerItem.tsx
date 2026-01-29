@@ -2,6 +2,7 @@ import ProfileImage from '@/components/common/ProfileImage'
 import TextArea from '@/components/common/TextArea'
 import DetailsComment from '@/components/details/DetailsComment'
 import type { QnaAnswer } from '@/types'
+import { getRelativeTime } from '@/utils/dayjs'
 interface Props {
   answer: QnaAnswer
 }
@@ -34,7 +35,9 @@ export default function DetailsAnswerItem({ answer }: Props) {
       <div className="editor_content">
         {answer.content}
         <div className="editor_code">에디터 코드 추후 수정</div>
-        <p className="mt-[40px] text-right text-[#9d9d9d]">11 시간 전</p>
+        <p className="mt-[40px] text-right text-[#9d9d9d]">
+          {getRelativeTime(answer.created_at)}
+        </p>
       </div>
 
       {/* 댓글 입력 */}

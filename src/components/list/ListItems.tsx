@@ -3,6 +3,7 @@ import type { QnaItem } from '@/types'
 import CategoryBreadcrumb from '@/components/common/CategoryBreadcrumb'
 import ProfileImage from '@/components/common/ProfileImage'
 import ThumbnailImage from '@/components/common/ThumbnailImage'
+import { getRelativeTime } from '@/utils/dayjs'
 
 interface ListItemsProps {
   item: QnaItem
@@ -48,7 +49,7 @@ export default function ListItems({ item }: ListItemsProps) {
               </span>
             </div>
             <span className="text-[12px] text-[#9d9d9d]">
-              {item.created_at}
+              {getRelativeTime(item.created_at)}
             </span>
           </div>
         </div>

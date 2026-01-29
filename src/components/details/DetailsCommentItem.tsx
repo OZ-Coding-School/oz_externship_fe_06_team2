@@ -1,5 +1,6 @@
 import ProfileImage from '@/components/common/ProfileImage'
 import type { QnaComment } from '@/types'
+import { formatDate } from '@/utils/dayjs'
 interface Props {
   comment: QnaComment
 }
@@ -13,7 +14,7 @@ export default function DetailsCommentItem({ comment }: Props) {
             {comment.author.nickname}
           </span>
           <span className="text-[12px] text-[#9d9d9d]">
-            {comment.created_at}
+            {formatDate(comment.created_at)}
           </span>
         </div>
         <p className="mt-[20px]">{comment.content}</p>

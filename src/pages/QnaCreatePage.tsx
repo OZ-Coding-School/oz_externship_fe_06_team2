@@ -3,9 +3,7 @@ import { useNavigate } from 'react-router'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import rehypeRaw from 'rehype-raw'
-import {
-  ChevronDown,
-} from 'lucide-react'
+import { ChevronDown } from 'lucide-react'
 import {
   UndoIcon,
   RedoIcon,
@@ -26,7 +24,7 @@ import {
   ToolbarAlignJustifyIcon,
   ToolbarLineHeightIcon,
   ToolbarOutdentIcon,
-  ToolbarIndentIcon
+  ToolbarIndentIcon,
 } from '../assets/images/icons/CustomIcons'
 
 import { api, createCommunityPost, getAccessToken } from '../api/api'
@@ -50,14 +48,12 @@ function replaceInfo(
   const original = textarea.value
   const newValue = original.substring(0, start) + text + original.substring(end)
 
-
   return {
     value: newValue,
     newSelectionStart: cursorInfo?.newStart ?? start + text.length,
     newSelectionEnd: cursorInfo?.newEnd ?? start + text.length,
   }
 }
-
 
 export default function CommunityCreatePage() {
   const navigate = useNavigate()
@@ -86,15 +82,15 @@ export default function CommunityCreatePage() {
   const listMenuRef = useRef<HTMLDivElement>(null)
   const objectUrlsRef = useRef<string[]>([])
 
-
   const [historyStack, setHistoryStack] = useState<string[]>([''])
   const [historyIndex, setHistoryIndex] = useState(0)
-
 
   useEffect(() => {
     async function fetchCategories() {
       try {
-        const res = await api.get<CommunityCategory[]>('/api/v1/posts/categories')
+        const res = await api.get<CommunityCategory[]>(
+          '/api/v1/posts/categories'
+        )
         // 응답 데이터가 배열인지 확인
         if (Array.isArray(res.data)) {
           setCategories(res.data)
@@ -110,16 +106,24 @@ export default function CommunityCreatePage() {
     fetchCategories()
   }, [])
 
-
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (fontSizeRef.current && !fontSizeRef.current.contains(event.target as Node)) {
+      if (
+        fontSizeRef.current &&
+        !fontSizeRef.current.contains(event.target as Node)
+      ) {
         setIsFontSizeMenuOpen(false)
       }
-      if (textColorRef.current && !textColorRef.current.contains(event.target as Node)) {
+      if (
+        textColorRef.current &&
+        !textColorRef.current.contains(event.target as Node)
+      ) {
         setIsTextColorMenuOpen(false)
       }
-      if (listMenuRef.current && !listMenuRef.current.contains(event.target as Node)) {
+      if (
+        listMenuRef.current &&
+        !listMenuRef.current.contains(event.target as Node)
+      ) {
         setIsListMenuOpen(false)
       }
     }
@@ -127,21 +131,22 @@ export default function CommunityCreatePage() {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
+  const pushToHistory = useCallback(
+    (newContent: string) => {
+      if (newContent === historyStack[historyIndex]) return
 
-  const pushToHistory = useCallback((newContent: string) => {
-    if (newContent === historyStack[historyIndex]) return
+      const newHistory = historyStack.slice(0, historyIndex + 1)
+      newHistory.push(newContent)
 
-    const newHistory = historyStack.slice(0, historyIndex + 1)
-    newHistory.push(newContent)
+      if (newHistory.length > 50) {
+        newHistory.shift()
+      }
 
-
-    if (newHistory.length > 50) {
-      newHistory.shift()
-    }
-
-    setHistoryStack(newHistory)
-    setHistoryIndex(newHistory.length - 1)
-  }, [historyStack, historyIndex])
+      setHistoryStack(newHistory)
+      setHistoryIndex(newHistory.length - 1)
+    },
+    [historyStack, historyIndex]
+  )
 
   const handleUndo = () => {
     if (historyIndex > 0) {
@@ -159,7 +164,6 @@ export default function CommunityCreatePage() {
     }
   }
 
-
   const updateContent = (newContent: string, saveToHistory = true) => {
     setContent(newContent)
     if (saveToHistory) {
@@ -167,26 +171,36 @@ export default function CommunityCreatePage() {
     }
   }
 
-
   const applyParams = (
-    transform: (sel: string, all: string, start: number, end: number) => { text: string; cursorOffset?: number; selectLength?: number }
+    transform: (
+      sel: string,
+      all: string,
+      start: number,
+      end: number
+    ) => { text: string; cursorOffset?: number; selectLength?: number }
   ) => {
     const textarea = textareaRef.current
     if (!textarea) return
 
     const { start, end, selectedText } = getSelectionInfo(textarea)
-    const { text, cursorOffset, selectLength } = transform(selectedText, textarea.value, start, end)
+    const { text, cursorOffset, selectLength } = transform(
+      selectedText,
+      textarea.value,
+      start,
+      end
+    )
 
     const result = replaceInfo(textarea, text, start, end)
 
-
     updateContent(result.value, true)
-
 
     setTimeout(() => {
       textarea.focus()
       const newCursorStart = start + (cursorOffset ?? text.length)
-      const newCursorEnd = selectLength !== undefined ? newCursorStart + selectLength : newCursorStart
+      const newCursorEnd =
+        selectLength !== undefined
+          ? newCursorStart + selectLength
+          : newCursorStart
       textarea.selectionStart = newCursorStart
       textarea.selectionEnd = newCursorEnd
     }, 0)
@@ -194,13 +208,17 @@ export default function CommunityCreatePage() {
 
   // --- 툴바  ---
 
-  const toggleWrapper = (prefix: string, suffix: string, placeholder = 'text') => {
+  const toggleWrapper = (
+    prefix: string,
+    suffix: string,
+    placeholder = 'text'
+  ) => {
     applyParams((sel) => {
       if (sel.startsWith(prefix) && sel.endsWith(suffix)) {
         return {
           text: sel.slice(prefix.length, -suffix.length),
           selectLength: sel.length - prefix.length - suffix.length,
-          cursorOffset: 0
+          cursorOffset: 0,
         }
       }
 
@@ -208,7 +226,7 @@ export default function CommunityCreatePage() {
       return {
         text: `${prefix}${content}${suffix}`,
         selectLength: content.length,
-        cursorOffset: prefix.length
+        cursorOffset: prefix.length,
       }
     })
   }
@@ -216,9 +234,10 @@ export default function CommunityCreatePage() {
   const handleBold = () => toggleWrapper('**', '**', 'Bold text')
   const handleItalic = () => toggleWrapper('*', '*', 'Italic text')
   const handleUnderline = () => toggleWrapper('<u>', '</u>', 'Underlined text')
-  const handleStrikethrough = () => toggleWrapper('~~', '~~', 'Strikethrough text')
+  const handleStrikethrough = () =>
+    toggleWrapper('~~', '~~', 'Strikethrough text')
 
-  // 폰트사이즈 , 컬러 
+  // 폰트사이즈 , 컬러
   const handleFontSize = (size: string) => {
     setCurrentFontSize(size)
     toggleWrapper(`<span style="font-size:${size}px">`, '</span>', 'Text')
@@ -241,7 +260,7 @@ export default function CommunityCreatePage() {
       return {
         text: `[${text}](${url})`,
         selectLength: text.length,
-        cursorOffset: 1
+        cursorOffset: 1,
       }
     })
   }
@@ -262,13 +281,12 @@ export default function CommunityCreatePage() {
       return {
         text: `![${alt}](${url})`,
         cursorOffset: 0,
-        selectLength: 0
+        selectLength: 0,
       }
     })
 
     e.target.value = ''
   }
-
 
   const toggleLinePrefix = (prefix: string) => {
     const textarea = textareaRef.current
@@ -282,7 +300,7 @@ export default function CommunityCreatePage() {
     const linesContent = value.substring(lineStart, lineEnd)
     const lines = linesContent.split('\n')
 
-    const newLines = lines.map(line => {
+    const newLines = lines.map((line) => {
       if (line.startsWith(prefix)) {
         return line.substring(prefix.length)
       } else {
@@ -311,7 +329,6 @@ export default function CommunityCreatePage() {
     setIsListMenuOpen(false)
   }
 
-
   const handleAlign = (align: 'left' | 'center' | 'right' | 'justify') => {
     toggleWrapper(`<div align="${align}">`, '</div>', 'Content')
   }
@@ -319,7 +336,11 @@ export default function CommunityCreatePage() {
   const handleLineHeight = () => {
     const height = window.prompt('행간을 입력하세요 (예: 1.5, 200%)', '1.5')
     if (!height) return
-    toggleWrapper(`<div style="line-height:${height}">`, '</div>', 'Line Height Content')
+    toggleWrapper(
+      `<div style="line-height:${height}">`,
+      '</div>',
+      'Line Height Content'
+    )
   }
 
   const handleIndent = () => toggleLinePrefix('> ')
@@ -336,8 +357,7 @@ export default function CommunityCreatePage() {
     const linesContent = value.substring(lineStart, lineEnd)
     const lines = linesContent.split('\n')
 
-    const newLines = lines.map(line => {
-
+    const newLines = lines.map((line) => {
       if (line.startsWith('> ')) return line.substring(2)
       if (line.startsWith('>')) return line.substring(1)
       if (line.startsWith('  ')) return line.substring(2)
@@ -386,11 +406,14 @@ export default function CommunityCreatePage() {
     try {
       setIsLoading(true)
       const token = getAccessToken()
-      const data = await createCommunityPost({
-        category_id: detailCategoryId, // 소분류 ID를 최종 카테고리로 사용
-        title,
-        content,
-      }, token || undefined)
+      const data = await createCommunityPost(
+        {
+          category_id: detailCategoryId, // 소분류 ID를 최종 카테고리로 사용
+          title,
+          content,
+        },
+        token || undefined
+      )
 
       alert('게시글이 등록되었습니다.')
       navigate(`/community/${data.pk}`)
@@ -403,10 +426,15 @@ export default function CommunityCreatePage() {
   }
 
   return (
-    <div className="flex w-full items-center justify-center py-[52px]">
+    <div className="flex w-full items-center justify-center">
       <div className="flex w-[944px] flex-col items-end gap-[52px]">
-
-        <input type="file" accept="image/*" ref={fileInputRef} onChange={handleFileChange} className="hidden" />
+        <input
+          type="file"
+          accept="image/*"
+          ref={fileInputRef}
+          onChange={handleFileChange}
+          className="hidden"
+        />
 
         {/* 헤더 */}
         <div className="flex w-full flex-col items-start gap-5">
@@ -435,10 +463,15 @@ export default function CommunityCreatePage() {
                       }}
                       className="z-10 h-full w-full cursor-pointer appearance-none bg-transparent text-sm text-[#374151] outline-none"
                     >
-                      <option value="" disabled>대분류 선택</option>
-                      {Array.isArray(categories) && categories.map((cat) => (
-                        <option key={cat.id} value={cat.id}>{cat.name}</option>
-                      ))}
+                      <option value="" disabled>
+                        대분류 선택
+                      </option>
+                      {Array.isArray(categories) &&
+                        categories.map((cat) => (
+                          <option key={cat.id} value={cat.id}>
+                            {cat.name}
+                          </option>
+                        ))}
                     </select>
                     <ChevronDown className="pointer-events-none absolute right-2.5 h-4 w-4 text-[#6B7280]" />
                   </div>
@@ -456,10 +489,15 @@ export default function CommunityCreatePage() {
                       className="z-10 h-full w-full cursor-pointer appearance-none bg-transparent text-sm text-[#374151] outline-none"
                       disabled={mainCategoryId === null}
                     >
-                      <option value="" disabled>중분류 선택</option>
-                      {Array.isArray(categories) && categories.map((cat) => (
-                        <option key={cat.id} value={cat.id}>{cat.name}</option>
-                      ))}
+                      <option value="" disabled>
+                        중분류 선택
+                      </option>
+                      {Array.isArray(categories) &&
+                        categories.map((cat) => (
+                          <option key={cat.id} value={cat.id}>
+                            {cat.name}
+                          </option>
+                        ))}
                     </select>
                     <ChevronDown className="pointer-events-none absolute right-2.5 h-4 w-4 text-[#6B7280]" />
                   </div>
@@ -475,17 +513,22 @@ export default function CommunityCreatePage() {
                       className="z-10 h-full w-full cursor-pointer appearance-none bg-transparent text-sm text-[#374151] outline-none"
                       disabled={subCategoryId === null}
                     >
-                      <option value="" disabled>소분류 선택</option>
-                      {Array.isArray(categories) && categories.map((cat) => (
-                        <option key={cat.id} value={cat.id}>{cat.name}</option>
-                      ))}
+                      <option value="" disabled>
+                        소분류 선택
+                      </option>
+                      {Array.isArray(categories) &&
+                        categories.map((cat) => (
+                          <option key={cat.id} value={cat.id}>
+                            {cat.name}
+                          </option>
+                        ))}
                     </select>
                     <ChevronDown className="pointer-events-none absolute right-2.5 h-4 w-4 text-[#6B7280]" />
                   </div>
                 </div>
 
                 {/* 제목 */}
-                <div className="flex h-[60px] w-full items-center rounded bg-primary-50 px-4">
+                <div className="bg-primary-50 flex h-[60px] w-full items-center rounded px-4">
                   <input
                     type="text"
                     value={title}
@@ -503,16 +546,23 @@ export default function CommunityCreatePage() {
         <div className="flex w-full flex-col items-end gap-[52px]">
           <div className="flex w-full flex-col overflow-visible rounded-[20px] border border-[#E5E7EB]">
             {/* 툴바 */}
-            <div className="sticky top-0 z-20 flex flex-col items-center justify-center border-b border-[#E5E7EB] bg-white px-8 py-4 shadow-sm gap-4">
-
+            <div className="sticky top-0 z-20 flex flex-col items-center justify-center gap-4 border-b border-[#E5E7EB] bg-white px-8 py-4 shadow-sm">
               {/* 상단 */}
               <div className="flex w-full items-center justify-center gap-6">
                 {/* 되돌리기/다시실행 */}
                 <div className="flex items-center gap-2">
-                  <button type="button" onClick={handleUndo} className="p-1 hover:bg-gray-100 rounded">
+                  <button
+                    type="button"
+                    onClick={handleUndo}
+                    className="rounded p-1 hover:bg-gray-100"
+                  >
                     <UndoIcon />
                   </button>
-                  <button type="button" onClick={handleRedo} className="p-1 hover:bg-gray-100 rounded">
+                  <button
+                    type="button"
+                    onClick={handleRedo}
+                    className="rounded p-1 hover:bg-gray-100"
+                  >
                     <RedoIcon />
                   </button>
                 </div>
@@ -521,20 +571,32 @@ export default function CommunityCreatePage() {
 
                 {/* 글자 */}
                 <div className="flex items-center gap-2">
-                  <button type="button" className="flex h-8 items-center gap-2 rounded bg-[#F3F4F6] px-3 text-sm text-[#4B5563] cursor-not-allowed opacity-70" disabled>
+                  <button
+                    type="button"
+                    className="flex h-8 cursor-not-allowed items-center gap-2 rounded bg-[#F3F4F6] px-3 text-sm text-[#4B5563] opacity-70"
+                    disabled
+                  >
                     기본서체
                     <ChevronDown className="h-4 w-4" />
                   </button>
 
                   <div className="relative" ref={fontSizeRef}>
-                    <button type="button" onClick={() => setIsFontSizeMenuOpen(!isFontSizeMenuOpen)} className="flex h-8 items-center gap-2 rounded bg-[#F3F4F6] px-3 text-sm text-[#4B5563] hover:bg-gray-200">
+                    <button
+                      type="button"
+                      onClick={() => setIsFontSizeMenuOpen(!isFontSizeMenuOpen)}
+                      className="flex h-8 items-center gap-2 rounded bg-[#F3F4F6] px-3 text-sm text-[#4B5563] hover:bg-gray-200"
+                    >
                       {currentFontSize}
                       <ChevronDown className="h-4 w-4" />
                     </button>
                     {isFontSizeMenuOpen && (
-                      <div className="absolute top-full left-0 mt-1 w-20 rounded border border-gray-200 bg-white shadow-lg py-1 z-30">
-                        {['12', '14', '16', '18', '24', '32'].map(size => (
-                          <button key={size} className="block w-full px-4 py-1 text-left text-sm hover:bg-gray-100" onClick={() => handleFontSize(size)}>
+                      <div className="absolute top-full left-0 z-30 mt-1 w-20 rounded border border-gray-200 bg-white py-1 shadow-lg">
+                        {['12', '14', '16', '18', '24', '32'].map((size) => (
+                          <button
+                            key={size}
+                            className="block w-full px-4 py-1 text-left text-sm hover:bg-gray-100"
+                            onClick={() => handleFontSize(size)}
+                          >
                             {size}
                           </button>
                         ))}
@@ -545,30 +607,86 @@ export default function CommunityCreatePage() {
 
                 <div className="h-6 w-px bg-[#E5E7EB]" />
 
-
                 <div className="flex items-center gap-1">
-                  <button type="button" onClick={handleBold} className="p-1 hover:bg-gray-100 rounded"><ToolbarBoldIcon /></button>
-                  <button type="button" onClick={handleItalic} className="p-1 hover:bg-gray-100 rounded"><ToolbarItalicIcon /></button>
-                  <button type="button" onClick={handleUnderline} className="p-1 hover:bg-gray-100 rounded"><ToolbarUnderlineIcon /></button>
-                  <button type="button" onClick={handleStrikethrough} className="p-1 hover:bg-gray-100 rounded"><ToolbarStrikeIcon /></button>
+                  <button
+                    type="button"
+                    onClick={handleBold}
+                    className="rounded p-1 hover:bg-gray-100"
+                  >
+                    <ToolbarBoldIcon />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleItalic}
+                    className="rounded p-1 hover:bg-gray-100"
+                  >
+                    <ToolbarItalicIcon />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleUnderline}
+                    className="rounded p-1 hover:bg-gray-100"
+                  >
+                    <ToolbarUnderlineIcon />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleStrikethrough}
+                    className="rounded p-1 hover:bg-gray-100"
+                  >
+                    <ToolbarStrikeIcon />
+                  </button>
 
                   {/* 컬러 */}
-                  <div className="relative flex items-center gap-1" ref={textColorRef}>
-                    <button type="button" onClick={() => setIsTextColorMenuOpen(!isTextColorMenuOpen)} className="p-1 hover:bg-gray-100 rounded">
+                  <div
+                    className="relative flex items-center gap-1"
+                    ref={textColorRef}
+                  >
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setIsTextColorMenuOpen(!isTextColorMenuOpen)
+                      }
+                      className="rounded p-1 hover:bg-gray-100"
+                    >
                       <ToolbarColorBoxIcon selectedColor={currentTextColor} />
                     </button>
-                    <button type="button" onClick={() => setIsTextColorMenuOpen(!isTextColorMenuOpen)} className="p-1 hover:bg-gray-100 rounded">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setIsTextColorMenuOpen(!isTextColorMenuOpen)
+                      }
+                      className="rounded p-1 hover:bg-gray-100"
+                    >
                       <ToolbarArrowIcon />
                     </button>
 
-                    <button type="button" onClick={handleUnderline} className="p-1 hover:bg-gray-100 rounded">
+                    <button
+                      type="button"
+                      onClick={handleUnderline}
+                      className="rounded p-1 hover:bg-gray-100"
+                    >
                       <ToolbarTextIcon />
                     </button>
 
                     {isTextColorMenuOpen && (
-                      <div className="absolute top-full left-0 mt-1 w-32 rounded border border-gray-200 bg-white shadow-lg p-2 z-30 grid grid-cols-4 gap-2">
-                        {['#000000', '#FF0000', '#0000FF', '#008000', '#FFA500', '#800080', '#A52A2A', '#808080'].map(c => (
-                          <div key={c} className="w-6 h-6 rounded-full cursor-pointer border border-gray-200 hover:scale-110 transition-transform" style={{ backgroundColor: c }} onClick={() => handleTextColor(c)} />
+                      <div className="absolute top-full left-0 z-30 mt-1 grid w-32 grid-cols-4 gap-2 rounded border border-gray-200 bg-white p-2 shadow-lg">
+                        {[
+                          '#000000',
+                          '#FF0000',
+                          '#0000FF',
+                          '#008000',
+                          '#FFA500',
+                          '#800080',
+                          '#A52A2A',
+                          '#808080',
+                        ].map((c) => (
+                          <div
+                            key={c}
+                            className="h-6 w-6 cursor-pointer rounded-full border border-gray-200 transition-transform hover:scale-110"
+                            style={{ backgroundColor: c }}
+                            onClick={() => handleTextColor(c)}
+                          />
                         ))}
                       </div>
                     )}
@@ -578,30 +696,36 @@ export default function CommunityCreatePage() {
                 <div className="h-6 w-px bg-[#E5E7EB]" />
 
                 <div className="flex items-center gap-3">
-                  <button type="button" onClick={handleLink} className="p-1 hover:bg-gray-100 rounded">
+                  <button
+                    type="button"
+                    onClick={handleLink}
+                    className="rounded p-1 hover:bg-gray-100"
+                  >
                     <ToolbarLinkIcon />
                   </button>
-                  <button type="button" onClick={handleImageClick} className="p-1 hover:bg-gray-100 rounded">
+                  <button
+                    type="button"
+                    onClick={handleImageClick}
+                    className="rounded p-1 hover:bg-gray-100"
+                  >
                     <ToolbarImageIcon />
                   </button>
                 </div>
               </div>
 
-
               <div className="flex w-full items-center justify-center gap-6 border-t border-[#F3F4F6] pt-3">
-
                 {/* 리스트 (Bullet/Ordered) */}
                 <div className="relative" ref={listMenuRef}>
                   <button
                     type="button"
-                    className="flex items-center hover:bg-gray-100 p-1 rounded transition-colors"
+                    className="flex items-center rounded p-1 transition-colors hover:bg-gray-100"
                     onClick={() => setIsListMenuOpen(!isListMenuOpen)}
                   >
                     <ToolbarListGroupIcon />
                   </button>
 
                   {isListMenuOpen && (
-                    <div className="absolute top-full left-0 mt-1 z-50 w-32 rounded-lg border border-[#E1E1E2] bg-white py-1 shadow-lg">
+                    <div className="absolute top-full left-0 z-50 mt-1 w-32 rounded-lg border border-[#E1E1E2] bg-white py-1 shadow-lg">
                       <button
                         onClick={handleUnorderedList}
                         className="flex w-full items-center px-4 py-2 text-sm text-[#52525B] hover:bg-gray-50"
@@ -618,40 +742,78 @@ export default function CommunityCreatePage() {
                   )}
                 </div>
 
-
                 <div className="flex items-center gap-2">
-                  <button type="button" onClick={() => handleAlign('left')} className="p-1 hover:bg-gray-100 rounded"><ToolbarAlignLeftIcon /></button>
-                  <button type="button" onClick={() => handleAlign('center')} className="p-1 hover:bg-gray-100 rounded"><ToolbarAlignCenterIcon /></button>
-                  <button type="button" onClick={() => handleAlign('right')} className="p-1 hover:bg-gray-100 rounded"><ToolbarAlignRightIcon /></button>
-                  <button type="button" onClick={() => handleAlign('justify')} className="p-1 hover:bg-gray-100 rounded"><ToolbarAlignJustifyIcon /></button>
+                  <button
+                    type="button"
+                    onClick={() => handleAlign('left')}
+                    className="rounded p-1 hover:bg-gray-100"
+                  >
+                    <ToolbarAlignLeftIcon />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleAlign('center')}
+                    className="rounded p-1 hover:bg-gray-100"
+                  >
+                    <ToolbarAlignCenterIcon />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleAlign('right')}
+                    className="rounded p-1 hover:bg-gray-100"
+                  >
+                    <ToolbarAlignRightIcon />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleAlign('justify')}
+                    className="rounded p-1 hover:bg-gray-100"
+                  >
+                    <ToolbarAlignJustifyIcon />
+                  </button>
                 </div>
 
-
                 <div className="flex items-center gap-2">
-                  <button type="button" onClick={handleLineHeight} className="p-1 hover:bg-gray-100 rounded">
+                  <button
+                    type="button"
+                    onClick={handleLineHeight}
+                    className="rounded p-1 hover:bg-gray-100"
+                  >
                     <ToolbarLineHeightIcon />
                   </button>
-                  <button type="button" onClick={handleOutdent} className="p-1 hover:bg-gray-100 rounded">
+                  <button
+                    type="button"
+                    onClick={handleOutdent}
+                    className="rounded p-1 hover:bg-gray-100"
+                  >
                     <ToolbarOutdentIcon />
                   </button>
-                  <button type="button" onClick={handleIndent} className="p-1 hover:bg-gray-100 rounded">
+                  <button
+                    type="button"
+                    onClick={handleIndent}
+                    className="rounded p-1 hover:bg-gray-100"
+                  >
                     <ToolbarIndentIcon />
                   </button>
                 </div>
 
-
                 <div className="flex items-center gap-1">
-                  <button type="button" onClick={handleEraser} className="p-1 hover:bg-gray-100 rounded">
+                  <button
+                    type="button"
+                    onClick={handleEraser}
+                    className="rounded p-1 hover:bg-gray-100"
+                  >
                     <ToolbarEraserIcon />
                   </button>
                 </div>
               </div>
             </div>
 
-            <div className="grid w-full grid-cols-2 bg-[#E5E7EB] p-px gap-px">
-
+            <div className="grid w-full grid-cols-2 gap-px bg-[#E5E7EB] p-px">
               <div className="flex h-full min-h-[600px] w-full flex-col bg-white p-6">
-                <div className="mb-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">Markdown Editor</div>
+                <div className="mb-2 text-xs font-semibold tracking-wider text-gray-400 uppercase">
+                  Markdown Editor
+                </div>
                 <textarea
                   ref={textareaRef}
                   value={content}
@@ -670,29 +832,74 @@ export default function CommunityCreatePage() {
                 />
               </div>
 
-
               <div className="flex h-full min-h-[600px] w-full flex-col bg-white p-6">
-                <div className="mb-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">Preview</div>
+                <div className="mb-2 text-xs font-semibold tracking-wider text-gray-400 uppercase">
+                  Preview
+                </div>
                 <div className="prose prose-sm max-w-none flex-1 overflow-y-auto font-['Pretendard'] text-[14px] leading-relaxed text-black">
                   <ReactMarkdown
                     remarkPlugins={[remarkGfm]}
                     rehypePlugins={[rehypeRaw]}
                     components={{
-                      h1: ({ node, ...props }) => <h1 className="text-2xl font-bold my-4 border-b pb-2" {...props} />,
-                      h2: ({ node, ...props }) => <h2 className="text-xl font-bold my-3" {...props} />,
-                      h3: ({ node, ...props }) => <h3 className="text-lg font-bold my-2" {...props} />,
-                      ul: ({ node, ...props }) => <ul className="list-disc list-inside my-2 pl-2" {...props} />,
-                      ol: ({ node, ...props }) => <ol className="list-decimal list-inside my-2 pl-2" {...props} />,
-                      blockquote: ({ node, ...props }) => <blockquote className="border-l-4 border-gray-300 pl-4 py-1 my-2 bg-gray-50 text-gray-600 italic" {...props} />,
-                      a: ({ node, ...props }) => <a className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer" {...props} />,
+                      h1: ({ node, ...props }) => (
+                        <h1
+                          className="my-4 border-b pb-2 text-2xl font-bold"
+                          {...props}
+                        />
+                      ),
+                      h2: ({ node, ...props }) => (
+                        <h2 className="my-3 text-xl font-bold" {...props} />
+                      ),
+                      h3: ({ node, ...props }) => (
+                        <h3 className="my-2 text-lg font-bold" {...props} />
+                      ),
+                      ul: ({ node, ...props }) => (
+                        <ul
+                          className="my-2 list-inside list-disc pl-2"
+                          {...props}
+                        />
+                      ),
+                      ol: ({ node, ...props }) => (
+                        <ol
+                          className="my-2 list-inside list-decimal pl-2"
+                          {...props}
+                        />
+                      ),
+                      blockquote: ({ node, ...props }) => (
+                        <blockquote
+                          className="my-2 border-l-4 border-gray-300 bg-gray-50 py-1 pl-4 text-gray-600 italic"
+                          {...props}
+                        />
+                      ),
+                      a: ({ node, ...props }) => (
+                        <a
+                          className="text-blue-600 hover:underline"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          {...props}
+                        />
+                      ),
                       img: ({ node, ...props }) => {
                         if (!props.src || props.src.trim() === '') return null
-                        return <img className="h-auto max-w-full rounded border border-gray-100 shadow-sm" {...props} />
+                        return (
+                          <img
+                            className="h-auto max-w-full rounded border border-gray-100 shadow-sm"
+                            {...props}
+                          />
+                        )
                       },
                       code: ({ node, ...props }) => (
-                        <code className="bg-gray-100 rounded px-1.5 py-0.5 font-mono text-sm text-red-500" {...props} />
+                        <code
+                          className="rounded bg-gray-100 px-1.5 py-0.5 font-mono text-sm text-red-500"
+                          {...props}
+                        />
                       ),
-                      pre: ({ node, ...props }) => <pre className="bg-gray-900 text-white p-4 rounded-lg overflow-x-auto my-4" {...props} />,
+                      pre: ({ node, ...props }) => (
+                        <pre
+                          className="my-4 overflow-x-auto rounded-lg bg-gray-900 p-4 text-white"
+                          {...props}
+                        />
+                      ),
                       span: ({ node, ...props }) => <span {...props} />,
                       div: ({ node, ...props }) => <div {...props} />,
                     }}
@@ -704,7 +911,6 @@ export default function CommunityCreatePage() {
             </div>
           </div>
         </div>
-
 
         <button
           onClick={handleSubmit}
