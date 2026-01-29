@@ -2,6 +2,7 @@ import DetailsHeader from '@/components/details/DetailsHeader'
 import DetailsContents from '@/components/details/DetailsContents'
 import DetailsWriter from '@/components/details/DetailsWriter'
 import DetailsAnswerList from '@/components/details/DetailsAnswerList'
+import AiAnswerSection from '@/components/details/DetailsChatbot'
 import { useQuery } from '@tanstack/react-query'
 import { FetchQnaDetails } from '@/hooks/FetchQnaDetails'
 import { useParams } from 'react-router'
@@ -25,6 +26,7 @@ export default function QnaDetailsPage() {
         name={data.author.nickname}
       />
       <DetailsContents content={data.content} />
+      <AiAnswerSection />
       <DetailsWriter />
       <DetailsAnswerList answers={data.answers} />
     </div>
