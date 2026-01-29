@@ -27,8 +27,10 @@ import {
   ToolbarIndentIcon,
 } from '../assets/images/icons/CustomIcons'
 
-import { api, createCommunityPost, getAccessToken } from '../api/api'
-import type { CommunityCategory } from '../types'
+// import { api, createQnaPost, getAccessToken } from '../api/api'
+import { api, getAccessToken } from '../api/api'
+import type { QnaCategory } from '../types'
+import { createQnaPost } from '@/hooks/FetchQnaCreate'
 
 function getSelectionInfo(textarea: HTMLTextAreaElement) {
   const start = textarea.selectionStart
@@ -59,7 +61,7 @@ export default function CommunityCreatePage() {
   const navigate = useNavigate()
 
   // --- Data ---
-  const [categories, setCategories] = useState<CommunityCategory[]>([])
+  const [categories, setCategories] = useState<QnaCategory[]>([])
   const [mainCategoryId, setMainCategoryId] = useState<number | null>(null)
   const [subCategoryId, setSubCategoryId] = useState<number | null>(null)
   const [detailCategoryId, setDetailCategoryId] = useState<number | null>(null)
@@ -88,9 +90,7 @@ export default function CommunityCreatePage() {
   useEffect(() => {
     async function fetchCategories() {
       try {
-        const res = await api.get<CommunityCategory[]>(
-          '/api/v1/posts/categories'
-        )
+        const res = await api.get<QnaCategory[]>('/api/v1/posts/categories')
         // 응답 데이터가 배열인지 확인
         if (Array.isArray(res.data)) {
           setCategories(res.data)
@@ -406,18 +406,17 @@ export default function CommunityCreatePage() {
     try {
       setIsLoading(true)
       const token = getAccessToken()
-      const data = await createCommunityPost(
-        {
-          category_id: detailCategoryId, // 소분류 ID를 최종 카테고리로 사용
-          title,
-          content,
-        },
-        token || undefined
-      )
-
+      const params = {
+        title,
+        content,
+        category_id: detailCategoryId, // 소분류 ID를 최종 카테고리로 사용
+      }
+      const data = await createQnaPost(params, token || undefined)
+      console.log(params)
       alert('게시글이 등록되었습니다.')
       navigate(`/community/${data.pk}`)
     } catch (error) {
+      console.log(detailCategoryId, title, content)
       console.error('게시글 등록 실패:', error)
       alert('게시글 등록에 실패했습니다.')
     } finally {
@@ -469,9 +468,10 @@ export default function CommunityCreatePage() {
                       {Array.isArray(categories) &&
                         categories.map((cat) => (
                           <option key={cat.id} value={cat.id}>
-                            {cat.name}
+                            {cat.names[0]}
                           </option>
                         ))}
+                      <option value="1">1</option>
                     </select>
                     <ChevronDown className="pointer-events-none absolute right-2.5 h-4 w-4 text-[#6B7280]" />
                   </div>
@@ -495,9 +495,10 @@ export default function CommunityCreatePage() {
                       {Array.isArray(categories) &&
                         categories.map((cat) => (
                           <option key={cat.id} value={cat.id}>
-                            {cat.name}
+                            {cat.names[1]}
                           </option>
                         ))}
+                      <option value="1">1</option>
                     </select>
                     <ChevronDown className="pointer-events-none absolute right-2.5 h-4 w-4 text-[#6B7280]" />
                   </div>
@@ -519,9 +520,10 @@ export default function CommunityCreatePage() {
                       {Array.isArray(categories) &&
                         categories.map((cat) => (
                           <option key={cat.id} value={cat.id}>
-                            {cat.name}
+                            {cat.names[2]}
                           </option>
                         ))}
+                      <option value="1">1</option>
                     </select>
                     <ChevronDown className="pointer-events-none absolute right-2.5 h-4 w-4 text-[#6B7280]" />
                   </div>
@@ -817,7 +819,9 @@ export default function CommunityCreatePage() {
                 <textarea
                   ref={textareaRef}
                   value={content}
-                  onChange={(e) => updateContent(e.target.value)}
+                  onChange={(e) => {
+                    updateContent(e.target.value)
+                  }}
                   className="flex-1 resize-none bg-transparent font-['Pretendard'] text-[14px] leading-relaxed text-black outline-none placeholder:text-gray-300"
                   placeholder={`# 제목
 

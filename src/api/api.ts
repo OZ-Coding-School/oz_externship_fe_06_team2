@@ -1,14 +1,5 @@
 import axios from 'axios'
-import type {
-  CommunityCategory,
-  GetCommunityPostsParams,
-  PaginatedResponse,
-  CommunityPostListItem,
-  CreateCommunityPostBody,
-  CreateCommunityPostResponse,
-  CreateCommunityCommentBody,
-  UpdateCommunityCommentBody,
-} from '../types'
+import type { CreateQnaPostBody, CreateQnaPostResponse } from '../types'
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? ''
 
@@ -31,7 +22,9 @@ function getCookie(name: string): string | null {
 
 /** 로그인 상태 확인 (refreshToken 쿠키 또는 localStorage user 존재 여부) */
 export function isLoggedIn(): boolean {
-  return getCookie('refreshToken') !== null || localStorage.getItem('user') !== null
+  return (
+    getCookie('refreshToken') !== null || localStorage.getItem('user') !== null
+  )
 }
 
 /** (옵션) Access Token 가져오기 (HttpOnly면 null 나올 수 있음) */
@@ -69,124 +62,18 @@ function withAuth(token?: string) {
 // Community API
 // =============================
 
-export async function getCommunityCategories(): Promise<CommunityCategory[]> {
-  const res = await api.get<CommunityCategory[]>('/api/v1/posts/categories')
-  return res.data
-}
+// export async function createQnaPost(
+//   body: CreateQnaPostBody,
+//   token?: string
+// ): Promise<CreateQnaPostResponse> {
+//   const res = await api.post<CreateQnaPostResponse>(
+//     '/api/v1/qna/questions',
+//     body,
+//     { headers: { ...withAuth(token) } }
+//   )
+//   return res.data
+// }
 
-export async function getCommunityPosts(
-  params?: GetCommunityPostsParams
-): Promise<PaginatedResponse<CommunityPostListItem>> {
-  const q = toQuery(params as unknown as Record<string, unknown>)
-  const suffix = q.toString() ? `?${q.toString()}` : ''
-  const res = await api.get<PaginatedResponse<CommunityPostListItem>>(
-    `/api/v1/posts${suffix}`
-  )
-  return res.data
-}
-
-export async function createCommunityPost(
-  body: CreateCommunityPostBody,
-  token?: string
-): Promise<CreateCommunityPostResponse> {
-  const res = await api.post<CreateCommunityPostResponse>(
-    '/api/v1/posts',
-    body,
-    { headers: { ...withAuth(token) } }
-  )
-  return res.data
-}
-
-export async function getCommunityPostDetail(postId: number) {
-  const res = await api.get(`/api/v1/posts/${postId}`)
-  return res.data
-}
-
-export async function deleteCommunityPost(postId: number) {
-  const token = getAccessToken()
-  const res = await api.delete(`/api/v1/posts/${postId}`, {
-    headers: { ...withAuth(token || undefined) },
-  })
-  return res.data
-}
-
-export async function getCommunityComments(
-  postId: number,
-  params?: { page?: number; page_size?: number }
-) {
-  const q = toQuery(params as Record<string, unknown>)
-  const suffix = q.toString() ? `?${q.toString()}` : ''
-  const res = await api.get(`/api/v1/posts/${postId}/comments${suffix}`)
-  return res.data
-}
-
-export async function createCommunityComment(
-  postId: number,
-  body: CreateCommunityCommentBody
-) {
-  const token = getAccessToken()
-  const res = await api.post(`/api/v1/posts/${postId}/comments`, body, {
-    headers: { ...withAuth(token || undefined) },
-  })
-  return res.data
-}
-
-export async function updateCommunityComment(
-  postId: number,
-  commentId: number,
-  body: UpdateCommunityCommentBody
-) {
-  const token = getAccessToken()
-  const res = await api.put(
-    `/api/v1/posts/${postId}/comments/${commentId}`,
-    body,
-    { headers: { ...withAuth(token || undefined) } }
-  )
-  return res.data
-}
-
-export async function deleteCommunityComment(
-  postId: number,
-  commentId: number
-) {
-  const token = getAccessToken()
-  const res = await api.delete(
-    `/api/v1/posts/${postId}/comments/${commentId}`,
-    {
-      headers: { ...withAuth(token || undefined) },
-    }
-  )
-  return res.data
-}
-
-export async function likeCommunityPost(postId: number) {
-  const token = getAccessToken()
-  const res = await api.post(
-    `/api/v1/posts/${postId}/like`,
-    {},
-    { headers: { ...withAuth(token || undefined) } }
-  )
-  return res.data
-}
-
-export async function unlikeCommunityPost(postId: number) {
-  const token = getAccessToken()
-  const res = await api.delete(`/api/v1/posts/${postId}/like`, {
-    headers: { ...withAuth(token || undefined) },
-  })
-  return res.data
-}
-
-export const communityApi = {
-  getCategories: getCommunityCategories,
-  getPosts: getCommunityPosts,
-  createPost: createCommunityPost,
-  getPostDetail: getCommunityPostDetail,
-  deletePost: deleteCommunityPost,
-  getComments: getCommunityComments,
-  createComment: createCommunityComment,
-  updateComment: updateCommunityComment,
-  deleteComment: deleteCommunityComment,
-  likePost: likeCommunityPost,
-  unlikePost: unlikeCommunityPost,
-}
+// export const qnaApi = {
+//   createPost: createQnaPost,
+// }

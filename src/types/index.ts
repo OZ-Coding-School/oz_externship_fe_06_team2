@@ -59,8 +59,17 @@ export interface QnaDetailResponse {
   thumbnail_img_url?: string | null
 }
 
-export type SearchFilterOption = 'author' | 'title' | 'content' | 'title_or_content'
-export type SortOption = 'latest' | 'oldest' | 'most_views' | 'most_likes' | 'most_comments'
+export type SearchFilterOption =
+  | 'author'
+  | 'title'
+  | 'content'
+  | 'title_or_content'
+export type SortOption =
+  | 'latest'
+  | 'oldest'
+  | 'most_views'
+  | 'most_likes'
+  | 'most_comments'
 
 export interface PaginatedResponse<T> {
   count: number
@@ -134,31 +143,6 @@ export interface QnaDetailResponse {
   thumbnail_img_url?: string | null
 }
 
-export interface CommunityCategory {
-  id: number
-  name: string
-}
-
-export interface CommunityAuthor {
-  id: number
-  nickname: string
-  profile_img_url: string | null
-}
-
-export interface CommunityPostListItem {
-  id: number
-  author: CommunityAuthor
-  title: string
-  thumbnail_img_url: string | null
-  content_preview: string
-  comment_count: number
-  view_count: number
-  like_count: number
-  created_at: string
-  updated_at: string
-  category_id: number
-}
-
 export interface GetCommunityPostsParams {
   page?: number
   page_size?: number
@@ -168,65 +152,13 @@ export interface GetCommunityPostsParams {
   sort?: SortOption
 }
 
-export interface CreateCommunityPostBody {
+export interface CreateQnaPostBody {
   title: string
   content: string
   category_id: number
 }
 
-export interface CreateCommunityPostResponse {
+export interface CreateQnaPostResponse {
   detail: string
   pk: number
-}
-
-export interface CommunityPostDetail {
-  id: number
-  author: CommunityAuthor
-  title: string
-  content: string
-  thumbnail_img_url: string | null
-  category: CommunityCategory
-  view_count: number
-  like_count: number
-  comment_count: number
-  created_at: string
-  updated_at: string
-  is_liked: boolean
-  is_author: boolean
-}
-
-export interface DeleteCommunityPostResponse {
-  detail: string
-}
-
-export interface CommunityComment {
-  id: number
-  author: CommunityAuthor
-  content: string
-  created_at: string
-  updated_at: string
-  is_author: boolean
-}
-
-export interface GetCommunityCommentsResponse extends PaginatedResponse<CommunityComment> {}
-
-export interface CreateCommunityCommentBody {
-  content: string
-}
-
-export interface CreateCommunityCommentResponse {
-  id: number
-  detail: string
-}
-
-export interface UpdateCommunityCommentBody {
-  content: string
-}
-
-export interface UpdateCommunityCommentResponse {
-  detail: string
-}
-
-export interface DeleteCommunityCommentResponse {
-  detail: string
 }
