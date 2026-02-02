@@ -3,35 +3,42 @@ import FilterIcon from '@/assets/images/svg/Filter.svg?react'
 import { useState } from 'react'
 import Modal from '@/components/common/Modal'
 import CategorySelect from '@/components/common/CategorySelect'
+import { useQnaListFilters } from '@/hooks/useQnaListFilters'
 
 interface TabMenuProps {
-  activeTab: string
-  setActiveTab: (tab: string) => void
-  sortOrder: string
-  setSortOrder: (order: string) => void
-  mainCategoryId: number | null
-  subCategoryId: number | null
-  detailCategoryId: number | null
-  onMainCategoryChange: (id: number | null) => void
-  onSubCategoryChange: (id: number | null) => void
-  onDetailCategoryChange: (id: number | null) => void
+  filters: ReturnType<typeof useQnaListFilters>
 }
 
-export default function TabMenu({
-  activeTab,
-  setActiveTab,
-  sortOrder,
-  setSortOrder,
-  mainCategoryId,
-  subCategoryId,
-  detailCategoryId,
-  onMainCategoryChange,
-  onSubCategoryChange,
-  onDetailCategoryChange,
-}: TabMenuProps) {
+export default function TabMenu({ filters }: TabMenuProps) {
   const tabs = ['전체보기', '답변완료', '답변 대기중']
-  const [isOpen, setIsOpen] = useState(false)
-  const [isFilterOpen, setIsFilterOpen] = useState(false)
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false) // 드롭다운 레이어
+  const [isFilterOpen, setIsFilterOpen] = useState(false) // 필터 모달
+
+  const {
+    activeTab,
+    setActiveTab,
+    handleApplyFilter,
+    handleResetFilter,
+    sortOrder,
+    setSortOrder,
+    mainCategoryId,
+    setMainCategoryId,
+    subCategoryId,
+    setSubCategoryId,
+    detailCategoryId,
+    setDetailCategoryId,
+  } = filters
+
+  // 필터 적용하기 버튼
+  const submitApplyFilter = () => {
+    handleApplyFilter()
+    setIsFilterOpen(false)
+  }
+  // 필터 초기화 버튼
+  const submitResetFilter = () => {
+    handleResetFilter()
+    setIsFilterOpen(false)
+  }
   return (
     <nav className="flex items-center justify-between border-b border-[#E5E7EB]">
       <div className="flex items-center gap-[40px]">
@@ -58,13 +65,13 @@ export default function TabMenu({
           <button
             type="button"
             className="icon_button"
-            onClick={() => setIsOpen(!isOpen)}
+            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
           >
             {sortOrder} <SortIcon />
           </button>
 
           {/* 드롭다운 레이어 */}
-          {isOpen && (
+          {isDropdownOpen && (
             <ul className="dropdown">
               {['최신순', '오래된 순'].map((type) => (
                 <li key={type}>
@@ -73,7 +80,7 @@ export default function TabMenu({
                     className={`${sortOrder === type ? 'bg-[#EFE6FC] font-bold text-[#6201E0] hover:bg-[#EFE6FC]' : 'text-[#6B7280]'}`}
                     onClick={() => {
                       setSortOrder(type)
-                      setIsOpen(false)
+                      setIsDropdownOpen(false)
                     }}
                   >
                     {type}
@@ -92,21 +99,24 @@ export default function TabMenu({
           필터 <FilterIcon />
         </button>
       </div>
-      {/* 필터 전용 모달 적용 */}
+
+      {/* 필터 전용 모달 */}
       <Modal
         isOpen={isFilterOpen}
         onClose={() => setIsFilterOpen(false)}
         size="lg"
         title="필터"
+        onResetFilter={submitResetFilter}
+        onApplyFilter={submitApplyFilter}
       >
         <div className="min-h-[200px]">
           <CategorySelect
             mainCategoryId={mainCategoryId}
             subCategoryId={subCategoryId}
             detailCategoryId={detailCategoryId}
-            onMainCategoryChange={onMainCategoryChange}
-            onSubCategoryChange={onSubCategoryChange}
-            onDetailCategoryChange={onDetailCategoryChange}
+            onMainCategoryChange={setMainCategoryId}
+            onSubCategoryChange={setSubCategoryId}
+            onDetailCategoryChange={setDetailCategoryId}
             viewMode="column"
           />
         </div>

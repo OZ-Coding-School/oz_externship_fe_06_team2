@@ -7,6 +7,8 @@ interface ModalProps {
   size?: 'sm' | 'lg'
   title?: string
   children: React.ReactNode
+  onResetFilter: () => void
+  onApplyFilter: () => void
 }
 
 export default function Modal({
@@ -15,6 +17,8 @@ export default function Modal({
   size = 'sm',
   title,
   children,
+  onResetFilter,
+  onApplyFilter,
 }: ModalProps) {
   useEffect(() => {
     if (isOpen) {
@@ -55,10 +59,18 @@ export default function Modal({
         {/* 푸터 영역 */}
         <div className="modal_footer">
           <div className="btn_wrap flex-center-center w-full gap-[44px]">
-            <button type="button" className="icon_button text">
+            <button
+              type="button"
+              onClick={onResetFilter}
+              className="icon_button text"
+            >
               <ResetIcon /> 선택초기화
             </button>
-            <button type="button" className="purple_bg w-[278px]">
+            <button
+              type="button"
+              onClick={onApplyFilter}
+              className="purple_bg w-[278px]"
+            >
               필터 적용하기
             </button>
           </div>
