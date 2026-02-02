@@ -1,4 +1,3 @@
-import { ChevronDown } from 'lucide-react'
 import { useState, useRef, useEffect } from 'react'
 import SelectArrowIcon from '@/assets/images/svg/SelectArr.svg?react'
 import SelectCheckIcon from '@/assets/images/svg/SelectChk.svg?react'
@@ -127,6 +126,7 @@ export default function CategorySelect({
                 <button
                   type="button"
                   onClick={() => {
+                    console.log('대분류 선택:', cat.id, cat.name)
                     onMainCategoryChange(cat.id)
                     onSubCategoryChange(null)
                     onDetailCategoryChange(null)

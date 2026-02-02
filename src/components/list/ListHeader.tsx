@@ -1,16 +1,15 @@
 import InputSearch from '@/components/common/InputSearch'
 import PencilIcon from '@/assets/images/svg/Pencil.svg?react'
 import { Link } from 'react-router'
+import type { useQnaListFilters } from '@/hooks/useQnaListFilters'
 
 interface ListHeaderProps {
-  searchQuery: string
-  setSearchQuery: (query: string) => void
+  //useQnaListFilters 훅의 반환 타입을 그대로 상속받음
+  filters: ReturnType<typeof useQnaListFilters>
 }
 
-export default function ListHeader({
-  searchQuery,
-  setSearchQuery,
-}: ListHeaderProps) {
+export default function ListHeader({ filters }: ListHeaderProps) {
+  const { searchQuery, setSearchQuery } = filters
   return (
     <section className="list_header">
       <h2 className="mb-[32px] text-[32px] font-bold text-[#121212]">
