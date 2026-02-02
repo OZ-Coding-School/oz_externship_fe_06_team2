@@ -28,9 +28,9 @@ import {
 } from '../assets/images/icons/CustomIcons'
 
 // import { api, createQnaPost, getAccessToken } from '../api/api'
-import { api, getAccessToken } from '../api/api'
-import type { QnaCategory } from '../types'
+import { getAccessToken } from '../api/api'
 import { createQnaPost } from '@/hooks/FetchQnaCreate'
+import CategorySelect from '../components/common/CategorySelect'
 
 function getSelectionInfo(textarea: HTMLTextAreaElement) {
   const start = textarea.selectionStart
@@ -61,7 +61,6 @@ export default function CommunityCreatePage() {
   const navigate = useNavigate()
 
   // --- Data ---
-  const [categories, setCategories] = useState<QnaCategory[]>([])
   const [mainCategoryId, setMainCategoryId] = useState<number | null>(null)
   const [subCategoryId, setSubCategoryId] = useState<number | null>(null)
   const [detailCategoryId, setDetailCategoryId] = useState<number | null>(null)
@@ -86,25 +85,6 @@ export default function CommunityCreatePage() {
 
   const [historyStack, setHistoryStack] = useState<string[]>([''])
   const [historyIndex, setHistoryIndex] = useState(0)
-
-  useEffect(() => {
-    async function fetchCategories() {
-      try {
-        const res = await api.get<QnaCategory[]>('/api/v1/posts/categories')
-        // 응답 데이터가 배열인지 확인
-        if (Array.isArray(res.data)) {
-          setCategories(res.data)
-        } else {
-          console.error('카테고리 데이터가 배열이 아닙니다:', res.data)
-          setCategories([]) // 빈 배열로 설정
-        }
-      } catch (error) {
-        console.error('카테고리 불러오기 실패:', error)
-        setCategories([]) // 에러 발생 시 빈 배열로 설정
-      }
-    }
-    fetchCategories()
-  }, [])
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -411,12 +391,24 @@ export default function CommunityCreatePage() {
         content,
         category_id: detailCategoryId, // 소분류 ID를 최종 카테고리로 사용
       }
-      const data = await createQnaPost(params, token || undefined)
+      const data = await createQnaPost(params, token ?? '')
       console.log(params)
       alert('게시글이 등록되었습니다.')
       navigate(`/community/${data.pk}`)
     } catch (error) {
-      console.log(detailCategoryId, title, content)
+      console.log(
+        '등록파람스테스트:',
+        '대분류',
+        mainCategoryId,
+        '중분류',
+        subCategoryId,
+        '소분류',
+        detailCategoryId,
+        '제목',
+        title,
+        '내용',
+        content
+      )
       console.error('게시글 등록 실패:', error)
       alert('게시글 등록에 실패했습니다.')
     } finally {
@@ -448,86 +440,14 @@ export default function CommunityCreatePage() {
             <div className="flex w-full flex-col items-start gap-2.5 rounded-[20px] border border-[#E5E7EB] px-[38px] py-10">
               <div className="flex w-full flex-col items-start gap-5">
                 {/* 3개의 Category Select */}
-                <div className="flex w-full gap-3">
-                  {/* 대분류 */}
-                  <div className="relative flex h-10 flex-1 items-center justify-between rounded border border-[#D1D5DB] bg-white px-4">
-                    <select
-                      value={mainCategoryId ?? ''}
-                      onChange={(e) => {
-                        const val = e.target.value
-                        setMainCategoryId(val === '' ? null : Number(val))
-                        // 대분류 변경 시 하위 분류 초기화
-                        setSubCategoryId(null)
-                        setDetailCategoryId(null)
-                      }}
-                      className="z-10 h-full w-full cursor-pointer appearance-none bg-transparent text-sm text-[#374151] outline-none"
-                    >
-                      <option value="" disabled>
-                        대분류 선택
-                      </option>
-                      {Array.isArray(categories) &&
-                        categories.map((cat) => (
-                          <option key={cat.id} value={cat.id}>
-                            {cat.names[0]}
-                          </option>
-                        ))}
-                      <option value="1">1</option>
-                    </select>
-                    <ChevronDown className="pointer-events-none absolute right-2.5 h-4 w-4 text-[#6B7280]" />
-                  </div>
-
-                  {/* 중분류 */}
-                  <div className="relative flex h-10 flex-1 items-center justify-between rounded border border-[#D1D5DB] bg-white px-4">
-                    <select
-                      value={subCategoryId ?? ''}
-                      onChange={(e) => {
-                        const val = e.target.value
-                        setSubCategoryId(val === '' ? null : Number(val))
-                        // 중분류 변경 시 소분류 초기화
-                        setDetailCategoryId(null)
-                      }}
-                      className="z-10 h-full w-full cursor-pointer appearance-none bg-transparent text-sm text-[#374151] outline-none"
-                      disabled={mainCategoryId === null}
-                    >
-                      <option value="" disabled>
-                        중분류 선택
-                      </option>
-                      {Array.isArray(categories) &&
-                        categories.map((cat) => (
-                          <option key={cat.id} value={cat.id}>
-                            {cat.names[1]}
-                          </option>
-                        ))}
-                      <option value="1">1</option>
-                    </select>
-                    <ChevronDown className="pointer-events-none absolute right-2.5 h-4 w-4 text-[#6B7280]" />
-                  </div>
-
-                  {/* 소분류 */}
-                  <div className="relative flex h-10 flex-1 items-center justify-between rounded border border-[#D1D5DB] bg-white px-4">
-                    <select
-                      value={detailCategoryId ?? ''}
-                      onChange={(e) => {
-                        const val = e.target.value
-                        setDetailCategoryId(val === '' ? null : Number(val))
-                      }}
-                      className="z-10 h-full w-full cursor-pointer appearance-none bg-transparent text-sm text-[#374151] outline-none"
-                      disabled={subCategoryId === null}
-                    >
-                      <option value="" disabled>
-                        소분류 선택
-                      </option>
-                      {Array.isArray(categories) &&
-                        categories.map((cat) => (
-                          <option key={cat.id} value={cat.id}>
-                            {cat.names[2]}
-                          </option>
-                        ))}
-                      <option value="1">1</option>
-                    </select>
-                    <ChevronDown className="pointer-events-none absolute right-2.5 h-4 w-4 text-[#6B7280]" />
-                  </div>
-                </div>
+                <CategorySelect
+                  mainCategoryId={mainCategoryId}
+                  subCategoryId={subCategoryId}
+                  detailCategoryId={detailCategoryId}
+                  onMainCategoryChange={setMainCategoryId}
+                  onSubCategoryChange={setSubCategoryId}
+                  onDetailCategoryChange={setDetailCategoryId}
+                />
 
                 {/* 제목 */}
                 <div className="bg-primary-50 flex h-[60px] w-full items-center rounded px-4">
