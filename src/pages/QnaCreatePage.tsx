@@ -447,6 +447,7 @@ export default function CommunityCreatePage() {
                   onMainCategoryChange={setMainCategoryId}
                   onSubCategoryChange={setSubCategoryId}
                   onDetailCategoryChange={setDetailCategoryId}
+                  viewMode="row"
                 />
 
                 {/* 제목 */}

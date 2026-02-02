@@ -2,12 +2,19 @@ import SortIcon from '@/assets/images/svg/Sorting.svg?react'
 import FilterIcon from '@/assets/images/svg/Filter.svg?react'
 import { useState } from 'react'
 import Modal from '@/components/common/Modal'
+import CategorySelect from '@/components/common/CategorySelect'
 
 interface TabMenuProps {
   activeTab: string
   setActiveTab: (tab: string) => void
   sortOrder: string
   setSortOrder: (order: string) => void
+  mainCategoryId: number | null
+  subCategoryId: number | null
+  detailCategoryId: number | null
+  onMainCategoryChange: (id: number | null) => void
+  onSubCategoryChange: (id: number | null) => void
+  onDetailCategoryChange: (id: number | null) => void
 }
 
 export default function TabMenu({
@@ -15,6 +22,12 @@ export default function TabMenu({
   setActiveTab,
   sortOrder,
   setSortOrder,
+  mainCategoryId,
+  subCategoryId,
+  detailCategoryId,
+  onMainCategoryChange,
+  onSubCategoryChange,
+  onDetailCategoryChange,
 }: TabMenuProps) {
   const tabs = ['전체보기', '답변완료', '답변 대기중']
   const [isOpen, setIsOpen] = useState(false)
@@ -87,42 +100,15 @@ export default function TabMenu({
         title="필터"
       >
         <div className="min-h-[200px]">
-          <p className="text-gray-600">필터 옵션들이 들어갈 자리입니다.</p>
-          <p className="text-gray-600">필터 옵션들이 들어갈 자리입니다.</p>
-          <p className="text-gray-600">필터 옵션들이 들어갈 자리입니다.</p>
-          <p className="text-gray-600">필터 옵션들이 들어갈 자리입니다.</p>
-          <p className="text-gray-600">필터 옵션들이 들어갈 자리입니다.</p>
-          <p className="text-gray-600">필터 옵션들이 들어갈 자리입니다.</p>
-          <p className="text-gray-600">필터 옵션들이 들어갈 자리입니다.</p>
-          <p className="text-gray-600">필터 옵션들이 들어갈 자리입니다.</p>
-          <p className="text-gray-600">필터 옵션들이 들어갈 자리입니다.</p>
-          <p className="text-gray-600">필터 옵션들이 들어갈 자리입니다.</p>
-          <p className="text-gray-600">필터 옵션들이 들어갈 자리입니다.</p>
-          <p className="text-gray-600">필터 옵션들이 들어갈 자리입니다.</p>
-          <p className="text-gray-600">필터 옵션들이 들어갈 자리입니다.</p>
-          <p className="text-gray-600">필터 옵션들이 들어갈 자리입니다.</p>
-          <p className="text-gray-600">필터 옵션들이 들어갈 자리입니다.</p>
-          <p className="text-gray-600">필터 옵션들이 들어갈 자리입니다.</p>
-          <p className="text-gray-600">필터 옵션들이 들어갈 자리입니다.</p>
-          <p className="text-gray-600">필터 옵션들이 들어갈 자리입니다.</p>
-          <p className="text-gray-600">필터 옵션들이 들어갈 자리입니다.</p>
-          <p className="text-gray-600">필터 옵션들이 들어갈 자리입니다.</p>
-          <p className="text-gray-600">필터 옵션들이 들어갈 자리입니다.</p>
-          <p className="text-gray-600">필터 옵션들이 들어갈 자리입니다.</p>
-          <p className="text-gray-600">필터 옵션들이 들어갈 자리입니다.</p>
-          <p className="text-gray-600">필터 옵션들이 들어갈 자리입니다.</p>
-          <p className="text-gray-600">필터 옵션들이 들어갈 자리입니다.</p>
-          <p className="text-gray-600">필터 옵션들이 들어갈 자리입니다.</p>
-          <p className="text-gray-600">필터 옵션들이 들어갈 자리입니다.</p>
-          <p className="text-gray-600">필터 옵션들이 들어갈 자리입니다.</p>
-          <p className="text-gray-600">필터 옵션들이 들어갈 자리입니다.</p>
-          <p className="text-gray-600">필터 옵션들이 들어갈 자리입니다.</p>
-          <p className="text-gray-600">필터 옵션들이 들어갈 자리입니다.</p>
-          <p className="text-gray-600">필터 옵션들이 들어갈 자리입니다.</p>
-          <p className="text-gray-600">필터 옵션들이 들어갈 자리입니다.</p>
-          <p className="text-gray-600">필터 옵션들이 들어갈 자리입니다.</p>
-          <p className="text-gray-600">필터 옵션들이 들어갈 자리입니다.</p>
-          <p className="text-gray-600">필터 옵션들이 들어갈 자리입니다.</p>
+          <CategorySelect
+            mainCategoryId={mainCategoryId}
+            subCategoryId={subCategoryId}
+            detailCategoryId={detailCategoryId}
+            onMainCategoryChange={onMainCategoryChange}
+            onSubCategoryChange={onSubCategoryChange}
+            onDetailCategoryChange={onDetailCategoryChange}
+            viewMode="column"
+          />
         </div>
       </Modal>
     </nav>
