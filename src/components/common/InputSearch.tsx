@@ -1,20 +1,21 @@
-import { useState } from 'react'
 import SearchIcon from '@/assets/images/svg/Search.svg?react'
 import SearchClearIcon from '@/assets/images/svg/SearchClear.svg?react'
 
 interface InputSearchProps {
+  value: string
+  onChange: (value: string) => void
   placeholder?: string
   className?: string
 }
 
 export default function InputSearch({
+  value,
+  onChange,
   placeholder = '질문 검색',
   className = '',
 }: InputSearchProps) {
-  const [value, setValue] = useState('')
-
   const handleClear = () => {
-    setValue('')
+    onChange('')
   }
 
   return (
@@ -26,7 +27,7 @@ export default function InputSearch({
       <input
         type="text"
         value={value}
-        onChange={(e) => setValue(e.target.value)}
+        onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         className={`h-[48px] w-full rounded-full border border-[#E5E7EB] bg-[#FAFAFA] pr-[40px] pl-[40px] text-[#222] transition-all outline-none placeholder:text-[#ADADAD] focus:border-[#6201E0] focus:ring-1 focus:ring-[#6201E0] ${value ? 'border-[#6201E0]' : ''} `}
       />

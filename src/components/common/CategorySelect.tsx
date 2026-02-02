@@ -32,6 +32,7 @@ interface CategorySelectProps {
   onMainCategoryChange: (id: number | null) => void
   onSubCategoryChange: (id: number | null) => void
   onDetailCategoryChange: (id: number | null) => void
+  viewMode?: 'row' | 'column'
 }
 
 export default function CategorySelect({
@@ -41,6 +42,7 @@ export default function CategorySelect({
   onMainCategoryChange,
   onSubCategoryChange,
   onDetailCategoryChange,
+  viewMode,
 }: CategorySelectProps) {
   const [isMainOpen, setIsMainOpen] = useState(false)
   const [isSubOpen, setIsSubOpen] = useState(false)
@@ -94,7 +96,11 @@ export default function CategorySelect({
   )
 
   return (
-    <div className="flex w-full gap-3">
+    <div
+      className={
+        viewMode === 'row' ? 'flex w-full gap-3' : 'flex flex-col gap-3'
+      }
+    >
       {/* 대분류 */}
       <div ref={mainRef} className="relative flex-1">
         <button
@@ -111,7 +117,11 @@ export default function CategorySelect({
         </button>
 
         {isMainOpen && (
-          <ul className="select_option">
+          <ul
+            className={
+              viewMode === 'row' ? 'select_option absolute' : 'select_option'
+            }
+          >
             {allMainCategories.map((cat) => (
               <li key={cat.id}>
                 <button
@@ -160,7 +170,11 @@ export default function CategorySelect({
         </button>
 
         {isSubOpen && mainCategoryId && (
-          <ul className="select_option">
+          <ul
+            className={
+              viewMode === 'row' ? 'select_option absolute' : 'select_option'
+            }
+          >
             {allSubCategories.map((cat) => (
               <li key={cat.id}>
                 <button
@@ -210,7 +224,11 @@ export default function CategorySelect({
         </button>
 
         {isDetailOpen && subCategoryId && (
-          <ul className="select_option">
+          <ul
+            className={
+              viewMode === 'row' ? 'select_option absolute' : 'select_option'
+            }
+          >
             {allDetailCategories.map((cat) => (
               <li key={cat.id}>
                 <button

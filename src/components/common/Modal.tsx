@@ -41,7 +41,7 @@ export default function Modal({
       <div className="modal_dimmed" onClick={onClose} />
 
       {/* 모달 컨텐츠 박스 */}
-      <div className={`modal_container ${sizeClasses[size]}`}>
+      <div className={`modal_container min-h-[80vh] ${sizeClasses[size]}`}>
         {/* 헤더 영역 */}
         <div className="modal_header">
           <h3 className="modal_title">{title}</h3>
