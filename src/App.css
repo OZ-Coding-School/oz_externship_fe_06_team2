@@ -261,6 +261,18 @@ body {
   .loading_dots {
     @apply h-[8px] w-[8px] rounded-full bg-[#6210E0];
   }
+
+  /* 커스텀 셀렉트 */
+  .select_button {
+    @apply flex h-10 w-full items-center justify-between rounded border border-[#D1D5DB] bg-white px-4 text-sm text-[#374151] outline-none hover:border-[#9CA3AF];
+  }
+  .select_option {
+    @apply absolute top-full left-0 z-50 mt-1 max-h-60 w-full overflow-auto rounded border border-[#D1D5DB] bg-white p-[5px] shadow-lg;
+  }
+  .select_option_item {
+    @apply w-full px-4 py-2 text-left text-sm hover:bg-[#efe6fc] {
+    }
+  }
 }
 @keyframes jump {
   0%,
