@@ -1,5 +1,16 @@
+import { useState } from 'react'
 import ProfileImage from '@/assets/images/svg/ProfileThumb.svg'
+import Editor from '@/components/Editor/Editor'
+
 export default function DetailsWriter() {
+  const [content, setContent] = useState('')
+
+  const handleSubmit = () => {
+    // TODO: Implement answer submission logic
+    console.log('Answer content:', content)
+    alert('답변이 등록되었습니다.')
+  }
+
   return (
     <section className="writer_box mt-[52px]">
       <div className="writer_header">
@@ -12,11 +23,17 @@ export default function DetailsWriter() {
             </p>
           </div>
         </div>
-        <button type="button" className="md purple_bg round">
+        <button
+          type="button"
+          className="md purple_bg round"
+          onClick={handleSubmit}
+        >
           등록하기
         </button>
       </div>
-      <div className="write_box h-[677px]">에디터 들어갈 자리</div>
+      <div className="write_box">
+        <Editor value={content} onChange={setContent} />
+      </div>
     </section>
   )
 }
