@@ -25,7 +25,7 @@ export default function DetailsComment({ comments }: Props) {
             className="icon_button"
             onClick={() => setIsOpen(!isOpen)}
           >
-            {sortType} <SortIcon />
+            {sortType === '' ? '최신순' : sortType} <SortIcon />
           </button>
 
           {/* 드롭다운 레이어 */}

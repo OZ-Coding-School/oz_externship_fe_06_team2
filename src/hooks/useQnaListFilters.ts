@@ -21,7 +21,10 @@ export function useQnaListFilters() {
   const activeTab =
     STATUS_MAP[searchParams.get('answer_status') || ''] || '전체보기'
   // 최신순 오래된순 정렬
-  const sortOrder = SORT_MAP[searchParams.get('sort') || ''] || '최신순'
+  const sort = searchParams.get('sort')
+  const sortOrder =
+    sort === 'latest' ? '최신순' : sort === 'oldest' ? '오래된 순' : '정렬'
+
   // 필터
   const filterDetailCategoryId = searchParams.get('category_id')
     ? Number(searchParams.get('category_id'))

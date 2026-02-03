@@ -8,7 +8,7 @@ export function useQnaListQuery() {
   const query = useQuery({
     queryKey: [
       'qnaList',
-      filters.searchQuery,
+      filters.searchQuery, // 여기 값들이 변경되면 쿼리가 다시 실행됨
       filters.activeTab,
       filters.sortOrder,
       filters.filterDetailCategoryId,
