@@ -67,7 +67,7 @@ export default function TabMenu({ filters }: TabMenuProps) {
             className="icon_button"
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
           >
-            {sortOrder} <SortIcon />
+            {sortOrder === '' ? '최신순' : sortOrder} <SortIcon />
           </button>
 
           {/* 드롭다운 레이어 */}
