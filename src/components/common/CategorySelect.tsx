@@ -4,11 +4,6 @@ import SelectCheckIcon from '@/assets/images/svg/SelectChk.svg?react'
 
 import { useCategoryQuery } from '@/hooks/useCategoryQuery'
 import Loading from '@/components/common/Loading'
-interface CategoryData {
-  id: number
-  name: string
-  level: 'main' | 'sub' | 'detail'
-}
 
 interface CategorySelectProps {
   mainCategoryId: number | null
