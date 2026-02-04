@@ -12,7 +12,7 @@ interface ListItemsProps {
 export default function ListItems({ item }: ListItemsProps) {
   return (
     <li key={item.id} className="list_items flex-start-between">
-      <div>
+      <div className="flex-1">
         {/* 카테고리 */}
         <CategoryBreadcrumb categories={item.category.names} />
 
@@ -56,7 +56,9 @@ export default function ListItems({ item }: ListItemsProps) {
       </div>
 
       {/* 썸네일 */}
-      <ThumbnailImage imageUrl={item.thumbnail_img_url} />
+      <div>
+        <ThumbnailImage imageUrl={item.thumbnail_img_url} />
+      </div>
     </li>
   )
 }

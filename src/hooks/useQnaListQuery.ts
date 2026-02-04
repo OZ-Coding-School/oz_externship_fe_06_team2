@@ -1,29 +1,41 @@
 import { useQuery } from '@tanstack/react-query'
 import { QnaList } from '@/api/qnaList'
-import { useQnaListFilters } from '@/hooks/useQnaListFilters'
 
-export function useQnaListQuery() {
-  const filters = useQnaListFilters()
+interface QnaListQueryParams {
+  searchQuery: string
+  status: string | null
+  sortOrder: string | null
+  categoryId: number | null
+  page: number
+  size: number
+}
 
-  const query = useQuery({
+export function useQnaListQuery({
+  searchQuery,
+  status,
+  sortOrder,
+  categoryId,
+  page,
+  size,
+}: QnaListQueryParams) {
+  return useQuery({
     queryKey: [
       'qnaList',
-      filters.searchQuery, // 여기 값들이 변경되면 쿼리가 다시 실행됨
-      filters.activeTab,
-      filters.sortOrder,
-      filters.filterDetailCategoryId,
+      searchQuery, // 여기 값들이 변경되면 쿼리가 다시 실행됨
+      status,
+      sortOrder,
+      categoryId,
+      page,
+      size,
     ],
     queryFn: () =>
       QnaList({
-        search_keyword: filters.searchQuery,
-        answer_status: filters.activeTab,
-        sort: filters.sortOrder,
-        category_id: filters.filterDetailCategoryId,
+        search_keyword: searchQuery || undefined,
+        answer_status: status || undefined,
+        sort: sortOrder || undefined,
+        category_id: categoryId || undefined,
+        page,
+        size,
       }),
   })
-
-  return {
-    filters,
-    ...query,
-  }
 }
