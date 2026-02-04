@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import DetailsHeader from '@/components/details/DetailsHeader'
 import DetailsContents from '@/components/details/DetailsContents'
 import DetailsWriter from '@/components/details/DetailsWriter'
@@ -6,7 +6,7 @@ import DetailsAnswerList from '@/components/details/DetailsAnswerList'
 import AiAnswerSection from '@/components/details/DetailsChatbot'
 import ProfileImage from '@/assets/images/svg/ProfileThumb.svg'
 import { useQuery } from '@tanstack/react-query'
-import { FetchQnaDetails } from '@/hooks/FetchQnaDetails'
+import { QnaDetails } from '@/api/qnadetails'
 import { useParams } from 'react-router'
 export default function QnaDetailsPage() {
   const { id } = useParams<{ id: string }>()
@@ -14,12 +14,20 @@ export default function QnaDetailsPage() {
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ['qnaDetails', id],
-    queryFn: () => FetchQnaDetails(Number(id)),
+    queryFn: () => QnaDetails(Number(id)),
   })
+
+  // 페이지 마운트시 스크롤 탑으로 이동
+  useEffect(() => {
+    if (data) {
+      window.scrollTo(0, 0)
+    }
+  }, [data])
 
   if (isLoading) return <div>로딩</div>
   if (isError || !data) return <div>에러</div>
   console.log(data)
+
   return (
     <div className="inner">
       <DetailsHeader
@@ -36,7 +44,11 @@ export default function QnaDetailsPage() {
         <div className="mt-[52px]">
           <div className="flex items-center justify-between rounded-[20px] border border-[#E5E7EB] bg-white px-[38px] py-[24px]">
             <div className="flex items-center gap-[12px]">
-              <img src={ProfileImage} alt="프로필 이미지" className="h-[48px] w-[48px]" />
+              <img
+                src={ProfileImage}
+                alt="프로필 이미지"
+                className="h-[48px] w-[48px]"
+              />
               <div>
                 <span className="text-[12px] text-[#6201E0]">오즈오즈 님,</span>
                 <p className="text-[18px] font-semibold text-[#222]">

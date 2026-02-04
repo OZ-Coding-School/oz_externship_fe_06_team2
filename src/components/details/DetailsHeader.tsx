@@ -20,10 +20,21 @@ export default function DetailsHeader({
 }: Props) {
   return (
     <section className="details_header">
-      <div>
+      <div className="flex-1">
         <div className="details_header_breadcrumb">
-          {category.names[0]} <ChevronRightPupleIcon /> {category.names[1]}
-          <ChevronRightPupleIcon /> {category.names[2]}
+          {category.names[0]}
+
+          {category.names[1] && (
+            <>
+              <ChevronRightPupleIcon /> {category.names[1]}
+            </>
+          )}
+
+          {category.names[2] && (
+            <>
+              <ChevronRightPupleIcon /> {category.names[2]}
+            </>
+          )}
         </div>
 
         <h2 className="details_header_title">
