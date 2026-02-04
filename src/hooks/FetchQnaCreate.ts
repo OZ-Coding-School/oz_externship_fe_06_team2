@@ -1,13 +1,13 @@
 import { api } from '../api/api'
 import type { CreateQnaPostBody, CreateQnaPostResponse } from '@/types'
-
+import { BASE_URL } from '@/constants/qna'
 export async function createQnaPost(
   body: CreateQnaPostBody,
   token: string
 ): Promise<CreateQnaPostResponse> {
   // const testToken = '테스트토큰값'
   const res = await api.post<CreateQnaPostResponse>(
-    'https://api.ozcodingschool.site/api/v1/qna/questions',
+    `${BASE_URL}questions`,
     body,
     {
       headers: {

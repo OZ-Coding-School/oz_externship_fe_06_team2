@@ -1,28 +1,14 @@
 import { useState, useRef, useEffect } from 'react'
 import SelectArrowIcon from '@/assets/images/svg/SelectArr.svg?react'
 import SelectCheckIcon from '@/assets/images/svg/SelectChk.svg?react'
+
+import { useCategoryQuery } from '@/hooks/useCategoryQuery'
+import Loading from '@/components/common/Loading'
 interface CategoryData {
   id: number
   name: string
   level: 'main' | 'sub' | 'detail'
 }
-
-const DUMMY_CATEGORIES: CategoryData[] = [
-  { id: 1, name: '프론트엔드', level: 'main' },
-  { id: 2, name: '백엔드', level: 'main' },
-  { id: 3, name: '프로그래밍 언어', level: 'sub' },
-  { id: 4, name: '웹프레임워크', level: 'sub' },
-  { id: 5, name: 'Web', level: 'sub' },
-  { id: 6, name: 'OS', level: 'sub' },
-  { id: 8, name: '라이브러리', level: 'sub' },
-  { id: 9, name: 'Javascript', level: 'detail' },
-  { id: 10, name: 'React', level: 'detail' },
-  { id: 11, name: 'Next.js', level: 'detail' },
-  { id: 12, name: 'Python', level: 'detail' },
-  { id: 13, name: 'Nginx', level: 'detail' },
-  { id: 14, name: 'Django', level: 'detail' },
-  { id: 15, name: 'FastAPI', level: 'detail' },
-]
 
 interface CategorySelectProps {
   mainCategoryId: number | null
@@ -46,22 +32,9 @@ export default function CategorySelect({
   const [isMainOpen, setIsMainOpen] = useState(false)
   const [isSubOpen, setIsSubOpen] = useState(false)
   const [isDetailOpen, setIsDetailOpen] = useState(false)
-
   const mainRef = useRef<HTMLDivElement>(null)
   const subRef = useRef<HTMLDivElement>(null)
   const detailRef = useRef<HTMLDivElement>(null)
-
-  // 대분류 옵션 필터
-  const allMainCategories = DUMMY_CATEGORIES.filter(
-    (cat) => cat.level === 'main'
-  )
-  // 중분류 옵션 필터
-  const allSubCategories = DUMMY_CATEGORIES.filter((cat) => cat.level === 'sub')
-  // 소분류 옵션 필터
-  const allDetailCategories = DUMMY_CATEGORIES.filter(
-    (cat) => cat.level === 'detail'
-  )
-
   // 외부 클릭 감지
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -82,15 +55,37 @@ export default function CategorySelect({
     document.addEventListener('mousedown', handleClickOutside)
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
+  const { data, isLoading } = useCategoryQuery()
+  const categories = data?.categories
+
+  if (isLoading) {
+    return <Loading />
+  }
+  // 대분류
+  const allMainCategories = categories
+  // 중분류 : 대분류 id로 찾기
+  const allSubCategories = allMainCategories?.find(
+    (cat) => mainCategoryId === cat.id
+  )
+  // 대분류 id 찾아서 그안의 subcategories 가져오기
+  const SubCategories = allSubCategories ? allSubCategories.subcategories : []
+  // 소분류 : 중분류 id로 찾기
+  const allDetailCategories = SubCategories.find(
+    (cat) => subCategoryId === cat.id
+  )
+  // 중분류 id 찾아서 그안의 subcategories 가져오기
+  const DetailCategories = allDetailCategories
+    ? allDetailCategories.subcategories
+    : []
 
   // 선택된 카테고리
-  const selectedMainCategory = allMainCategories.find(
+  const selectedMainCategory = allMainCategories?.find(
     (cat) => cat.id === mainCategoryId
   )
-  const selectedSubCategory = allSubCategories.find(
+  const selectedSubCategory = SubCategories.find(
     (cat) => cat.id === subCategoryId
   )
-  const selectedDetailCategory = allDetailCategories.find(
+  const selectedDetailCategory = DetailCategories.find(
     (cat) => cat.id === detailCategoryId
   )
 
@@ -121,12 +116,11 @@ export default function CategorySelect({
               viewMode === 'row' ? 'select_option absolute' : 'select_option'
             }
           >
-            {allMainCategories.map((cat) => (
+            {allMainCategories?.map((cat) => (
               <li key={cat.id}>
                 <button
                   type="button"
                   onClick={() => {
-                    console.log('대분류 선택:', cat.id, cat.name)
                     onMainCategoryChange(cat.id)
                     onSubCategoryChange(null)
                     onDetailCategoryChange(null)
@@ -175,7 +169,7 @@ export default function CategorySelect({
               viewMode === 'row' ? 'select_option absolute' : 'select_option'
             }
           >
-            {allSubCategories.map((cat) => (
+            {SubCategories.map((cat) => (
               <li key={cat.id}>
                 <button
                   type="button"
@@ -229,7 +223,7 @@ export default function CategorySelect({
               viewMode === 'row' ? 'select_option absolute' : 'select_option'
             }
           >
-            {allDetailCategories.map((cat) => (
+            {DetailCategories.map((cat) => (
               <li key={cat.id}>
                 <button
                   type="button"

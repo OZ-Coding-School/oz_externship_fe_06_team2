@@ -1,15 +1,6 @@
-import { useSearchParams } from 'react-router' // 또는 react-router-dom
+import { useSearchParams } from 'react-router'
 import { useCallback, useState } from 'react'
-
-const STATUS_MAP: Record<string, string> = {
-  answered: '답변완료',
-  waiting: '답변 대기중',
-}
-
-const SORT_MAP: Record<string, string> = {
-  latest: '최신순',
-  oldest: '오래된 순',
-}
+import { STATUS_MAP, SORT_MAP } from '@/constants/qna'
 
 export function useQnaListFilters() {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -67,12 +58,16 @@ export function useQnaListFilters() {
     updateParams({ sort: value })
   }
 
-  // 필터 적용
+  // 필터 모달 적용
   const handleApplyFilter = () => {
-    updateParams({ category_id: detailCategoryId?.toString() || null })
+    updateParams({
+      category_id:
+        (detailCategoryId || subCategoryId || mainCategoryId)?.toString() ||
+        null,
+    })
   }
 
-  // 필터 초기화
+  // 필터 모달 초기화
   const handleResetFilter = () => {
     setMainCategoryId(null)
     setSubCategoryId(null)
