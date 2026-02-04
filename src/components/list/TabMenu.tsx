@@ -11,8 +11,8 @@ interface TabMenuProps {
 
 export default function TabMenu({ filters }: TabMenuProps) {
   const tabs = ['전체보기', '답변완료', '답변 대기중']
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false) // 드롭다운 레이어
-  const [isFilterOpen, setIsFilterOpen] = useState(false) // 필터 모달
+  const sort = ['최신순', '오래된 순']
+  // 필터 모달
 
   const {
     activeTab,
@@ -27,18 +27,12 @@ export default function TabMenu({ filters }: TabMenuProps) {
     setSubCategoryId,
     detailCategoryId,
     setDetailCategoryId,
+    isDropdownOpen,
+    setIsDropdownOpen,
+    isFilterOpen,
+    setIsFilterOpen,
   } = filters
 
-  // 필터 적용하기 버튼
-  const submitApplyFilter = () => {
-    handleApplyFilter()
-    setIsFilterOpen(false)
-  }
-  // 필터 초기화 버튼
-  const submitResetFilter = () => {
-    handleResetFilter()
-    setIsFilterOpen(false)
-  }
   return (
     <nav className="flex items-center justify-between border-b border-[#E5E7EB]">
       <div className="flex items-center gap-[40px]">
@@ -73,7 +67,7 @@ export default function TabMenu({ filters }: TabMenuProps) {
           {/* 드롭다운 레이어 */}
           {isDropdownOpen && (
             <ul className="dropdown">
-              {['최신순', '오래된 순'].map((type) => (
+              {sort.map((type) => (
                 <li key={type}>
                   <button
                     type="button"
@@ -106,8 +100,8 @@ export default function TabMenu({ filters }: TabMenuProps) {
         onClose={() => setIsFilterOpen(false)}
         size="lg"
         title="필터"
-        onResetFilter={submitResetFilter}
-        onApplyFilter={submitApplyFilter}
+        onResetFilter={handleResetFilter}
+        onApplyFilter={handleApplyFilter}
       >
         <div className="min-h-[200px]">
           <CategorySelect

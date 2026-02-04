@@ -4,35 +4,34 @@ import { STATUS_MAP, SORT_MAP } from '@/constants/qna'
 
 export function useQnaListFilters() {
   const [searchParams, setSearchParams] = useSearchParams()
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false) // 드롭다운 레이어
+  const [isFilterOpen, setIsFilterOpen] = useState(false) // 필터 모달
 
-  // URL 값으로 UI 상태 변환
-  // 검색어
+  // api 호출 넘기는 값
   const searchQuery = searchParams.get('search_keyword') || ''
-  // 탭
-  const activeTab =
-    STATUS_MAP[searchParams.get('answer_status') || ''] || '전체보기'
-  // 최신순 오래된순 정렬
+  const status = searchParams.get('answer_status')
   const sort = searchParams.get('sort')
+  const categoryId = Number(searchParams.get('category_id')) || null
+  const page = Number(searchParams.get('page')) || 1
+  const size = Number(searchParams.get('size')) || 10
+
+  // UI 렌더링용 값
+  const activeTab = status ? STATUS_MAP[status] || '전체보기' : '전체보기'
   const sortOrder =
     sort === 'latest' ? '최신순' : sort === 'oldest' ? '오래된 순' : '정렬'
 
-  // 필터
-  const filterDetailCategoryId = searchParams.get('category_id')
-    ? Number(searchParams.get('category_id'))
-    : null
-
-  // 필터 로컬 상태
+  // 필터 모달 로컬 상태
   const [mainCategoryId, setMainCategoryId] = useState<number | null>(null)
   const [subCategoryId, setSubCategoryId] = useState<number | null>(null)
   const [detailCategoryId, setDetailCategoryId] = useState<number | null>(null)
 
-  // URL 파라미터 업데이트
+  // URL 파라미터 업데이트 공통 로직
   const updateParams = useCallback(
     (updates: Record<string, string | null>) => {
       setSearchParams((prev) => {
         const newParams = new URLSearchParams(prev)
         Object.entries(updates).forEach(([key, value]) => {
-          if (!value) newParams.delete(key)
+          if (!value || value === 'all') newParams.delete(key)
           else newParams.set(key, value)
         })
         return newParams
@@ -41,54 +40,70 @@ export function useQnaListFilters() {
     [setSearchParams]
   )
 
-  // 검색어
   const setSearchQuery = (query: string) =>
     updateParams({ search_keyword: query })
 
-  // 탭
-  const setActiveTab = (tab: string) => {
-    const value =
-      Object.keys(STATUS_MAP).find((key) => STATUS_MAP[key] === tab) || null
-    updateParams({ answer_status: value })
-  }
-  // 최신순 오래된순 정렬
-  const setSortOrder = (order: string) => {
-    const value =
-      Object.keys(SORT_MAP).find((key) => SORT_MAP[key] === order) || 'latest'
-    updateParams({ sort: value })
+  // 한글 라벨을 영어 Key로 변환하는 헬퍼 함수
+  const getLabelToKey = (map: Record<string, string>, label: string) => {
+    return Object.keys(map).find((key) => map[key] === label) || null
   }
 
-  // 필터 모달 적용
+  const setActiveTab = (tabLabel: string) => {
+    updateParams({ answer_status: getLabelToKey(STATUS_MAP, tabLabel) })
+  }
+
+  const setSortOrder = (sortLabel: string) => {
+    updateParams({ sort: getLabelToKey(SORT_MAP, sortLabel) })
+  }
+
+  const setPage = (newPage: number) => {
+    updateParams({ page: newPage.toString() })
+  }
+
+  //필터 모달 적용
   const handleApplyFilter = () => {
-    updateParams({
-      category_id:
-        (detailCategoryId || subCategoryId || mainCategoryId)?.toString() ||
-        null,
-    })
+    const finalId = detailCategoryId || subCategoryId || mainCategoryId
+    updateParams({ category_id: finalId?.toString() || null })
+    setIsFilterOpen(false)
   }
 
-  // 필터 모달 초기화
+  //필터 모달 초기화
   const handleResetFilter = () => {
     setMainCategoryId(null)
     setSubCategoryId(null)
     setDetailCategoryId(null)
     updateParams({ category_id: null })
+    setIsFilterOpen(false)
   }
 
   return {
+    // API에 보낼 값
     searchQuery,
-    setSearchQuery,
+    status,
+    sort,
+    categoryId,
+    page,
+    size,
+
+    // UI에 보여줄 값
     activeTab,
-    setActiveTab,
     sortOrder,
-    setSortOrder,
+
+    // 필터 로컬 상태 및 핸들러
     mainCategoryId,
     setMainCategoryId,
     subCategoryId,
     setSubCategoryId,
     detailCategoryId,
     setDetailCategoryId,
-    filterDetailCategoryId,
+    setSearchQuery,
+    setActiveTab,
+    setSortOrder,
+    setPage,
+    isDropdownOpen,
+    setIsDropdownOpen,
+    isFilterOpen,
+    setIsFilterOpen,
     handleApplyFilter,
     handleResetFilter,
   }

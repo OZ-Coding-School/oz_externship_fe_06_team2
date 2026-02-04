@@ -6,12 +6,18 @@ import Pagi_first_disabled from '@/assets/images/svg/Pagi_first_disabled.svg?rea
 import Pagi_prev_disabled from '@/assets/images/svg/Pagi_prev_disabled.svg?react'
 import Pagi_next_disabled from '@/assets/images/svg/Pagi_next_disabled.svg?react'
 import Pagi_last_disabled from '@/assets/images/svg/Pagi_last_disabled.svg?react'
-import { useState } from 'react'
 
-export default function Pagination() {
-  const [currentPage, setCurrentPage] = useState(1)
-  const totalPages = 10 // 추후 실데이터 토탈 페이지 적용후 작업
+interface PaginationProps {
+  currentPage: number
+  totalPages: number
+  onPageChange: (page: number) => void
+}
 
+export default function Pagination({
+  currentPage,
+  totalPages,
+  onPageChange,
+}: PaginationProps) {
   const isFirstPage = currentPage === 1
   const isLastPage = currentPage === totalPages
 
@@ -23,7 +29,7 @@ export default function Pagination() {
         <li className="pagi_control">
           <button
             type="button"
-            onClick={() => setCurrentPage(1)}
+            onClick={() => onPageChange(1)}
             disabled={isFirstPage}
           >
             {isFirstPage ? <Pagi_first_disabled /> : <Pagi_first />}
@@ -33,7 +39,7 @@ export default function Pagination() {
         <li className="pagi_control">
           <button
             type="button"
-            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+            onClick={() => onPageChange(Math.max(currentPage - 1, 1))}
             disabled={isFirstPage}
           >
             {isFirstPage ? <Pagi_prev_disabled /> : <Pagi_prev />}
@@ -45,7 +51,7 @@ export default function Pagination() {
             <button
               type="button"
               className={`pagi_item ${currentPage === num ? 'active' : ''}`}
-              onClick={() => setCurrentPage(num)}
+              onClick={() => onPageChange(num)}
             >
               {num}
             </button>
@@ -55,9 +61,7 @@ export default function Pagination() {
         <li className="pagi_control">
           <button
             type="button"
-            onClick={() =>
-              setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-            }
+            onClick={() => onPageChange(Math.min(currentPage + 1, totalPages))}
             disabled={isLastPage}
           >
             {isLastPage ? <Pagi_next_disabled /> : <Pagi_next />}
@@ -67,7 +71,7 @@ export default function Pagination() {
         <li className="pagi_control">
           <button
             type="button"
-            onClick={() => setCurrentPage(totalPages)}
+            onClick={() => onPageChange(totalPages)}
             disabled={isLastPage}
           >
             {isLastPage ? <Pagi_last_disabled /> : <Pagi_last />}
