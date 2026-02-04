@@ -203,9 +203,9 @@ export default function GuidePage() {
           <section>
             <h2 className="mb-6 text-[32px] font-bold text-[#121212]">Input</h2>
             <div className="mb-2">
-              <InputSearch />
+              <InputSearch value="" onChange={() => {}} />
             </div>
-            <CodeBlock code={`<InputSearch />`} />
+            <CodeBlock code={`<InputSearch value="" onChange={() => {}} />`} />
           </section>
         )}
         {/* pagination */}
@@ -215,9 +215,15 @@ export default function GuidePage() {
               Pagination
             </h2>
             <div className="mb-2">
-              <Pagination />
+              <Pagination
+                currentPage={1}
+                totalPages={10}
+                onPageChange={() => {}}
+              />
             </div>
-            <CodeBlock code={`<Pagination />`} />
+            <CodeBlock
+              code={`<Pagination currentPage={1} totalPages={10} onPageChange={() => {}} />`}
+            />
           </section>
         )}
         {/* loading */}

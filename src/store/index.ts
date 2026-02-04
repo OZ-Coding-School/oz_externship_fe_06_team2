@@ -1,1 +1,1 @@
-// store
+export * from './authStore'

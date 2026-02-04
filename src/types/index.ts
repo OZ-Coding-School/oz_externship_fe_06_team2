@@ -159,6 +159,7 @@ export interface CreateQnaPostBody {
 }
 
 export interface CreateQnaPostResponse {
+  question_id: any
   detail: string
   pk: number
 }

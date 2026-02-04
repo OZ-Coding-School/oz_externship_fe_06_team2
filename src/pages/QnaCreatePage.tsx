@@ -48,9 +48,9 @@ export default function CommunityCreatePage() {
         category_id: detailCategoryId || subCategoryId || mainCategoryId,
       }
       const data = await createQnaPost(params, token ?? '')
-      console.log(params)
+      console.log(data)
       alert('게시글이 등록되었습니다.')
-      navigate(`/community/${data.pk}`)
+      navigate(`/qnadetails/${data.question_id}`)
     } catch (error) {
       console.log(
         '등록파람스테스트:',

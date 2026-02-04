@@ -1,5 +1,4 @@
 import axios from 'axios'
-import type { CreateQnaPostBody, CreateQnaPostResponse } from '../types'
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? ''
 

@@ -9,6 +9,7 @@ import Pagination from '@/components/common/Pagination'
 
 export default function QnaListPage() {
   const filters = useQnaListFilters()
+
   const { data, isLoading, isError } = useQnaListQuery({
     searchQuery: filters.searchQuery,
     status: filters.status,
