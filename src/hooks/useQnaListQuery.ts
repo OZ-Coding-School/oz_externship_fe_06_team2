@@ -15,10 +15,10 @@ export function useQnaListQuery() {
     ],
     queryFn: () =>
       QnaList({
-        search: filters.searchQuery,
-        tab: filters.activeTab,
-        sortOrder: filters.sortOrder,
-        detailCategoryId: filters.filterDetailCategoryId,
+        search_keyword: filters.searchQuery,
+        answer_status: filters.activeTab,
+        sort: filters.sortOrder,
+        category_id: filters.filterDetailCategoryId,
       }),
   })
 

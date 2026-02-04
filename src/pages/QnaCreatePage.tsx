@@ -22,14 +22,14 @@ export default function CommunityCreatePage() {
       alert('대분류를 선택해주세요.')
       return
     }
-    if (subCategoryId === null) {
-      alert('중분류를 선택해주세요.')
-      return
-    }
-    if (detailCategoryId === null) {
-      alert('소분류를 선택해주세요.')
-      return
-    }
+    // if (subCategoryId === null) {
+    //   alert('중분류를 선택해주세요.')
+    //   return
+    // }
+    // if (detailCategoryId === null) {
+    //   alert('소분류를 선택해주세요.')
+    //   return
+    // }
     if (!title.trim()) {
       alert('제목을 입력해주세요.')
       return
@@ -45,7 +45,7 @@ export default function CommunityCreatePage() {
       const params = {
         title,
         content,
-        category_id: detailCategoryId, // 소분류 ID를 최종 카테고리로 사용
+        category_id: detailCategoryId || subCategoryId || mainCategoryId,
       }
       const data = await createQnaPost(params, token ?? '')
       console.log(params)
