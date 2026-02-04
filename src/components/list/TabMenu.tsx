@@ -1,6 +1,5 @@
 import SortIcon from '@/assets/images/svg/Sorting.svg?react'
 import FilterIcon from '@/assets/images/svg/Filter.svg?react'
-import { useState } from 'react'
 import Modal from '@/components/common/Modal'
 import CategorySelect from '@/components/common/CategorySelect'
 import { useQnaListFilters } from '@/hooks/useQnaListFilters'
