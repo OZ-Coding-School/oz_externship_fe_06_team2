@@ -1,15 +1,18 @@
+// QnA 카테고리 정보 (대/중/소분류)
 export interface QnaCategory {
   id: number
   depth: number
   names: string[]
 }
 
+// 작성자 정보
 export interface QnaAuthor {
   id: number
   nickname: string
   profile_image_url: string | null
 }
 
+// QnA 리스트
 export interface QnaItem {
   id: number
   category: QnaCategory
@@ -22,16 +25,29 @@ export interface QnaItem {
   thumbnail_img_url: string | null
 }
 
+// QnA 리스트 API 응답
 export interface QnaListResponse {
   count: number
   next: string | null
   previous: string | null
   results: QnaItem[]
 }
+
+// QnA 이미지 정보
 export interface QnaImage {
   id: number
   img_url: string
 }
+
+// QnA 댓글 정보
+export interface QnaComment {
+  id: number
+  content: string
+  created_at: string
+  author: QnaAuthor
+}
+
+// QnA 답변 정보
 export interface QnaAnswer {
   id: number
   content: string
@@ -40,12 +56,8 @@ export interface QnaAnswer {
   author: QnaAuthor
   comments: QnaComment[]
 }
-export interface QnaComment {
-  id: number
-  content: string
-  created_at: string
-  author: QnaAuthor
-}
+
+// QnA 상세 API 응답
 export interface QnaDetailResponse {
   id: number
   title: string
@@ -59,107 +71,14 @@ export interface QnaDetailResponse {
   thumbnail_img_url?: string | null
 }
 
-export type SearchFilterOption =
-  | 'author'
-  | 'title'
-  | 'content'
-  | 'title_or_content'
-export type SortOption =
-  | 'latest'
-  | 'oldest'
-  | 'most_views'
-  | 'most_likes'
-  | 'most_comments'
-
-export interface PaginatedResponse<T> {
-  count: number
-  next: string | null
-  previous: string | null
-  results: T[]
-}
-
-export interface QnaCategory {
-  id: number
-  depth: number
-  names: string[]
-}
-
-export interface QnaAuthor {
-  id: number
-  nickname: string
-  profile_image_url: string | null
-}
-
-export interface QnaItem {
-  id: number
-  category: QnaCategory
-  author: QnaAuthor
-  title: string
-  content_preview: string
-  answer_count: number
-  view_count: number
-  created_at: string
-  thumbnail_img_url: string | null
-}
-
-export interface QnaListResponse {
-  count: number
-  next: string | null
-  previous: string | null
-  results: QnaItem[]
-}
-
-export interface QnaImage {
-  id: number
-  img_url: string
-}
-
-export interface QnaComment {
-  id: number
-  content: string
-  created_at: string
-  author: QnaAuthor
-}
-
-export interface QnaAnswer {
-  id: number
-  content: string
-  created_at: string
-  is_adopted: boolean
-  author: QnaAuthor
-  comments: QnaComment[]
-}
-
-export interface QnaDetailResponse {
-  id: number
-  title: string
-  content: string
-  category: QnaCategory
-  author: QnaAuthor
-  images: QnaImage[]
-  view_count: number
-  created_at: string
-  answers: QnaAnswer[]
-  thumbnail_img_url?: string | null
-}
-
-export interface GetCommunityPostsParams {
-  page?: number
-  page_size?: number
-  search?: string
-  search_filter?: SearchFilterOption
-  category_id?: number
-  sort?: SortOption
-}
-
+// QnA 게시글 생성 요청 바디
 export interface CreateQnaPostBody {
   title: string
   content: string
   category_id: number
 }
 
+// QnA 게시글 생성 응답
 export interface CreateQnaPostResponse {
   question_id: any
-  detail: string
-  pk: number
 }
