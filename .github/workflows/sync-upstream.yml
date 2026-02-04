@@ -1,0 +1,41 @@
+name: Sync Fork with Public Upstream
+
+on:
+  schedule:
+    # 예: 매일 한국 시간 오전 9시 (UTC 00:00) 실행
+    - cron: '0 0 * * *'
+  workflow_dispatch: # 테스트용 수동 실행 버튼
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    # 중요: 이 권한 설정이 있어야 개인 레포에 Push가 가능합니다.
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout Personal Repo
+        uses: actions/checkout@v4
+        with:
+          ref: develop  # 본인 레포의 기본 브랜치 (master면 수정 필요)
+          fetch-depth: 0
+
+      - name: Configure Git
+        run: |
+          git config --global user.name 'Sync Bot'
+          git config --global user.email 'bot@noreply.github.com'
+
+      - name: Add Upstream Remote (Public)
+        # Public이므로 토큰 없이 https 주소만 있으면 됩니다. (조직 레포)
+        run: |
+          git remote add upstream https://github.com/OZ-Coding-School/oz_externship_fe_06_team2.git
+          git fetch upstream
+
+      - name: Sync Upstream to Local
+        # Upstream의 main을 내 main으로 병합
+        run: |
+          git merge upstream/develop --allow-unrelated-histories -m "chore: sync with upstream organization repo"
+
+      - name: Push to Personal Repo
+        run: |
+          git push origin develop
