@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
 
-import { createQnaPost } from '@/api/qnaCreate'
+import { QnaCreate } from '@/api/qnaCreate'
 import CategorySelect from '../components/common/CategorySelect'
 import Editor from '../components/Editor/Editor'
 
@@ -45,7 +45,7 @@ export default function CommunityCreatePage() {
         content,
         category_id: detailCategoryId || subCategoryId || mainCategoryId,
       }
-      const data = await createQnaPost(params)
+      const data = await QnaCreate(params)
       console.log(data)
       alert('게시글이 등록되었습니다.')
       navigate(`/qnadetails/${data.question_id}`)

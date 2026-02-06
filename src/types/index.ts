@@ -5,6 +5,18 @@ export interface QnaCategory {
   names: string[]
 }
 
+//QnA 카테고리 api 응답
+export interface Category {
+  id: number
+  name: string
+  depth: number
+  subcategories: Category[]
+}
+
+export interface CategoriesResponse {
+  categories: Category[]
+}
+
 // 작성자 정보
 export interface QnaAuthor {
   id: number
@@ -80,5 +92,23 @@ export interface CreateQnaPostBody {
 
 // QnA 게시글 생성 응답
 export interface CreateQnaPostResponse {
-  question_id: any
+  question_id: number
+}
+
+//QnA 리스트 API 응답
+export interface QnaListParams {
+  search_keyword?: string
+  answer_status?: string | null
+  sort?: string
+  category_id?: number | string | null
+  page?: number
+  size?: number
+}
+
+export interface QnaAnswerBody {
+  content: string
+  image_urls: string[]
+}
+export interface QnaAnswerResponse {
+  question_id: number
 }
