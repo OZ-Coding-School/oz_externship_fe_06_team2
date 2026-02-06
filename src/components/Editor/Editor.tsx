@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
-import rehypeRaw from 'rehype-raw'
 import { ChevronDown } from 'lucide-react'
 import {
   UndoIcon,
@@ -25,11 +24,20 @@ import {
   ToolbarOutdentIcon,
   ToolbarIndentIcon,
 } from '../../assets/images/icons/CustomIcons'
-import { getPresignedUrl, uploadToS3 } from '@/api/api'
+import {
+  getPresignedUrl as getQuestionPresignedUrl,
+  uploadToS3 as uploadQuestionToS3,
+} from '@/api/qnaCreateImages'
+import {
+  getPresignedUrl as getAnswerPresignedUrl,
+  uploadToS3 as uploadAnswerToS3,
+} from '@/api/qnaAnswersImages'
+import { MARKDOWN_COMPONENTS } from '@/constants/markdown'
 
 interface EditorProps {
   value: string
   onChange: (value: string) => void
+  uploadType?: 'question' | 'answer' // 업로드 타입 추가 (기본값: question)
 }
 
 function getSelectionInfo(textarea: HTMLTextAreaElement) {
@@ -57,7 +65,11 @@ function replaceInfo(
   }
 }
 
-export default function Editor({ value, onChange }: EditorProps) {
+export default function Editor({
+  value,
+  onChange,
+  uploadType = 'question',
+}: EditorProps) {
   // --- UI ---
   const [isFontSizeMenuOpen, setIsFontSizeMenuOpen] = useState(false)
   const [isTextColorMenuOpen, setIsTextColorMenuOpen] = useState(false)
@@ -71,7 +83,6 @@ export default function Editor({ value, onChange }: EditorProps) {
   const fontSizeRef = useRef<HTMLDivElement>(null)
   const textColorRef = useRef<HTMLDivElement>(null)
   const listMenuRef = useRef<HTMLDivElement>(null)
-  const objectUrlsRef = useRef<string[]>([])
 
   const [historyStack, setHistoryStack] = useState<string[]>([value])
   const [historyIndex, setHistoryIndex] = useState(0)
@@ -243,6 +254,7 @@ export default function Editor({ value, onChange }: EditorProps) {
     }
     fileInputRef.current?.click()
   }
+
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
@@ -265,6 +277,14 @@ export default function Editor({ value, onChange }: EditorProps) {
     try {
       setIsUploading(true)
 
+      // uploadType에 따라 적절한 함수 선택
+      const getPresignedUrl =
+        uploadType === 'question'
+          ? getQuestionPresignedUrl
+          : getAnswerPresignedUrl
+      const uploadToS3 =
+        uploadType === 'question' ? uploadQuestionToS3 : uploadAnswerToS3
+
       // 1. Presigned URL 요청
       const { presigned_url, img_url } = await getPresignedUrl(file.name)
 
@@ -273,9 +293,18 @@ export default function Editor({ value, onChange }: EditorProps) {
 
       // 3. 마크다운에 이미지 URL 삽입
       applyParams(() => {
-        const alt = file.name
+        // 파일명의 공백을 언더스코어로 변경 (마크다운 파싱 문제 방지)
+        const alt = file.name.replace(/\s+/g, '_')
+
+        // URL의 파일명 부분만 인코딩 (한글, 공백 등 처리)
+        const urlParts = img_url.split('/')
+        const fileName = urlParts[urlParts.length - 1]
+        const encodedFileName = encodeURIComponent(fileName)
+        const encodedUrl =
+          urlParts.slice(0, -1).join('/') + '/' + encodedFileName
+
         return {
-          text: `![${alt}](${img_url})`,
+          text: `![${alt}](${encodedUrl})`,
           cursorOffset: 0,
           selectLength: 0,
         }
@@ -689,67 +718,7 @@ export default function Editor({ value, onChange }: EditorProps) {
           <div className="prose prose-sm max-w-none flex-1 overflow-y-auto font-['Pretendard'] text-[14px] leading-relaxed text-black">
             <ReactMarkdown
               remarkPlugins={[remarkGfm]}
-              rehypePlugins={[rehypeRaw]}
-              components={{
-                h1: ({ node, ...props }) => (
-                  <h1
-                    className="my-4 border-b pb-2 text-2xl font-bold"
-                    {...props}
-                  />
-                ),
-                h2: ({ node, ...props }) => (
-                  <h2 className="my-3 text-xl font-bold" {...props} />
-                ),
-                h3: ({ node, ...props }) => (
-                  <h3 className="my-2 text-lg font-bold" {...props} />
-                ),
-                ul: ({ node, ...props }) => (
-                  <ul className="my-2 list-inside list-disc pl-2" {...props} />
-                ),
-                ol: ({ node, ...props }) => (
-                  <ol
-                    className="my-2 list-inside list-decimal pl-2"
-                    {...props}
-                  />
-                ),
-                blockquote: ({ node, ...props }) => (
-                  <blockquote
-                    className="my-2 border-l-4 border-gray-300 bg-gray-50 py-1 pl-4 text-gray-600 italic"
-                    {...props}
-                  />
-                ),
-                a: ({ node, ...props }) => (
-                  <a
-                    className="text-blue-600 hover:underline"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    {...props}
-                  />
-                ),
-                img: ({ node, ...props }) => {
-                  if (!props.src || props.src.trim() === '') return null
-                  return (
-                    <img
-                      className="h-auto max-w-full rounded border border-gray-100 shadow-sm"
-                      {...props}
-                    />
-                  )
-                },
-                code: ({ node, ...props }) => (
-                  <code
-                    className="rounded bg-gray-100 px-1.5 py-0.5 font-mono text-sm text-red-500"
-                    {...props}
-                  />
-                ),
-                pre: ({ node, ...props }) => (
-                  <pre
-                    className="my-4 overflow-x-auto rounded-lg bg-gray-900 p-4 text-white"
-                    {...props}
-                  />
-                ),
-                span: ({ node, ...props }) => <span {...props} />,
-                div: ({ node, ...props }) => <div {...props} />,
-              }}
+              components={MARKDOWN_COMPONENTS}
             >
               {value || '*미리보기가 여기에 표시됩니다.*'}
             </ReactMarkdown>
