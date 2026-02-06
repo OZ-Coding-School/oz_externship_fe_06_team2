@@ -65,7 +65,7 @@ export default function DetailsWriter() {
         </button>
       </div>
       <div className="write_box">
-        <Editor value={content} onChange={setContent} />
+        <Editor value={content} onChange={setContent} uploadType="answer" />
       </div>
     </section>
   )
