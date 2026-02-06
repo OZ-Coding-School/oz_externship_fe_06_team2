@@ -1,6 +1,7 @@
 import LinkShareIcon from '@/assets/images/svg/Link-share.svg?react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
+import rehypeRaw from 'rehype-raw'
 import { MARKDOWN_COMPONENTS } from '@/constants/markdown'
 
 interface Props {
@@ -13,6 +14,7 @@ export default function DetailsContents({ content }: Props) {
       <div className="editor pb-[24px]">
         <ReactMarkdown
           remarkPlugins={[remarkGfm]}
+          rehypePlugins={[rehypeRaw]}
           components={MARKDOWN_COMPONENTS}
         >
           {content}

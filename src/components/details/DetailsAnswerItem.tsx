@@ -5,6 +5,7 @@ import type { QnaAnswer } from '@/types'
 import { getRelativeTime } from '@/utils/dayjs'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
+import rehypeRaw from 'rehype-raw'
 import { MARKDOWN_COMPONENTS } from '@/constants/markdown'
 interface Props {
   answer: QnaAnswer
@@ -39,6 +40,7 @@ export default function DetailsAnswerItem({ answer }: Props) {
         <div className="editor_code">
           <ReactMarkdown
             remarkPlugins={[remarkGfm]}
+            rehypePlugins={[rehypeRaw]}
             components={MARKDOWN_COMPONENTS}
           >
             {answer.content}

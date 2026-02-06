@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
+import rehypeRaw from 'rehype-raw'
 import { ChevronDown } from 'lucide-react'
 import {
   UndoIcon,
@@ -718,6 +719,7 @@ export default function Editor({
           <div className="prose prose-sm max-w-none flex-1 overflow-y-auto font-['Pretendard'] text-[14px] leading-relaxed text-black">
             <ReactMarkdown
               remarkPlugins={[remarkGfm]}
+              rehypePlugins={[rehypeRaw]}
               components={MARKDOWN_COMPONENTS}
             >
               {value || '*미리보기가 여기에 표시됩니다.*'}
