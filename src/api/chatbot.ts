@@ -11,7 +11,8 @@ export interface CreateChatbotSessionRequest {
 }
 
 export interface CreateChatbotSessionResponse {
-    session_id: number
+    id: number
+    session_id?: number
     user_id: number
     question?: string
     title?: string
@@ -33,12 +34,14 @@ export async function createChatbotSession(
     token?: string
 ): Promise<CreateChatbotSessionResponse> {
     const headers = token ? { Authorization: `Bearer ${token}` } : {}
+    // 프록시 문제 확인을 위해 임시로 절대 경로 사용
     const res = await api.post<CreateChatbotSessionResponse>(
-        '/api/v1/chatbot/sessions/',
+        'https://api.ozcodingschool.site/api/v1/chatbot/sessions/',
         data,
         { headers }
     )
     return res.data
+
 }
 
 /**
@@ -46,7 +49,7 @@ export async function createChatbotSession(
  * DELETE /api/v1/chatbot/sessions/{session_id}/
  */
 export async function deleteChatbotSession(sessionId: number): Promise<void> {
-    await api.delete(`/api/v1/chatbot/sessions/${sessionId}/`)
+    await api.delete(`https://api.ozcodingschool.site/api/v1/chatbot/sessions/${sessionId}/`)
 }
 
 /**
@@ -59,12 +62,28 @@ export async function sendChatbotMessage(
     token?: string
 ): Promise<string> {
     const headers = token ? { Authorization: `Bearer ${token}` } : {}
-    const res = await api.post<{ response: string }>(
-        `/api/v1/chatbot/sessions/${sessionId}/messages/`,
+    const url = `https://api.ozcodingschool.site/api/v1/chatbot/sessions/${sessionId}/completions`;
+    console.error("DEBUG: 메시지 전송 URL:", url);
+
+    const res = await api.post<string>(
+        url,
         { message },
-        { headers }
+        { headers, responseType: 'text' }
     )
-    return res.data.response
+
+    // SSE 형식(data: {...})으로 올 경우 처리
+    const data = res.data;
+    if (typeof data === 'string' && data.startsWith('data: ')) {
+        try {
+            const jsonStr = data.replace('data: ', '').trim();
+            const parsed = JSON.parse(jsonStr);
+            return parsed.response || parsed.message || (parsed.error ? `Error: ${parsed.error}` : data);
+        } catch (e) {
+            return data;
+        }
+    }
+
+    return typeof data === 'object' ? (data as any).response : data;
 }
 
 // =============================
