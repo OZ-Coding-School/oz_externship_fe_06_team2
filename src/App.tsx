@@ -18,11 +18,7 @@ function App() {
     const refreshToken = async () => {
       try {
         const response = await api.post(
-          'https://api.ozcodingschool.site/api/v1/accounts/me/refresh/',
-          {
-            refresh_token: '',
-            //테스트할때 스웨거에서 로그인후 refresh_token을 복사해서 사용
-          }
+          'https://api.ozcodingschool.site/api/v1/accounts/me/refresh/'
         )
 
         // API 응답에서 access_token 추출하여 전역 상태에 저장

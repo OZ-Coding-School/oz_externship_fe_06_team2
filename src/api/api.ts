@@ -22,7 +22,7 @@ function getCookie(name: string): string | null {
 /** 로그인 상태 확인 (refreshToken 쿠키 또는 localStorage user 존재 여부) */
 export function isLoggedIn(): boolean {
   return (
-    getCookie('refreshToken') !== null || localStorage.getItem('user') !== null
+    getCookie('refreshToken') !== null || localStorage.getItem('userInfo') !== null
   )
 }
 
