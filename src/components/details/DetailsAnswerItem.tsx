@@ -3,6 +3,10 @@ import TextArea from '@/components/common/TextArea'
 import DetailsComment from '@/components/details/DetailsComment'
 import type { QnaAnswer } from '@/types'
 import { getRelativeTime } from '@/utils/dayjs'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
+import rehypeRaw from 'rehype-raw'
+import { MARKDOWN_COMPONENTS } from '@/constants/markdown'
 interface Props {
   answer: QnaAnswer
 }
@@ -33,8 +37,15 @@ export default function DetailsAnswerItem({ answer }: Props) {
 
       {/* 답변 본문 */}
       <div className="editor_content">
-        {answer.content}
-        <div className="editor_code">에디터 코드 추후 수정</div>
+        <div className="editor_code">
+          <ReactMarkdown
+            remarkPlugins={[remarkGfm]}
+            rehypePlugins={[rehypeRaw]}
+            components={MARKDOWN_COMPONENTS}
+          >
+            {answer.content}
+          </ReactMarkdown>
+        </div>
         <p className="mt-[40px] text-right text-[#9d9d9d]">
           {getRelativeTime(answer.created_at)}
         </p>

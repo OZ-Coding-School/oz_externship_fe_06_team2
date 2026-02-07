@@ -6,7 +6,7 @@ import { chatbotApi } from "../api/chatbot";
 import { isLoggedIn } from "../api/api";
 
 // 🔧 테스트용: 스웨거에서 받은 ACCESS token을 여기에 입력하세요
-const TEST_ACCESS_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzcwMzYxMDI5LCJpYXQiOjE3NzAyNzQ2MjksImp0aSI6IjdlNjM3ZjliMzYzZDRhMjI5ZGQ4ODY0ZTYzZTg2YzUzIiwidXNlcl9pZCI6MTB9.Zv1w_k860ye4NYwYRU3aBpfYtvOtqI6NFJVRJ5mrr_o";
+const TEST_ACCESS_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzcwNDY2NzM1LCJpYXQiOjE3NzAzODAzMzUsImp0aSI6IjIyODExOWQ0NmJhMTRjZGZiOGM4ODQxODcxOWUyNDA1IiwidXNlcl9pZCI6MTB9.EvH1nLhrH3JjdnohXk80xZPPZfTWAZPRY6S9t_oL7N8";
 
 export default function ChatbotUI() {
     const [open, setOpen] = useState(false);
@@ -15,10 +15,13 @@ export default function ChatbotUI() {
     const [isLoading, setIsLoading] = useState(false);
 
     const handleOpen = async () => {
+        console.log("handleOpen 호출됨");
         setOpen(true);
 
-        // 로그인 상태 확인
-        if (!isLoggedIn()) {
+        const loggedIn = isLoggedIn();
+
+        // 로그인 상태 확인 (테스트 토큰이 있으면 통과)
+        if (!loggedIn && !TEST_ACCESS_TOKEN) {
             setMessages([
                 { role: "bot", text: "로그인이 필요합니다. 로그인 후 다시 시도해주세요." }
             ]);
@@ -37,15 +40,16 @@ export default function ChatbotUI() {
                 }, TEST_ACCESS_TOKEN);
                 console.log("세션 생성 성공:", response);
                 setSession({
-                    sessionId: response.session_id,
+                    sessionId: response.id, // session_id -> id 로 수정
                     title: response.title,
                     usingModel: response.using_model,
                 });
-            } catch (error) {
+            } catch (error: any) {
                 console.error("세션 생성 실패:", error);
-                console.error("에러 상세:", (error as any).response?.data || (error as any).message);
+                const errorMsg = error.response?.data?.detail || error.response?.data?.message || error.message;
+                console.error("에러 상세:", error.response?.data || error.message);
                 setMessages([
-                    { role: "bot", text: "세션 생성에 실패했습니다. 잠시 후 다시 시도해주세요." }
+                    { role: "bot", text: `세션 생성에 실패했습니다. (${errorMsg})` }
                 ]);
             } finally {
                 setIsLoading(false);

@@ -8,6 +8,8 @@ export const api = axios.create({
   withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
+    // Authorization:
+    //   'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzcwNDM3NTc4LCJpYXQiOjE3NzAzNTExNjcsImp0aSI6ImQ3YWMxOTExOTMwMDRiZWU4ZTdmMDNjNzE3NWViZDg4IiwidXNlcl9pZCI6MTB9.6yD4w-h05SD-bmSueCB-hXAwSeYkQPjNSyfcVze79H8',
   },
 })
 
@@ -22,7 +24,7 @@ function getCookie(name: string): string | null {
 /** 로그인 상태 확인 (refreshToken 쿠키 또는 localStorage user 존재 여부) */
 export function isLoggedIn(): boolean {
   return (
-    getCookie('refreshToken') !== null || localStorage.getItem('userInfo') !== null
+    getCookie('refreshToken') !== null || localStorage.getItem('user') !== null
   )
 }
 
