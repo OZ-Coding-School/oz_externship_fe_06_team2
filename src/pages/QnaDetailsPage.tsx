@@ -8,9 +8,12 @@ import ProfileImage from '@/assets/images/svg/ProfileThumb.svg'
 import { useQuery } from '@tanstack/react-query'
 import { QnaDetails } from '@/api/qnadetails'
 import { useParams } from 'react-router'
+import { useAuthStore } from '@/store'
+import Loading from '@/components/common/Loading'
 export default function QnaDetailsPage() {
   const { id } = useParams<{ id: string }>()
   const [showAnswerForm, setShowAnswerForm] = useState(false)
+  const accessToken = useAuthStore((state) => state.accessToken)
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ['qnaDetails', id],
@@ -24,9 +27,8 @@ export default function QnaDetailsPage() {
     }
   }, [data])
 
-  if (isLoading) return <div>로딩</div>
+  if (isLoading) return <Loading />
   if (isError || !data) return <div>에러</div>
-  console.log(data)
 
   return (
     <div className="inner">
@@ -38,37 +40,41 @@ export default function QnaDetailsPage() {
         name={data.author.nickname}
       />
       <DetailsContents content={data.content} />
-      <AiAnswerSection />
-
-      {!showAnswerForm && (
-        <div className="mt-[52px]">
-          <div className="flex items-center justify-between rounded-[20px] border border-[#E5E7EB] bg-white px-[38px] py-[24px]">
-            <div className="flex items-center gap-[12px]">
-              <img
-                src={ProfileImage}
-                alt="프로필 이미지"
-                className="h-[48px] w-[48px]"
-              />
-              <div>
-                <span className="text-[12px] text-[#6201E0]">오즈오즈 님,</span>
-                <p className="text-[18px] font-semibold text-[#222]">
-                  정보를 공유해 주세요.
-                </p>
+      {accessToken && (
+        <>
+          <AiAnswerSection />
+          {!showAnswerForm && (
+            <div className="mt-[52px]">
+              <div className="flex items-center justify-between rounded-[20px] border border-[#E5E7EB] bg-white px-[38px] py-[24px]">
+                <div className="flex items-center gap-[12px]">
+                  <img
+                    src={ProfileImage}
+                    alt="프로필 이미지"
+                    className="h-[48px] w-[48px]"
+                  />
+                  <div>
+                    <span className="text-[12px] text-[#6201E0]">
+                      오즈오즈 님111,
+                    </span>
+                    <p className="text-[18px] font-semibold text-[#222]">
+                      정보를 공유해 주세요.
+                    </p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowAnswerForm(true)}
+                  className="rounded-[8px] bg-[#7C3AED] px-[24px] py-[12px] text-[14px] font-semibold text-white transition-colors hover:bg-[#6D28D9]"
+                >
+                  답변하기
+                </button>
               </div>
             </div>
-            <button
-              type="button"
-              onClick={() => setShowAnswerForm(true)}
-              className="rounded-[8px] bg-[#7C3AED] px-[24px] py-[12px] text-[14px] font-semibold text-white transition-colors hover:bg-[#6D28D9]"
-            >
-              답변하기
-            </button>
-          </div>
-        </div>
+          )}
+
+          {showAnswerForm && <DetailsWriter />}
+        </>
       )}
-
-      {showAnswerForm && <DetailsWriter />}
-
       <DetailsAnswerList answers={data.answers} />
     </div>
   )
