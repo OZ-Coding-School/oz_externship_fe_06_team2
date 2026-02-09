@@ -3,12 +3,13 @@ import { useParams } from 'react-router'
 import ProfileImage from '@/assets/images/svg/ProfileThumb.svg'
 import Editor from '@/components/Editor/Editor'
 import { useQnaDetailsAnswer } from '@/hooks/useQnaDetailsAnswer'
+import { useAuthStore } from '@/store'
 
 export default function DetailsWriter() {
   const { id } = useParams<{ id: string }>()
   const [content, setContent] = useState('')
   const [imageUrls, setImageUrls] = useState<string[]>([])
-
+  const userInfo = useAuthStore((state) => state.userInfo)
   const { mutate: createAnswer, isPending } = useQnaDetailsAnswer()
 
   const handleSubmit = async () => {
@@ -50,7 +51,9 @@ export default function DetailsWriter() {
         <div className="flex gap-[12px]">
           <img src={ProfileImage} alt="프로필 이미지" />
           <div>
-            <span className="text-[12px] text-[#6201E0]">{'오즈오즈'} 님,</span>
+            <span className="text-[12px] text-[#6201E0]">
+              {userInfo?.nickname} 님,
+            </span>
             <p className="text-[18px] font-semibold text-[#222]">
               정보를 공유해 주세요.
             </p>

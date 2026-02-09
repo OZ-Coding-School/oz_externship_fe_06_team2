@@ -7,10 +7,13 @@ import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import rehypeRaw from 'rehype-raw'
 import { MARKDOWN_COMPONENTS } from '@/constants/markdown'
+import { useAuthStore } from '@/store'
+
 interface Props {
   answer: QnaAnswer
 }
 export default function DetailsAnswerItem({ answer }: Props) {
+  const userInfo = useAuthStore((state) => state.userInfo)
   return (
     <div className={`${answer.is_adopted ? 'choice' : ''} answer_box`}>
       {/* 답변 헤더 */}
@@ -29,10 +32,11 @@ export default function DetailsAnswerItem({ answer }: Props) {
             </p>
           </div>
         </div>
-
-        <button type="button" className="md purple_bg round">
-          채택하기
-        </button>
+        {answer.author.id !== userInfo?.id && (
+          <button type="button" className="md purple_bg round">
+            채택하기
+          </button>
+        )}
       </div>
 
       {/* 답변 본문 */}
