@@ -5,20 +5,20 @@ import { api } from './api'
 // =============================
 
 export interface CreateChatbotSessionRequest {
-    question?: string
-    title?: string
-    using_model?: string
+  question?: string
+  title?: string
+  using_model?: string
 }
 
 export interface CreateChatbotSessionResponse {
-    id: number
-    session_id?: number
-    user_id: number
-    question?: string
-    title?: string
-    using_model?: string
-    created_at: string
-    updated_at: string
+  id: number
+  session_id?: number
+  user_id: number
+  question?: string
+  title?: string
+  using_model?: string
+  created_at: string
+  updated_at: string
 }
 
 // =============================
@@ -30,18 +30,17 @@ export interface CreateChatbotSessionResponse {
  * POST /api/v1/chatbot/sessions/
  */
 export async function createChatbotSession(
-    data: CreateChatbotSessionRequest,
-    token?: string
+  data: CreateChatbotSessionRequest,
+  token?: string
 ): Promise<CreateChatbotSessionResponse> {
-    const headers = token ? { Authorization: `Bearer ${token}` } : {}
-    // 프록시 문제 확인을 위해 임시로 절대 경로 사용
-    const res = await api.post<CreateChatbotSessionResponse>(
-        'https://api.ozcodingschool.site/api/v1/chatbot/sessions/',
-        data,
-        { headers }
-    )
-    return res.data
-
+  const headers = token ? { Authorization: `Bearer ${token}` } : {}
+  // 프록시 문제 확인을 위해 임시로 절대 경로 사용
+  const res = await api.post<CreateChatbotSessionResponse>(
+    'https://api.ozcodingschool.site/api/v1/chatbot/sessions/',
+    data,
+    { headers }
+  )
+  return res.data
 }
 
 /**
@@ -49,7 +48,9 @@ export async function createChatbotSession(
  * DELETE /api/v1/chatbot/sessions/{session_id}/
  */
 export async function deleteChatbotSession(sessionId: number): Promise<void> {
-    await api.delete(`https://api.ozcodingschool.site/api/v1/chatbot/sessions/${sessionId}/`)
+  await api.delete(
+    `https://api.ozcodingschool.site/api/v1/chatbot/sessions/${sessionId}/`
+  )
 }
 
 /**
@@ -57,33 +58,37 @@ export async function deleteChatbotSession(sessionId: number): Promise<void> {
  * POST /api/v1/chatbot/sessions/{session_id}/messages/
  */
 export async function sendChatbotMessage(
-    sessionId: number,
-    message: string,
-    token?: string
+  sessionId: number,
+  message: string,
+  token?: string
 ): Promise<string> {
-    const headers = token ? { Authorization: `Bearer ${token}` } : {}
-    const url = `https://api.ozcodingschool.site/api/v1/chatbot/sessions/${sessionId}/completions`;
-    console.error("DEBUG: 메시지 전송 URL:", url);
+  const headers = token ? { Authorization: `Bearer ${token}` } : {}
+  const url = `https://api.ozcodingschool.site/api/v1/chatbot/sessions/${sessionId}/completions`
+  console.error('DEBUG: 메시지 전송 URL:', url)
 
-    const res = await api.post<string>(
-        url,
-        { message },
-        { headers, responseType: 'text' }
-    )
+  const res = await api.post<string>(
+    url,
+    { message },
+    { headers, responseType: 'text' }
+  )
 
-    // SSE 형식(data: {...})으로 올 경우 처리
-    const data = res.data;
-    if (typeof data === 'string' && data.startsWith('data: ')) {
-        try {
-            const jsonStr = data.replace('data: ', '').trim();
-            const parsed = JSON.parse(jsonStr);
-            return parsed.response || parsed.message || (parsed.error ? `Error: ${parsed.error}` : data);
-        } catch (e) {
-            return data;
-        }
+  // SSE 형식(data: {...})으로 올 경우 처리
+  const data = res.data
+  if (typeof data === 'string' && data.startsWith('data: ')) {
+    try {
+      const jsonStr = data.replace('data: ', '').trim()
+      const parsed = JSON.parse(jsonStr)
+      return (
+        parsed.response ||
+        parsed.message ||
+        (parsed.error ? `Error: ${parsed.error}` : data)
+      )
+    } catch (e) {
+      return data
     }
+  }
 
-    return typeof data === 'object' ? (data as any).response : data;
+  return typeof data === 'object' ? (data as any).response : data
 }
 
 // =============================
@@ -91,7 +96,7 @@ export async function sendChatbotMessage(
 // =============================
 
 export const chatbotApi = {
-    createSession: createChatbotSession,
-    deleteSession: deleteChatbotSession,
-    sendMessage: sendChatbotMessage,
+  createSession: createChatbotSession,
+  deleteSession: deleteChatbotSession,
+  sendMessage: sendChatbotMessage,
 }

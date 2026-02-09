@@ -6,6 +6,7 @@ import Loading from '@/components/common/Loading'
 import { useEffect } from 'react'
 import { api } from '@/api/api'
 import { useAuthStore } from '@/store'
+import { getUserInfo, type UserInfo } from '@/api/userInfo'
 const GuidePage = lazy(() => import('@/pages/GuidePage'))
 const QnaListPage = lazy(() => import('@/pages/QnaListPage'))
 const QnaDetailsPage = lazy(() => import('@/pages/QnaDetailsPage'))
@@ -14,6 +15,8 @@ const QnaUpdatePage = lazy(() => import('@/pages/QnaUpdatePage'))
 
 function App() {
   const setAccessToken = useAuthStore((state) => state.setAccessToken)
+  const setUserInfo = useAuthStore((state) => state.setUserInfo)
+
   useEffect(() => {
     const refreshToken = async () => {
       try {
@@ -25,6 +28,17 @@ function App() {
         if (response.data?.access_token) {
           setAccessToken(response.data.access_token)
           console.log('Token refresh successful, access_token saved to store')
+
+          // 토큰 저장 후 유저 정보 가져오기
+          try {
+            const userInfo = await api.get<UserInfo>(
+              'https://api.ozcodingschool.site/api/v1/accounts/me/'
+            )
+            setUserInfo(userInfo.data)
+            console.log('User info fetched successfully:', userInfo.data)
+          } catch (error) {
+            console.error('Failed to fetch user info:', error)
+          }
         }
       } catch (error) {
         console.error('Token refresh failed:', error)
@@ -32,7 +46,8 @@ function App() {
     }
 
     refreshToken()
-  }, [])
+  }, [setAccessToken, setUserInfo])
+
   return (
     <>
       <Suspense fallback={<Loading />}>
