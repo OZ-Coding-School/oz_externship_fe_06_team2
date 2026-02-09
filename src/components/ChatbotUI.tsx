@@ -6,7 +6,7 @@ import { chatbotApi } from "../api/chatbot";
 import { isLoggedIn } from "../api/api";
 
 // 🔧 테스트용: 스웨거에서 받은 ACCESS token을 여기에 입력하세요
-const TEST_ACCESS_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzcwNDY2NzM1LCJpYXQiOjE3NzAzODAzMzUsImp0aSI6IjIyODExOWQ0NmJhMTRjZGZiOGM4ODQxODcxOWUyNDA1IiwidXNlcl9pZCI6MTB9.EvH1nLhrH3JjdnohXk80xZPPZfTWAZPRY6S9t_oL7N8";
+const TEST_ACCESS_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzcwNzAwMTIxLCJpYXQiOjE3NzA2MTM3MjEsImp0aSI6ImVmYjE5MWMxNTAxZTQxZjlhNjU4YmZmOTZiNTZhNmU1IiwidXNlcl9pZCI6MTB9.gSs-kcEhI4QCp2TPQ1KmfgaJ6cw5WJ-i0T6TJjJl3xU";
 
 export default function ChatbotUI() {
     const [open, setOpen] = useState(false);

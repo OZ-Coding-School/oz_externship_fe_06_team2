@@ -7,9 +7,27 @@ import { getRelativeTime } from '@/utils/dayjs'
 
 interface ListItemsProps {
   item: QnaItem
+  searchQuery?: string
 }
 
-export default function ListItems({ item }: ListItemsProps) {
+export default function ListItems({ item, searchQuery }: ListItemsProps) {
+  // 검색어 하이라이트 함수
+  const highlightText = (text: string, query: string | undefined) => {
+    if (!query || !query.trim()) return text
+
+    const regex = new RegExp(`(${query})`, 'gi')
+    const parts = text.split(regex)
+
+    return parts.map((part, index) =>
+      regex.test(part) ? (
+        <span key={index} className="text-[#6201E0]">
+          {part}
+        </span>
+      ) : (
+        part
+      )
+    )
+  }
   return (
     <li key={item.id} className="list_items flex-start-between">
       <div className="flex-1">
@@ -21,7 +39,7 @@ export default function ListItems({ item }: ListItemsProps) {
           to={`/qnadetails/${item.id}`}
           className="text-[18px] font-semibold text-black"
         >
-          {item.title}
+          {highlightText(item.title, searchQuery)}
         </Link>
 
         {/* 질문 내용 */}

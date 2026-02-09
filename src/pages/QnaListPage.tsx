@@ -33,7 +33,11 @@ export default function QnaListPage() {
       {data?.results && data.results.length > 0 ? (
         <ul>
           {data.results.map((item) => (
-            <ListItems key={item.id} item={item} />
+            <ListItems
+              key={item.id}
+              item={item}
+              searchQuery={filters.searchQuery}
+            />
           ))}
         </ul>
       ) : (

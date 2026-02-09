@@ -40,8 +40,9 @@ export function useQnaListFilters() {
     [setSearchParams]
   )
 
-  const setSearchQuery = (query: string) =>
-    updateParams({ search_keyword: query })
+  const setSearchQuery = (query: string) => {
+    updateParams({ search_keyword: query, page: '1' })
+  }
 
   // 한글 라벨을 영어 Key로 변환하는 헬퍼 함수
   const getLabelToKey = (map: Record<string, string>, label: string) => {
@@ -49,11 +50,14 @@ export function useQnaListFilters() {
   }
 
   const setActiveTab = (tabLabel: string) => {
-    updateParams({ answer_status: getLabelToKey(STATUS_MAP, tabLabel) })
+    updateParams({
+      answer_status: getLabelToKey(STATUS_MAP, tabLabel),
+      page: '1',
+    })
   }
 
   const setSortOrder = (sortLabel: string) => {
-    updateParams({ sort: getLabelToKey(SORT_MAP, sortLabel) })
+    updateParams({ sort: getLabelToKey(SORT_MAP, sortLabel), page: '1' })
   }
 
   const setPage = (newPage: number) => {
@@ -63,7 +67,7 @@ export function useQnaListFilters() {
   //필터 모달 적용
   const handleApplyFilter = () => {
     const finalId = detailCategoryId || subCategoryId || mainCategoryId
-    updateParams({ category_id: finalId?.toString() || null })
+    updateParams({ category_id: finalId?.toString() || null, page: '1' })
     setIsFilterOpen(false)
   }
 
@@ -72,7 +76,7 @@ export function useQnaListFilters() {
     setMainCategoryId(null)
     setSubCategoryId(null)
     setDetailCategoryId(null)
-    updateParams({ category_id: null })
+    updateParams({ category_id: null, page: '1' })
     setIsFilterOpen(false)
   }
 
