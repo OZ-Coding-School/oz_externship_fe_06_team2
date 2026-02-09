@@ -109,6 +109,15 @@ export interface QnaAnswerBody {
   content: string
   image_urls: string[]
 }
+
 export interface QnaAnswerResponse {
   question_id: number
+}
+
+export interface AiAnswerResponse {
+  id: number
+  question_id: number
+  output: string
+  using_model: string
+  created_at: string
 }

@@ -42,7 +42,7 @@ export default function QnaDetailsPage() {
       <DetailsContents content={data.content} />
       {accessToken && (
         <>
-          <AiAnswerSection />
+          <AiAnswerSection questionId={Number(id)} />
           {!showAnswerForm && (
             <div className="mt-[52px]">
               <div className="flex items-center justify-between rounded-[20px] border border-[#E5E7EB] bg-white px-[38px] py-[24px]">
