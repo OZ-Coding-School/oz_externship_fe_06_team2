@@ -76,7 +76,7 @@ export default function QnaDetailsPage() {
           {showAnswerForm && <DetailsWriter />}
         </>
       )}
-      <DetailsAnswerList answers={data.answers} />
+      <DetailsAnswerList answers={data.answers} questionId={Number(id)} />
     </div>
   )
 }

@@ -8,12 +8,20 @@ import remarkGfm from 'remark-gfm'
 import rehypeRaw from 'rehype-raw'
 import { MARKDOWN_COMPONENTS } from '@/constants/markdown'
 import { useAuthStore } from '@/store'
+import { useQnaAnswersAccept } from '@/hooks/useQnaAnswersAccept'
 
 interface Props {
   answer: QnaAnswer
+  hasAdoptedAnswer: boolean
+  questionId: number
 }
-export default function DetailsAnswerItem({ answer }: Props) {
+export default function DetailsAnswerItem({
+  answer, // 답변 데이터
+  hasAdoptedAnswer, // 해당 게시글에 채택된 답변이 있는지
+  questionId, // 질문글의 id
+}: Props) {
   const userInfo = useAuthStore((state) => state.userInfo)
+  const { mutate: acceptAnswer } = useQnaAnswersAccept(questionId)
   return (
     <div className={`${answer.is_adopted ? 'choice' : ''} answer_box`}>
       {/* 답변 헤더 */}
@@ -32,8 +40,12 @@ export default function DetailsAnswerItem({ answer }: Props) {
             </p>
           </div>
         </div>
-        {answer.author.id !== userInfo?.id && (
-          <button type="button" className="md purple_bg round">
+        {answer.author.id !== userInfo?.id && !hasAdoptedAnswer && (
+          <button
+            type="button"
+            className="md purple_bg round"
+            onClick={() => acceptAnswer(answer.id)}
+          >
             채택하기
           </button>
         )}
