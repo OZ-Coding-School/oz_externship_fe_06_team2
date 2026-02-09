@@ -30,25 +30,27 @@ export default function ListItems({ item, searchQuery }: ListItemsProps) {
   }
   return (
     <li key={item.id} className="list_items flex-start-between">
-      <div className="flex-1">
-        {/* 카테고리 */}
-        <CategoryBreadcrumb categories={item.category.names} />
+      <div className="flex h-full flex-1 flex-col">
+        <div className="flex h-full flex-col">
+          {/* 카테고리 */}
+          <CategoryBreadcrumb categories={item.category.names} />
 
-        {/* 질문 제목 */}
-        <Link
-          to={`/qnadetails/${item.id}`}
-          className="text-[18px] font-semibold text-black"
-        >
-          {highlightText(item.title, searchQuery)}
-        </Link>
+          {/* 질문 제목 */}
+          <Link
+            to={`/qnadetails/${item.id}`}
+            className="line-clamp-3 text-[18px] font-semibold text-black underline"
+          >
+            {highlightText(item.title, searchQuery)}
+          </Link>
+        </div>
 
         {/* 질문 내용 */}
-        <p className="mt-[12px] line-clamp-2 text-[14px] text-[#9d9d9d]">
+        {/* <p className="mt-[12px] line-clamp-2 text-[14px] text-[#9d9d9d]">
           {item.content_preview}
-        </p>
+        </p> */}
 
         {/* 답변 수, 조회수, 작성자, 작성일 */}
-        <div className="flex-center-between bottom-[20px] mt-[36px]">
+        <div className="flex-center-between bottom-[20px]">
           <div className="flex-center-between gap-[19px]">
             <span className="flex-center-between gap-[9px] text-[12px] text-[#4d4d4d]">
               <span className="comment-icon">A</span>

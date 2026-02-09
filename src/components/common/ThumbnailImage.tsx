@@ -9,7 +9,7 @@ interface ThumbnailImageProps {
 export default function ThumbnailImage({
   imageUrl,
   alt = '썸네일 이미지',
-  className = 'h-[162px] w-[228px] rounded object-cover',
+  className = 'h-[162px] w-[228px] rounded object-cover shadow-lg rounded-2xl',
 }: ThumbnailImageProps) {
   if (!imageUrl) return null
 
