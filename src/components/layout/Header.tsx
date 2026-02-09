@@ -3,6 +3,8 @@ import { useAuthStore } from '@/store'
 // src/components/layout/Header.tsx
 export default function Header() {
   const accessToken = useAuthStore((state) => state.accessToken)
+  const userInfo = useAuthStore((state) => state.userInfo)
+  const clearAuth = useAuthStore((state) => state.clearAuth)
   return (
     <header className="w-full">
       {/* 상단 알림 바 */}
@@ -76,9 +78,16 @@ export default function Header() {
           {/* 오른쪽 메뉴 */}
           {accessToken ? (
             <div className="flex items-center gap-2 font-[Pretendard] text-gray-500">
+              <span className="text-gray-700">
+                {userInfo?.nickname || '사용자'}님
+              </span>
               <a
                 href="#"
                 className="transition-colors duration-200 hover:text-gray-900"
+                onClick={(e) => {
+                  e.preventDefault()
+                  clearAuth()
+                }}
               >
                 로그아웃
               </a>

@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { useAuthStore } from '@/store'
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? ''
 
@@ -8,10 +9,22 @@ export const api = axios.create({
   withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
-    // Authorization:
-    //   'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzcwNDM3NTc4LCJpYXQiOjE3NzAzNTExNjcsImp0aSI6ImQ3YWMxOTExOTMwMDRiZWU4ZTdmMDNjNzE3NWViZDg4IiwidXNlcl9pZCI6MTB9.6yD4w-h05SD-bmSueCB-hXAwSeYkQPjNSyfcVze79H8',
   },
 })
+
+// Request 인터셉터: 모든 요청에 자동으로 토큰 추가
+api.interceptors.request.use(
+  (config) => {
+    const accessToken = useAuthStore.getState().accessToken
+    if (accessToken) {
+      config.headers.Authorization = `Bearer ${accessToken}`
+    }
+    return config
+  },
+  (error) => {
+    return Promise.reject(error)
+  }
+)
 
 /** (옵션) JS로 읽을 수 있는 쿠키일 때만 사용 가능 */
 function getCookie(name: string): string | null {
