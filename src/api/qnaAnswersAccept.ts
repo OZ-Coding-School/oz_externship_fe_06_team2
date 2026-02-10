@@ -1,7 +1,7 @@
 import { api } from '@/api/api'
 import { BASE_URL } from '@/constants/qna'
 
-export const qnaAnswersAccept = async (answerId: number) => {
+export const QnaAnswersAccept = async (answerId: number) => {
   const response = await api.post(`${BASE_URL}answers/${answerId}/accept`)
   return response.data
 }

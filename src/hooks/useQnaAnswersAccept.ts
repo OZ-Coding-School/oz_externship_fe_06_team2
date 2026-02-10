@@ -1,11 +1,11 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { qnaAnswersAccept } from '@/api/qnaAnswersAccept'
+import { QnaAnswersAccept } from '@/api/qnaAnswersAccept'
 
 export function useQnaAnswersAccept(questionId: number) {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: (answerId: number) => qnaAnswersAccept(answerId),
+    mutationFn: (answerId: number) => QnaAnswersAccept(answerId),
     onSuccess: () => {
       alert('답변이 채택되었습니다.')
       queryClient.invalidateQueries({
