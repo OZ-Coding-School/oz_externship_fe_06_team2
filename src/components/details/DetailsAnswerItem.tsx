@@ -25,6 +25,7 @@ export default function DetailsAnswerItem({
   questionId, // 질문글의 id
 }: Props) {
   const userInfo = useAuthStore((state) => state.userInfo)
+  const accessToken = useAuthStore((state) => state.accessToken)
   const { mutate: acceptAnswer } = useQnaAnswersAccept(questionId)
   const { mutate: modifyAnswer, isPending } = useQnaAnswersModify(questionId)
   const { mutate: submitComment, isPending: isCommentPending } =
@@ -172,14 +173,20 @@ export default function DetailsAnswerItem({
           />
         </div>
       )}
+      {accessToken && (
+        <>
+          {/* 댓글 입력 */}
+          {!isEditMode && (
+            <TextArea
+              onSubmit={handleCommentSubmit}
+              isPending={isCommentPending}
+            />
+          )}
 
-      {/* 댓글 입력 */}
-      {!isEditMode && (
-        <TextArea onSubmit={handleCommentSubmit} isPending={isCommentPending} />
+          {/* 댓글 영역 */}
+          {!isEditMode && <DetailsComment comments={answer.comments} />}
+        </>
       )}
-
-      {/* 댓글 영역 */}
-      {!isEditMode && <DetailsComment comments={answer.comments} />}
     </div>
   )
 }
