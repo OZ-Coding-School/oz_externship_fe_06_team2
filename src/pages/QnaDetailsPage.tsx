@@ -14,7 +14,7 @@ export default function QnaDetailsPage() {
   const { id } = useParams<{ id: string }>()
   const [showAnswerForm, setShowAnswerForm] = useState(false)
   const accessToken = useAuthStore((state) => state.accessToken)
-
+  const userInfo = useAuthStore((state) => state.userInfo)
   const { data, isLoading, isError } = useQuery({
     queryKey: ['qnaDetails', id],
     queryFn: () => QnaDetails(Number(id)),
@@ -25,6 +25,7 @@ export default function QnaDetailsPage() {
     if (data) {
       window.scrollTo(0, 0)
     }
+    console.log(userInfo?.nickname)
   }, [data])
 
   if (isLoading) return <Loading />
@@ -40,7 +41,7 @@ export default function QnaDetailsPage() {
         name={data.author.nickname}
       />
       <DetailsContents content={data.content} />
-      {accessToken && (
+      {accessToken && data.author.id !== userInfo?.id && (
         <>
           <AiAnswerSection questionId={Number(id)} />
           {!showAnswerForm && (
@@ -54,7 +55,7 @@ export default function QnaDetailsPage() {
                   />
                   <div>
                     <span className="text-[12px] text-[#6201E0]">
-                      오즈오즈 님111,
+                      {userInfo?.nickname}님
                     </span>
                     <p className="text-[18px] font-semibold text-[#222]">
                       정보를 공유해 주세요.
@@ -75,7 +76,7 @@ export default function QnaDetailsPage() {
           {showAnswerForm && <DetailsWriter />}
         </>
       )}
-      <DetailsAnswerList answers={data.answers} />
+      <DetailsAnswerList answers={data.answers} questionId={Number(id)} />
     </div>
   )
 }

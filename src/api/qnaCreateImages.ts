@@ -1,6 +1,5 @@
 import axios from 'axios'
 import { api } from './api'
-import { useAuthStore } from '@/store'
 
 /**
  * S3 이미지 업로드를 위한 Presigned URL 발급 응답 타입
@@ -19,16 +18,9 @@ export interface PresignedUrlResponse {
 export async function getPresignedUrl(
   fileName: string
 ): Promise<PresignedUrlResponse> {
-  const accessToken = useAuthStore.getState().accessToken
   const res = await api.put<PresignedUrlResponse>(
     'https://api.ozcodingschool.site/api/v1/qna/questions/presigned-url',
-    { file_name: fileName },
-    {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        'Content-Type': 'application/json',
-      },
-    }
+    { file_name: fileName }
   )
   return res.data
 }

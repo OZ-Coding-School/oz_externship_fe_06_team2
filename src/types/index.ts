@@ -61,6 +61,7 @@ export interface QnaComment {
 
 // QnA 답변 정보
 export interface QnaAnswer {
+  question_id: number
   id: number
   content: string
   created_at: string
