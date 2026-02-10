@@ -192,7 +192,12 @@ export default function GuidePage() {
               TextArea
             </h2>
             <div className="mb-2">
-              <TextArea />
+              <TextArea
+                onSubmit={function (content: string): void {
+                  throw new Error('Function not implemented.')
+                }}
+                isPending={false}
+              />
             </div>
             <CodeBlock code={`<TextArea />`} />
           </section>
