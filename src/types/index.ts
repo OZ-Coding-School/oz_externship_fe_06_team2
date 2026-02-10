@@ -61,7 +61,7 @@ export interface QnaComment {
 
 // QnA 답변 정보
 export interface QnaAnswer {
-  question_id: number
+  question_id?: number
   id: number
   content: string
   created_at: string
@@ -96,7 +96,7 @@ export interface CreateQnaPostResponse {
   question_id: number
 }
 
-//QnA 리스트 API 응답
+// QnA 리스트 API 요청 파라미터
 export interface QnaListParams {
   search_keyword?: string
   answer_status?: string | null

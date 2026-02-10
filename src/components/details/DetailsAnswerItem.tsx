@@ -12,6 +12,7 @@ import { MARKDOWN_COMPONENTS } from '@/constants/markdown'
 import { useAuthStore } from '@/store'
 import { useQnaAnswersAccept } from '@/hooks/useQnaAnswersAccept'
 import { useQnaAnswersModify } from '@/hooks/useQnaAnswersModify'
+import { useQnaAnswersComment } from '@/hooks/useQnaAnswersComment'
 
 interface Props {
   answer: QnaAnswer
@@ -26,6 +27,8 @@ export default function DetailsAnswerItem({
   const userInfo = useAuthStore((state) => state.userInfo)
   const { mutate: acceptAnswer } = useQnaAnswersAccept(questionId)
   const { mutate: modifyAnswer, isPending } = useQnaAnswersModify(questionId)
+  const { mutate: submitComment, isPending: isCommentPending } =
+    useQnaAnswersComment(questionId)
 
   // 편집 모드 상태
   const [isEditMode, setIsEditMode] = useState(false)
@@ -69,6 +72,14 @@ export default function DetailsAnswerItem({
         },
       }
     )
+  }
+
+  // 댓글 등록
+  const handleCommentSubmit = (content: string) => {
+    submitComment({
+      answerId: answer.id,
+      content,
+    })
   }
 
   return (
@@ -163,7 +174,9 @@ export default function DetailsAnswerItem({
       )}
 
       {/* 댓글 입력 */}
-      {!isEditMode && <TextArea />}
+      {!isEditMode && (
+        <TextArea onSubmit={handleCommentSubmit} isPending={isCommentPending} />
+      )}
 
       {/* 댓글 영역 */}
       {!isEditMode && <DetailsComment comments={answer.comments} />}
