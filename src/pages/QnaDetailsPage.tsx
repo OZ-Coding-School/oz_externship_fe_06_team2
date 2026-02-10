@@ -6,7 +6,7 @@ import DetailsAnswerList from '@/components/details/DetailsAnswerList'
 import AiAnswerSection from '@/components/details/DetailsChatbot'
 import ProfileImage from '@/assets/images/svg/ProfileThumb.svg'
 import { useQuery } from '@tanstack/react-query'
-import { QnaDetails } from '@/api/qnadetails'
+import { QnaDetails } from '@/api/qnaDetails'
 import { useParams } from 'react-router'
 import { useAuthStore } from '@/store'
 import Loading from '@/components/common/Loading'
@@ -33,11 +33,14 @@ export default function QnaDetailsPage() {
   return (
     <div className="inner">
       <DetailsHeader
+        id={Number(id)}
         title={data.title}
         category={data.category}
         viewCount={data.view_count}
         created={data.created_at}
         name={data.author.nickname}
+        authorId={data.author.id}
+        currentUserId={userInfo?.id}
       />
       <DetailsContents content={data.content} />
       {userInfo && data.author.id !== userInfo.id && (

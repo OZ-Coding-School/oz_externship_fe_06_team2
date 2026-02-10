@@ -6,12 +6,12 @@ import Loading from '@/components/common/Loading'
 import { useEffect } from 'react'
 import { api } from '@/api/api'
 import { useAuthStore } from '@/store'
-import { getUserInfo, type UserInfo } from '@/api/userInfo'
+import { type UserInfo } from '@/api/userInfo'
 const GuidePage = lazy(() => import('@/pages/GuidePage'))
 const QnaListPage = lazy(() => import('@/pages/QnaListPage'))
 const QnaDetailsPage = lazy(() => import('@/pages/QnaDetailsPage'))
 const QnaCreatePage = lazy(() => import('@/pages/QnaCreatePage'))
-const QnaUpdatePage = lazy(() => import('@/pages/QnaUpdatePage'))
+const QnaModifyPage = lazy(() => import('@/pages/QnaModifyPage'))
 
 function App() {
   const setAccessToken = useAuthStore((state) => state.setAccessToken)
@@ -54,7 +54,7 @@ function App() {
             <Route path="/qna" element={<QnaListPage />} />
             <Route path="/qnadetails/:id" element={<QnaDetailsPage />} />
             <Route path="/qnacreate" element={<QnaCreatePage />} />
-            <Route path="/qnaupdate" element={<QnaUpdatePage />} />
+            <Route path="/qnamodify/:id" element={<QnaModifyPage />} />
           </Route>
           <Route path="/guide" element={<GuidePage />} />
         </Routes>

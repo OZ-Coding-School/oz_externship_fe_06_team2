@@ -86,7 +86,7 @@ body {
     @apply mx-auto max-w-[944px];
   }
   .details_header {
-    @apply flex items-center gap-[60px] border-b border-[#e5e5e5] pb-[20px];
+    @apply border-b border-[#e5e5e5] pb-[20px];
   }
   .details_header_breadcrumb {
     @apply mb-[20px] flex items-center text-[20px] font-bold text-[#6201E0];
@@ -96,7 +96,7 @@ body {
   }
 
   .details_profile {
-    @apply mt-[-50px] flex min-w-fit items-center gap-[12px];
+    @apply flex min-w-fit items-center gap-[12px];
   }
 
   .details_profile_name {
