@@ -11,7 +11,7 @@ interface ListHeaderProps {
 
 export default function ListHeader({ filters }: ListHeaderProps) {
   const { searchQuery, setSearchQuery } = filters
-  const accessToken = useAuthStore((state) => state.accessToken)
+  const userInfo = useAuthStore((state) => state.userInfo)
 
   return (
     <section className="list_header">
@@ -20,7 +20,7 @@ export default function ListHeader({ filters }: ListHeaderProps) {
       </h2>
       <div className="flex-center-between mb-[52px]">
         <InputSearch value={searchQuery} onChange={setSearchQuery} />
-        {accessToken && (
+        {userInfo && (
           <Link to="/qnacreate" type="button" className="icon_button bg">
             <PencilIcon />
             질문하기

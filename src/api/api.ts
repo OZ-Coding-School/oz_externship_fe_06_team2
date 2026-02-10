@@ -26,6 +26,7 @@ api.interceptors.request.use(
   }
 )
 
+// 챗봇에서 사용중이라 챗봇 로그인체크 전역상태관리로 수정하고 제거예정
 /** (옵션) JS로 읽을 수 있는 쿠키일 때만 사용 가능 */
 function getCookie(name: string): string | null {
   const value = `; ${document.cookie}`
@@ -40,54 +41,3 @@ export function isLoggedIn(): boolean {
     getCookie('refreshToken') !== null || localStorage.getItem('user') !== null
   )
 }
-
-/** (옵션) Access Token 가져오기 (HttpOnly면 null 나올 수 있음) */
-export function getAccessToken(): string | null {
-  return getCookie('accessToken')
-}
-
-/** 현재 로그인한 사용자 정보 조회 API */
-export async function getCurrentUser() {
-  const token = getAccessToken()
-  const res = await api.get('/api/v1/accounts/me', {
-    headers: { ...withAuth(token || undefined) },
-  })
-  return res.data
-}
-
-/** undefined / null 제거 + querystring 생성 */
-export function toQuery(params?: Record<string, unknown>) {
-  const sp = new URLSearchParams()
-  if (!params) return sp
-  Object.entries(params).forEach(([key, value]) => {
-    if (value === undefined || value === null) return
-    sp.set(key, String(value))
-  })
-  return sp
-}
-
-/** Authorization 헤더 주입 (토큰을 JS에서 읽을 수 있을 때만 의미 있음) */
-function withAuth(token?: string) {
-  if (!token) return {}
-  return { Authorization: `Bearer ${token}` }
-}
-
-// =============================
-// Community API
-// =============================
-
-// export async function createQnaPost(
-//   body: CreateQnaPostBody,
-//   token?: string
-// ): Promise<CreateQnaPostResponse> {
-//   const res = await api.post<CreateQnaPostResponse>(
-//     '/api/v1/qna/questions',
-//     body,
-//     { headers: { ...withAuth(token) } }
-//   )
-//   return res.data
-// }
-
-// export const qnaApi = {
-//   createPost: createQnaPost,
-// }

@@ -46,24 +46,10 @@ export default function CommunityCreatePage() {
         category_id: detailCategoryId || subCategoryId || mainCategoryId,
       }
       const data = await QnaCreate(params)
-      console.log(data)
+
       alert('게시글이 등록되었습니다.')
       navigate(`/qnadetails/${data.question_id}`)
     } catch (error) {
-      console.log(
-        '등록파람스테스트:',
-        '대분류',
-        mainCategoryId,
-        '중분류',
-        subCategoryId,
-        '소분류',
-        detailCategoryId,
-        '제목',
-        title,
-        '내용',
-        content
-      )
-      console.error('게시글 등록 실패:', error)
       alert('게시글 등록에 실패했습니다.')
     } finally {
       setIsLoading(false)

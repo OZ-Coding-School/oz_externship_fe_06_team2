@@ -14,7 +14,6 @@ import Error from '@/pages/Error'
 export default function QnaDetailsPage() {
   const { id } = useParams<{ id: string }>()
   const [showAnswerForm, setShowAnswerForm] = useState(false)
-  const accessToken = useAuthStore((state) => state.accessToken)
   const userInfo = useAuthStore((state) => state.userInfo)
   const { data, isLoading, isError } = useQuery({
     queryKey: ['qnaDetails', id],
@@ -26,7 +25,6 @@ export default function QnaDetailsPage() {
     if (data) {
       window.scrollTo(0, 0)
     }
-    console.log(userInfo?.nickname)
   }, [data])
 
   if (isLoading) return <Loading />
@@ -42,7 +40,7 @@ export default function QnaDetailsPage() {
         name={data.author.nickname}
       />
       <DetailsContents content={data.content} />
-      {accessToken && data.author.id !== userInfo?.id && (
+      {userInfo && data.author.id !== userInfo.id && (
         <>
           <AiAnswerSection questionId={Number(id)} />
           {!showAnswerForm && (
