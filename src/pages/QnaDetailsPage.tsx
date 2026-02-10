@@ -10,6 +10,7 @@ import { QnaDetails } from '@/api/qnadetails'
 import { useParams } from 'react-router'
 import { useAuthStore } from '@/store'
 import Loading from '@/components/common/Loading'
+import Error from '@/pages/Error'
 export default function QnaDetailsPage() {
   const { id } = useParams<{ id: string }>()
   const [showAnswerForm, setShowAnswerForm] = useState(false)
@@ -29,7 +30,7 @@ export default function QnaDetailsPage() {
   }, [data])
 
   if (isLoading) return <Loading />
-  if (isError || !data) return <div>에러</div>
+  if (isError || !data) return <Error />
 
   return (
     <div className="inner">
