@@ -27,7 +27,6 @@ function App() {
         // API 응답에서 access_token 추출하여 전역 상태에 저장
         if (response.data?.access_token) {
           setAccessToken(response.data.access_token)
-          console.log('Token refresh successful, access_token saved to store')
 
           // 토큰 저장 후 유저 정보 가져오기
           try {
@@ -35,7 +34,6 @@ function App() {
               'https://api.ozcodingschool.site/api/v1/accounts/me/'
             )
             setUserInfo(userInfo.data)
-            console.log('User info fetched successfully:', userInfo.data)
           } catch (error) {
             console.error('Failed to fetch user info:', error)
           }
