@@ -50,7 +50,7 @@ function App() {
     <>
       <Suspense fallback={<Loading />}>
         <Routes>
-          <Route path="/" element={<Layout />}>
+          <Route path="/qna" element={<Layout />}>
             <Route index element={<QnaListPage />} />
             <Route path="/qnadetails/:id" element={<QnaDetailsPage />} />
             <Route path="/qnacreate" element={<QnaCreatePage />} />
