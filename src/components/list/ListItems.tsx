@@ -29,56 +29,58 @@ export default function ListItems({ item, searchQuery }: ListItemsProps) {
     )
   }
   return (
-    <li key={item.id} className="list_items flex-start-between">
-      <div className="flex h-full flex-1 flex-col">
-        <div className="flex h-full flex-col">
-          {/* 카테고리 */}
-          <CategoryBreadcrumb categories={item.category.names} />
+    <li key={item.id} className="list_items">
+      <Link
+        to={`/qnadetails/${item.id}`}
+        className="flex-center-between h-full gap-[20px]"
+      >
+        <div className="flex h-full flex-1 flex-col justify-between">
+          <div>
+            {/* 카테고리 */}
+            <CategoryBreadcrumb categories={item.category.names} />
 
-          {/* 질문 제목 */}
-          <Link
-            to={`/qnadetails/${item.id}`}
-            className="line-clamp-3 text-[18px] font-semibold text-black underline"
-          >
-            {highlightText(item.title, searchQuery)}
-          </Link>
-        </div>
+            {/* 질문 제목 */}
+            <h3 className="line-clamp-3 text-[18px] font-semibold text-black underline">
+              {highlightText(item.title, searchQuery)}
+            </h3>
+          </div>
 
-        {/* 질문 내용 */}
-        {/* <p className="mt-[12px] line-clamp-2 text-[14px] text-[#9d9d9d]">
+          {/* 질문 내용 */}
+          {/* <p className="mt-[12px] line-clamp-2 text-[14px] text-[#9d9d9d]">
           {item.content_preview}
         </p> */}
 
-        {/* 답변 수, 조회수, 작성자, 작성일 */}
-        <div className="flex-center-between bottom-[20px]">
-          <div className="flex-center-between gap-[19px]">
-            <span className="flex-center-between gap-[9px] text-[12px] text-[#4d4d4d]">
-              <span className="comment-icon">A</span>
-              <span>답변 {item.answer_count}</span>
-            </span>
-            <span className="text-[12px] text-[#9d9d9d]">
-              조회수 {item.view_count}
-            </span>
-          </div>
-
-          <div className="flex-center gap-[4px]">
-            <div className="flex-center gap-[4px]">
-              <ProfileImage imageUrl={item.author.profile_image_url} />
-              <span className="text-[12px] text-[#4d4d4d]">
-                {item.author.nickname}
+          {/* 답변 수, 조회수, 작성자, 작성일 */}
+          <div className="flex-center-between bottom-[20px]">
+            <div className="flex-center-between gap-[19px]">
+              <span className="flex-center-between gap-[9px] text-[12px] text-[#4d4d4d]">
+                <span className="comment-icon">A</span>
+                <span>답변 {item.answer_count}</span>
+              </span>
+              <span className="text-[12px] text-[#9d9d9d]">
+                조회수 {item.view_count}
               </span>
             </div>
-            <span className="text-[12px] text-[#9d9d9d]">
-              {getRelativeTime(item.created_at)}
-            </span>
+
+            <div className="flex-center gap-[4px]">
+              <div className="flex-center gap-[4px]">
+                <ProfileImage imageUrl={item.author.profile_image_url} />
+                <span className="text-[12px] text-[#4d4d4d]">
+                  {item.author.nickname}
+                </span>
+              </div>
+              <span className="text-[12px] text-[#9d9d9d]">
+                {getRelativeTime(item.created_at)}
+              </span>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* 썸네일 */}
-      <div>
-        <ThumbnailImage imageUrl={item.thumbnail_img_url} />
-      </div>
+        {/* 썸네일 */}
+        <div>
+          <ThumbnailImage imageUrl={item.thumbnail_img_url} />
+        </div>
+      </Link>
     </li>
   )
 }
