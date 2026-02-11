@@ -61,13 +61,13 @@ export default function Header() {
             {/* 메뉴 */}
             <nav className="flex gap-10 font-[Pretendard] text-[18px] text-gray-700">
               <a
-                href="#"
+                href="https://community.ozcodingschool.site/"
                 className="transition-colors duration-200 hover:text-black"
               >
                 커뮤니티
               </a>
               <Link
-                to="/qna"
+                to="https://qna.ozcodingschool.site/"
                 className="transition-colors duration-200 hover:text-black"
               >
                 질의응답
@@ -82,7 +82,7 @@ export default function Header() {
                 {userInfo?.nickname || '사용자'}님
               </span>
               <a
-                href="#"
+                href="https://my.ozcodingschool.site/mypage/profile"
                 className="transition-colors duration-200 hover:text-gray-900"
                 onClick={(e) => {
                   e.preventDefault()
@@ -95,14 +95,14 @@ export default function Header() {
           ) : (
             <div className="flex items-center gap-2 font-[Pretendard] text-gray-500">
               <a
-                href="#"
+                href="https://my.ozcodingschool.site/login"
                 className="transition-colors duration-200 hover:text-gray-900"
               >
                 로그인
               </a>
               <span className="text-gray-300">|</span>
               <a
-                href="#"
+                href="https://my.ozcodingschool.site/signup"
                 className="transition-colors duration-200 hover:text-gray-900"
               >
                 회원가입
