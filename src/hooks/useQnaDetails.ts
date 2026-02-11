@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { QnaDetails } from '@/api/qnaDetails'
+import { QnaDetails } from '@/api/qnadetails'
 
 export function useQnaDetails(id: number) {
   return useQuery({

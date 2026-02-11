@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
-import { QnaDetails } from '@/api/qnaDetails'
+import { QnaDetails } from '@/api/qnadetails'
 import { useQnaDetailsModify } from '@/hooks/useQnaDetailsModify'
 import { useCategoryQuery } from '@/hooks/useCategoryQuery'
 import { findCategoryPath } from '@/utils/categoryUtils'
