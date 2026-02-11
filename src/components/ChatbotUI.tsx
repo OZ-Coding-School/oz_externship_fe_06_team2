@@ -1,14 +1,11 @@
-import { useState } from "react";
-// import type { ChatMessage, ChatSession } from "./chatbot/types";
+import { useChatStore } from "../store/chatStore";
+import { useAuthStore } from "../store";
+import { useChatbot } from "../hooks/useChatbot";
 import ChatFloatingButton from "./chatbot/ChatFloatingButton";
 import ChatWindow from "./chatbot/ChatWindow";
-// import { chatbotApi } from "../api/chatbot";
-import { useChatbot } from "../hooks/useChatbot";
-
-import { useAuthStore } from "../store";
 
 export default function ChatbotUI() {
-    const [open, setOpen] = useState(false);
+    const { isOpen, setOpen } = useChatStore();
     const { messages, setMessages, session, isLoading, createSession, sendMessage } = useChatbot();
     const accessToken = useAuthStore((state) => state.accessToken);
 
@@ -46,8 +43,8 @@ export default function ChatbotUI() {
 
     return (
         <div className="fixed bottom-6 right-6 z-50">
-            {!open && <ChatFloatingButton onClick={handleOpen} />}
-            {open && (
+            {!isOpen && <ChatFloatingButton onClick={handleOpen} />}
+            {isOpen && (
                 <ChatWindow
                     messages={messages}
                     onClose={handleClose}
