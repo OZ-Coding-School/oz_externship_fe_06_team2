@@ -20,7 +20,7 @@ export default function Header() {
           {/* 왼쪽: 로고 + 메뉴 */}
           <div className="flex items-center gap-10">
             {/* 로고 */}
-            <a href="/" className="flex items-center">
+            <a href="https://my.ozcodingschool.site/" className="flex items-center">
               <svg
                 width="150"
                 height="20"
