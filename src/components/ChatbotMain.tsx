@@ -7,9 +7,9 @@ import { chatbotApi } from "../api/chatbot";
 import { useAuthStore } from "../store";
 
 // 🔧 테스트용: 로컬 환경에서 쿠키가 안 잡힐 때 사용 (필요시 토큰 갱신)
-const TEST_ACCESS_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzcwODg3NTk2LCJpYXQiOjE3NzA4MDExOTYsImp0aSI6Ijg1OTQ1ZGExMWVlMTRiY2Y5MDhiOWFhNDNmMjA1NjcwIiwidXNlcl9pZCI6MTB9.rHSdt4SwDZqh_6VTREXwIT34V3CiSAh9cj1yphUJn4c";
+const TEST_ACCESS_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzcwODc5MTQxLCJpYXQiOjE3NzA3OTI3NDEsImp0aSI6IjVkZWNhOTgwMWYxMDQ0OTBiNTdmMTgyNzRmMmMwYmY2IiwidXNlcl9pZCI6MTB9.q6NyT-zfnbvsPXTCE3KximhquUl74g2md1-yDBXSltU";
 
-export default function ChatbotUI() {
+export default function ChatbotMain() {
     const [open, setOpen] = useState(false);
     const [messages, setMessages] = useState<ChatMessage[]>([]);
     const [session, setSession] = useState<ChatSession>({ sessionId: null });
@@ -30,7 +30,11 @@ export default function ChatbotUI() {
     const handleOpen = async () => {
         // 로컬 개발 환경 대응: 토큰이 없으면 테스트 토큰 즉시 사용 (Double Check)
         let currentToken = accessToken;
-        console.log(currentToken);
+        if (!currentToken && TEST_ACCESS_TOKEN) {
+            console.error("⚠️ 클릭 시 토큰 없음 -> 테스트 토큰 강제 주입");
+            setAccessToken(TEST_ACCESS_TOKEN);
+            currentToken = TEST_ACCESS_TOKEN;
+        }
 
         console.error("chatbot open - token:", currentToken ? `${currentToken.substring(0, 10)}...` : "없음");
         setOpen(true);
@@ -95,7 +99,7 @@ export default function ChatbotUI() {
         if (!session.sessionId) {
             setMessages((prev) => [
                 ...prev,
-                { role: "bot", text: "대화 세션이 생성되지 않았습니다. 서버 오류일 수 있습니다. 페이지를 새로고침하거나 잠시 후 다시 시도해주세요." },
+                { role: "bot", text: "로그인이 되지 않았습니다. 로그인 후 다시 시도해주세요." },
             ]);
             return;
         }

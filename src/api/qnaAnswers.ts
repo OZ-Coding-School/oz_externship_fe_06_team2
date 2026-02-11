@@ -27,15 +27,13 @@ export async function getAiAnswer(id: number): Promise<AiAnswerResponse> {
     console.log('✅ [getAiAnswer] Success:', res.data)
     return res.data
   } catch (error: any) {
-    console.error('❌ [getAiAnswer] Error details:', {
+    console.error('❌ [getAiAnswer] Error details:', JSON.stringify({
       message: error.message,
       status: error.response?.status,
       statusText: error.response?.statusText,
       data: error.response?.data,
-      headers: error.response?.headers,
-      requestURL: error.config?.url,
-      requestHeaders: error.config?.headers,
-    })
+      url: error.config?.url,
+    }, null, 2))
     throw error
   }
 }
