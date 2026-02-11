@@ -35,9 +35,8 @@ function getCookie(name: string): string | null {
   return null
 }
 
-/** 로그인 상태 확인 (refreshToken 쿠키 또는 localStorage user 존재 여부) */
+/** 로그인 상태 확인 (Store에 accessToken이 있는지 확인) */
 export function isLoggedIn(): boolean {
-  return (
-    getCookie('refreshToken') !== null || localStorage.getItem('user') !== null
-  )
+  const token = useAuthStore.getState().accessToken
+  return !!token
 }
