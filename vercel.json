@@ -1,10 +1,6 @@
 {
     "rewrites": [
         {
-            "source": "/",
-            "destination": "/qna"
-        },
-        {
             "source": "/(.*)",
             "destination": "/index.html"
         }
