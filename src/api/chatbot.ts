@@ -30,15 +30,12 @@ export interface CreateChatbotSessionResponse {
  * POST /api/v1/chatbot/sessions/
  */
 export async function createChatbotSession(
-  data: CreateChatbotSessionRequest,
-  token?: string
+  data: CreateChatbotSessionRequest
 ): Promise<CreateChatbotSessionResponse> {
-  const headers = token ? { Authorization: `Bearer ${token}` } : {}
-  // 프록시 문제 확인을 위해 임시로 절대 경로 사용
+  // axios interceptor가 자동으로 Bearer 토큰을 추가합니다
   const res = await api.post<CreateChatbotSessionResponse>(
     'https://api.ozcodingschool.site/api/v1/chatbot/sessions/',
-    data,
-    { headers }
+    data
   )
   return res.data
 }
@@ -59,17 +56,16 @@ export async function deleteChatbotSession(sessionId: number): Promise<void> {
  */
 export async function sendChatbotMessage(
   sessionId: number,
-  message: string,
-  token?: string
+  message: string
 ): Promise<string> {
-  const headers = token ? { Authorization: `Bearer ${token}` } : {}
+  // axios interceptor가 자동으로 Bearer 토큰을 추가합니다
   const url = `https://api.ozcodingschool.site/api/v1/chatbot/sessions/${sessionId}/completions`
-  console.error('DEBUG: 메시지 전송 URL:', url)
+  console.log('📤 메시지 전송 URL:', url)
 
   const res = await api.post<string>(
     url,
     { message },
-    { headers, responseType: 'text' }
+    { responseType: 'text' }
   )
 
   // SSE 형식(data: {...})으로 올 경우 처리
