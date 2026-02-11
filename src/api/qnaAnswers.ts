@@ -18,8 +18,25 @@ export async function QnaAnswer(
 }
 
 export async function getAiAnswer(id: number): Promise<AiAnswerResponse> {
-  const res = await api.get<AiAnswerResponse>(
-    `${BASE_URL}questions/${id}/ai-answer`
-  )
-  return res.data
+  console.log('🔍 [getAiAnswer] Requesting AI answer for question ID:', id)
+
+  try {
+    const res = await api.get<AiAnswerResponse>(
+      `${BASE_URL}questions/${id}/ai-answer`
+    )
+    console.log('✅ [getAiAnswer] Success:', res.data)
+    return res.data
+  } catch (error: any) {
+    console.error('❌ [getAiAnswer] Error details:', {
+      message: error.message,
+      status: error.response?.status,
+      statusText: error.response?.statusText,
+      data: error.response?.data,
+      headers: error.response?.headers,
+      requestURL: error.config?.url,
+      requestHeaders: error.config?.headers,
+    })
+    throw error
+  }
 }
+

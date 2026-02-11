@@ -28,11 +28,6 @@ export default function DetailsWriter() {
       },
       {
         onSuccess: () => {
-          console.log('답변 등록 성공 - 전송된 데이터:', {
-            content: content,
-            image_urls: imageUrls,
-            question_id: Number(id),
-          })
           alert('답변이 등록되었습니다.')
           setContent('')
           setImageUrls([])

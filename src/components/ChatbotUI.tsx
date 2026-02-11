@@ -5,9 +5,6 @@ import ChatWindow from "./chatbot/ChatWindow";
 import { chatbotApi } from "../api/chatbot";
 import { isLoggedIn } from "../api/api";
 
-// 🔧 테스트용: 스웨거에서 받은 ACCESS token을 여기에 입력하세요
-const TEST_ACCESS_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzcwNzAwMTIxLCJpYXQiOjE3NzA2MTM3MjEsImp0aSI6ImVmYjE5MWMxNTAxZTQxZjlhNjU4YmZmOTZiNTZhNmU1IiwidXNlcl9pZCI6MTB9.gSs-kcEhI4QCp2TPQ1KmfgaJ6cw5WJ-i0T6TJjJl3xU";
-
 export default function ChatbotUI() {
     const [open, setOpen] = useState(false);
     const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -20,8 +17,8 @@ export default function ChatbotUI() {
 
         const loggedIn = isLoggedIn();
 
-        // 로그인 상태 확인 (테스트 토큰이 있으면 통과)
-        if (!loggedIn && !TEST_ACCESS_TOKEN) {
+        // 로그인 상태 확인
+        if (!loggedIn) {
             setMessages([
                 { role: "bot", text: "로그인이 필요합니다. 로그인 후 다시 시도해주세요." }
             ]);
@@ -37,7 +34,7 @@ export default function ChatbotUI() {
                     question: "1",
                     title: "새 대화",
                     using_model: "Gemini",
-                }, TEST_ACCESS_TOKEN);
+                });
                 console.log("세션 생성 성공:", response);
                 setSession({
                     sessionId: response.id, // session_id -> id 로 수정
@@ -87,8 +84,8 @@ export default function ChatbotUI() {
 
         try {
             setIsLoading(true);
-            // 실제 AI 챗봇 API 호출
-            const aiResponse = await chatbotApi.sendMessage(session.sessionId, text, TEST_ACCESS_TOKEN);
+            // 실제 AI 챗봇 API 호출 (axios interceptor가 자동으로 토큰 추가)
+            const aiResponse = await chatbotApi.sendMessage(session.sessionId, text);
 
             setMessages((prev) => [
                 ...prev,
