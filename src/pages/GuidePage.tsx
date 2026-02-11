@@ -43,11 +43,10 @@ export default function GuidePage() {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex h-[48px] items-center rounded-[8px] px-4 font-medium transition-all ${
-                activeTab === tab.id
+              className={`flex h-[48px] items-center rounded-[8px] px-4 font-medium transition-all ${activeTab === tab.id
                   ? 'bg-[#EFE6FC] text-[#6201E0]'
                   : 'text-[#6B7280] hover:bg-gray-50'
-              }`}
+                }`}
             >
               {tab.label}
             </button>
@@ -193,7 +192,7 @@ export default function GuidePage() {
             </h2>
             <div className="mb-2">
               <TextArea
-                onSubmit={function (content: string): void {
+                onSubmit={function (): void {
                   throw new Error('Function not implemented.')
                 }}
                 isPending={false}
@@ -208,7 +207,7 @@ export default function GuidePage() {
           <section>
             <h2 className="mb-6 text-[32px] font-bold text-[#121212]">Input</h2>
             <div className="mb-2">
-              <InputSearch value="" onChange={() => {}} />
+              <InputSearch value="" onChange={() => { }} />
             </div>
             <CodeBlock code={`<InputSearch value="" onChange={() => {}} />`} />
           </section>
@@ -223,7 +222,7 @@ export default function GuidePage() {
               <Pagination
                 currentPage={1}
                 totalPages={10}
-                onPageChange={() => {}}
+                onPageChange={() => { }}
               />
             </div>
             <CodeBlock
