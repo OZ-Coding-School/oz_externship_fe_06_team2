@@ -1,6 +1,6 @@
 import ChevronRightPupleIcon from '@/assets/images/svg/Chevron-right-puple.svg?react'
 import TitleQ from '@/assets/images/svg/TitleQ.svg?react'
-import ProfileImage from '@/assets/images/svg/ProfileThumb.svg'
+import ProfileImage from '@/components/common/ProfileImage'
 import { getRelativeTime } from '@/utils/dayjs'
 import { Link } from 'react-router'
 
@@ -11,6 +11,7 @@ interface Props {
   viewCount: number
   created: string
   name: string
+  profileImageUrl?: string | null
   authorId: number
   currentUserId?: number
 }
@@ -22,6 +23,7 @@ export default function DetailsHeader({
   viewCount,
   created,
   name,
+  profileImageUrl,
   authorId,
   currentUserId,
 }: Props) {
@@ -51,7 +53,7 @@ export default function DetailsHeader({
           </h2>
         </div>
         <div className="details_profile">
-          <img src={ProfileImage} alt="프로필 이미지" />
+          <ProfileImage imageUrl={profileImageUrl} size={48} />
           <span className="details_profile_name">{name}</span>
         </div>
       </div>

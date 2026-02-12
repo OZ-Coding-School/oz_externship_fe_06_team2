@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useParams } from 'react-router'
-import ProfileImage from '@/assets/images/svg/ProfileThumb.svg'
+import ProfileImage from '@/components/common/ProfileImage'
 import Editor from '@/components/Editor/Editor'
 import { useQnaDetailsAnswer } from '@/hooks/useQnaDetailsAnswer'
 import { useAuthStore } from '@/store'
@@ -44,7 +44,7 @@ export default function DetailsWriter() {
     <section className="writer_box mt-[52px]">
       <div className="writer_header">
         <div className="flex gap-[12px]">
-          <img src={ProfileImage} alt="프로필 이미지" />
+          <ProfileImage imageUrl={userInfo?.profile_img_url} size={48} />
           <div>
             <span className="text-[12px] text-[#6201E0]">
               {userInfo?.nickname} 님,

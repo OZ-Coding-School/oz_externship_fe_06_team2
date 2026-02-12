@@ -4,7 +4,7 @@ export interface UserInfo {
   id: number
   email: string
   nickname: string
-  profile_image_url: string | null
+  profile_img_url: string | null
 }
 
 export const getUserInfo = async (): Promise<UserInfo> => {

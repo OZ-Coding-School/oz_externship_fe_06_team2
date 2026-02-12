@@ -17,6 +17,8 @@ export default function DetailsAnswerList({
         {answers.length}개의 답변이 있어요
       </h3>
 
+
+
       <div className="flex flex-col gap-[24px]">
         {answers.map((answer) => (
           <DetailsAnswerItem
