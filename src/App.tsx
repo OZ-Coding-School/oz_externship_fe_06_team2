@@ -52,9 +52,9 @@ function App() {
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<QnaListPage />} />
-            <Route path="qnadetails/:id" element={<QnaDetailsPage />} />
-            <Route path="qnacreate" element={<QnaCreatePage />} />
-            <Route path="qnamodify/:id" element={<QnaModifyPage />} />
+            <Route path="/qnadetails/:id" element={<QnaDetailsPage />} />
+            <Route path="/qnacreate" element={<QnaCreatePage />} />
+            <Route path="/qnamodify/:id" element={<QnaModifyPage />} />
           </Route>
           <Route path="guide" element={<GuidePage />} />
         </Routes>
