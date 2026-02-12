@@ -10,7 +10,7 @@ export default function DetailsWriter() {
   const [content, setContent] = useState('')
   const [imageUrls, setImageUrls] = useState<string[]>([])
   const userInfo = useAuthStore((state) => state.userInfo)
-  const { mutate: createAnswer, isPending } = useQnaDetailsAnswer()
+  const { mutate: createAnswer, isPending: _isPending } = useQnaDetailsAnswer()
 
   const handleSubmit = async () => {
     if (!content.trim()) {
