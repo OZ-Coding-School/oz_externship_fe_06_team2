@@ -14,7 +14,6 @@ interface Props {
 }
 
 export default function AiAnswerSection({ questionId }: Props) {
-    console.log("🔥 AiAnswerSection 렌더됨")
     const { data, isLoading } = useQuery({
         queryKey: ['aiAnswer', questionId],
         queryFn: () => getAiAnswer(questionId),
