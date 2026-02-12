@@ -1,0 +1,2 @@
+﻿src/components/details/DetailsWriter.tsx(13,33): error TS6133: 'isPending' is declared but its value is never read.
+src/pages/GuidePage.tsx(196,37): error TS6133: 'content' is declared but its value is never read.

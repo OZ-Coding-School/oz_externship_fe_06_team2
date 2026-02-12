@@ -1,13 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import type { ChatMessage, ChatSession } from "./chatbot/types";
 import ChatFloatingButton from "./chatbot/ChatFloatingButton";
 import ChatWindow from "./chatbot/ChatWindow";
 import { chatbotApi } from "../api/chatbot";
 
 import { useAuthStore } from "../store";
-
-// 🔧 테스트용: 로컬 환경에서 쿠키가 안 잡힐 때 사용 (필요시 토큰 갱신)
-const TEST_ACCESS_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzcwODc5MTQxLCJpYXQiOjE3NzA3OTI3NDEsImp0aSI6IjVkZWNhOTgwMWYxMDQ0OTBiNTdmMTgyNzRmMmMwYmY2IiwidXNlcl9pZCI6MTB9.q6NyT-zfnbvsPXTCE3KximhquUl74g2md1-yDBXSltU";
 
 export default function ChatbotMain() {
     const [open, setOpen] = useState(false);
@@ -17,25 +14,9 @@ export default function ChatbotMain() {
 
     // 훅을 사용하여 상태 변경 감지 (리렌더링 유발)
     const accessToken = useAuthStore((state) => state.accessToken);
-    const setAccessToken = useAuthStore((state) => state.setAccessToken);
-
-    // 컴포넌트 마운트 시 테스트 토큰 자동 주입 (로컬 개발용)
-    useEffect(() => {
-        if (!accessToken && TEST_ACCESS_TOKEN) {
-            console.error("🛠️ ChatbotUI 마운트: 테스트 토큰 자동 주입");
-            setAccessToken(TEST_ACCESS_TOKEN);
-        }
-    }, [accessToken, setAccessToken]);
 
     const handleOpen = async () => {
-        // 로컬 개발 환경 대응: 토큰이 없으면 테스트 토큰 즉시 사용 (Double Check)
-        let currentToken = accessToken;
-        if (!currentToken && TEST_ACCESS_TOKEN) {
-            console.error("⚠️ 클릭 시 토큰 없음 -> 테스트 토큰 강제 주입");
-            setAccessToken(TEST_ACCESS_TOKEN);
-            currentToken = TEST_ACCESS_TOKEN;
-        }
-
+        const currentToken = accessToken;
         console.error("chatbot open - token:", currentToken ? `${currentToken.substring(0, 10)}...` : "없음");
         setOpen(true);
 
