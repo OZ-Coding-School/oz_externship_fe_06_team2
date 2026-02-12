@@ -67,7 +67,7 @@ export default function Header() {
                 커뮤니티
               </a>
               <Link
-                to="https://qna.ozcodingschool.site/"
+                to="/"
                 className="transition-colors duration-200 hover:text-black"
               >
                 질의응답
