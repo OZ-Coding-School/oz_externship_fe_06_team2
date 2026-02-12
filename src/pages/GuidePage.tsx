@@ -44,8 +44,8 @@ export default function GuidePage() {
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
               className={`flex h-[48px] items-center rounded-[8px] px-4 font-medium transition-all ${activeTab === tab.id
-                  ? 'bg-[#EFE6FC] text-[#6201E0]'
-                  : 'text-[#6B7280] hover:bg-gray-50'
+                ? 'bg-[#EFE6FC] text-[#6201E0]'
+                : 'text-[#6B7280] hover:bg-gray-50'
                 }`}
             >
               {tab.label}
