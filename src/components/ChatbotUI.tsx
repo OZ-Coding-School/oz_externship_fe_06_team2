@@ -26,7 +26,7 @@ export default function ChatbotUI() {
         // 로그인 상태 확인
         if (!currentToken) {
             setMessages([
-                { role: "bot", text: "로그인이 필요합니다. (토큰 없음)" }
+                { role: "bot", text: "로그인이 필요합니다." }
             ]);
             return;
         }
