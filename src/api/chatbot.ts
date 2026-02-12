@@ -6,7 +6,7 @@ import { useAuthStore } from '@/store'
 // =============================
 
 export interface CreateChatbotSessionRequest {
-  question?: string
+  question?: string | number
   title?: string
   using_model?: string
 }
