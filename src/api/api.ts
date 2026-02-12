@@ -26,8 +26,6 @@ api.interceptors.request.use(
   }
 )
 
-
-
 /** 로그인 상태 확인 (Store에 accessToken이 있는지 확인) */
 export function isLoggedIn(): boolean {
   const token = useAuthStore.getState().accessToken
