@@ -5,64 +5,23 @@ import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import rehypeRaw from 'rehype-raw'
 import { MARKDOWN_COMPONENTS } from '@/constants/markdown'
-import { useEffect, useState } from 'react'
-import { useAuthStore } from '@/store'
-import { useChatbot } from '@/hooks/useChatbot'
+import { useEffect } from 'react'
+import { useChatStore } from '@/store/chatStore'
 
 interface Props {
     questionId: number
 }
 
 export default function AiAnswerSection({ questionId }: Props) {
-    console.log("🔥 AiAnswerSection 렌더됨")
-    const { data, isLoading } = useQuery({
+
+    const { data, isLoading, error } = useQuery({
         queryKey: ['aiAnswer', questionId],
         queryFn: () => getAiAnswer(questionId),
         retry: 1,
     })
 
-    // 챗봇 상태 관리 (useChatbot 훅 사용)
-    const { messages, session: { sessionId }, isLoading: isSending, createSession, sendMessage, error } = useChatbot();
-
-    // 로컬 상태 (UI 제어용)
-    const [inputText, setInputText] = useState('')
-    const [showInput, setShowInput] = useState(false)
-    const accessToken = useAuthStore((state) => state.accessToken)
-
-    // 챗봇 세션 생성
-    useEffect(() => {
-        const initSession = async () => {
-            if (!accessToken || sessionId) return // 이미 세션이 있거나 토큰이 없으면 스킵
-
-            try {
-                await createSession({
-                    question: `QnA ${questionId}번 질문에 대한 추가 질문`,
-                    title: '추가 질문',
-                    using_model: 'Gemini',
-                })
-                console.log('✅ 챗봇 세션 생성 성공')
-            } catch (error) {
-                console.error('챗봇 세션 생성 실패:', error)
-            }
-        }
-
-        initSession()
-    }, [questionId, accessToken, createSession, sessionId]) // sessionId 의존성 제거하여 무한 루프 방지
-
-    const handleSendMessage = async () => {
-        if (!inputText.trim() || !sessionId || isSending) return
-
-        const text = inputText.trim()
-        setInputText('')
-        await sendMessage(text)
-    }
-
-    const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === 'Enter' && !e.shiftKey) {
-            e.preventDefault()
-            handleSendMessage()
-        }
-    }
+    // 챗봇 전역 상태
+    const { setOpen } = useChatStore();
 
     return (
         <div className="mb-8 mt-8">
@@ -98,7 +57,10 @@ export default function AiAnswerSection({ questionId }: Props) {
                                         rehypePlugins={[rehypeRaw]}
                                         components={MARKDOWN_COMPONENTS}
                                     >
-                                        {data?.output || error || 'AI 답변을 불러올 수 없습니다.'}
+                                        {data?.output ||
+                                            ((error as any)?.response?.status === 409
+                                                ? "이미 AI 답변이 생성되었습니다.\n\n궁금한 점이 있다면 아래 **'추가 질문하기'** 버튼을 통해 질문해 주세요! 🤖"
+                                                : (error ? 'AI 답변을 불러올 수 없습니다.' : '답변을 기다리는 중입니다...'))}
                                     </ReactMarkdown>
                                 </div>
                             </div>
@@ -107,65 +69,13 @@ export default function AiAnswerSection({ questionId }: Props) {
                         {/* 추가 질문하기 버튼 */}
                         <div className="mt-4 flex justify-end">
                             <button
-                                onClick={() => setShowInput(true)}
+                                onClick={() => setOpen(true)}
                                 className="rounded-full bg-[#6200EE] px-6 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#5000C8]"
                             >
                                 추가 질문하기
                             </button>
                         </div>
                     </div>
-
-                    {/* 추가 질문하기 섹션 */}
-                    {accessToken && (
-                        <div className="pt-4 mt-4">
-                            {showInput && (
-                                <div className="rounded-2xl bg-white p-6 border-2 border-gray-200">
-                                    <h4 className="text-sm font-semibold text-gray-700 mb-3">💬 추가 질문하기</h4>
-
-                                    {/* 대화 내역 */}
-                                    {messages.length > 0 && (
-                                        <div className="mb-4 max-h-60 overflow-y-auto space-y-3">
-                                            {messages.map((msg, idx) => (
-                                                <div
-                                                    key={idx}
-                                                    className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
-                                                >
-                                                    <div
-                                                        className={`max-w-[80%] rounded-lg px-4 py-2 ${msg.role === 'user'
-                                                            ? 'bg-purple-600 text-white'
-                                                            : 'bg-gray-100 text-gray-800'
-                                                            }`}
-                                                    >
-                                                        <p className="text-sm whitespace-pre-wrap">{msg.text}</p>
-                                                    </div>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    )}
-
-                                    {/* 입력 필드 */}
-                                    <div className="flex gap-2">
-                                        <input
-                                            type="text"
-                                            value={inputText}
-                                            onChange={(e) => setInputText(e.target.value)}
-                                            onKeyPress={handleKeyPress}
-                                            placeholder="추가 질문을 입력하세요..."
-                                            disabled={!sessionId || isSending}
-                                            className="flex-1 rounded-lg border border-gray-300 px-4 py-2 text-sm focus:border-purple-500 focus:outline-none focus:ring-1 focus:ring-purple-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
-                                        />
-                                        <button
-                                            onClick={handleSendMessage}
-                                            disabled={!inputText.trim() || !sessionId || isSending}
-                                            className="rounded-lg bg-purple-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-purple-700 disabled:bg-gray-300 disabled:cursor-not-allowed"
-                                        >
-                                            {isSending ? '전송 중...' : '전송'}
-                                        </button>
-                                    </div>
-                                </div>
-                            )}
-                        </div>
-                    )}
                 </>
             )}
         </div>

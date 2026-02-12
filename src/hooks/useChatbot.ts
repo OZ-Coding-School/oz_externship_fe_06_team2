@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { chatbotApi } from '@/api/chatbot';
 import type { ChatMessage, ChatSession } from '@/components/chatbot/types';
 
@@ -8,7 +8,7 @@ export const useChatbot = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const createSession = async (initData: { question?: string; title?: string; using_model?: string }) => {
+    const createSession = useCallback(async (initData: { question?: string | number; title?: string; using_model?: string }) => {
         try {
             setIsLoading(true);
             const response = await chatbotApi.createSession(initData);
@@ -25,9 +25,9 @@ export const useChatbot = () => {
         } finally {
             setIsLoading(false);
         }
-    };
+    }, []);
 
-    const deleteSession = async () => {
+    const deleteSession = useCallback(async () => {
         if (!session.sessionId) return;
         try {
             await chatbotApi.deleteSession(session.sessionId);
@@ -36,9 +36,9 @@ export const useChatbot = () => {
         } catch (err) {
             console.error('Failed to delete session:', err);
         }
-    };
+    }, [session.sessionId]);
 
-    const sendMessage = async (text: string) => {
+    const sendMessage = useCallback(async (text: string) => {
         if (!text.trim()) return;
 
         setMessages((prev) => [...prev, { role: 'user', text }]);
@@ -64,7 +64,7 @@ export const useChatbot = () => {
         } finally {
             setIsLoading(false);
         }
-    };
+    }, [session.sessionId]);
 
     return {
         messages,

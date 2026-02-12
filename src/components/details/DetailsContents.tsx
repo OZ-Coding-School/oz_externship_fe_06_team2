@@ -20,7 +20,14 @@ export default function DetailsContents({ content }: Props) {
           {content}
         </ReactMarkdown>
       </div>
-      <button type="button" className="icon_button ml-auto border">
+      <button
+        type="button"
+        className="icon_button ml-auto border"
+        onClick={() => {
+          navigator.clipboard.writeText(window.location.href)
+          alert('URL을 복사했습니다.')
+        }}
+      >
         <LinkShareIcon />
         공유하기
       </button>
