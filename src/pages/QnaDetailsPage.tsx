@@ -4,7 +4,7 @@ import DetailsContents from '@/components/details/DetailsContents'
 import DetailsWriter from '@/components/details/DetailsWriter'
 import DetailsAnswerList from '@/components/details/DetailsAnswerList'
 import AiAnswerSection from '@/components/details/DetailsChatbot'
-import ProfileImage from '@/assets/images/svg/ProfileThumb.svg'
+import ProfileImage from '@/components/common/ProfileImage'
 import { useQuery } from '@tanstack/react-query'
 import { QnaDetails } from '@/api/qnaDetails'
 import { useParams } from 'react-router'
@@ -19,7 +19,7 @@ export default function QnaDetailsPage() {
     queryKey: ['qnaDetails', id],
     queryFn: () => QnaDetails(Number(id)),
   })
-
+  console.log(userInfo?.profile_img_url)
   // 페이지 마운트시 스크롤 탑으로 이동
   useEffect(() => {
     if (data) {
@@ -39,6 +39,7 @@ export default function QnaDetailsPage() {
         viewCount={data.view_count}
         created={data.created_at}
         name={data.author.nickname}
+        profileImageUrl={data.author.profile_image_url}
         authorId={data.author.id}
         currentUserId={userInfo?.id}
       />
@@ -53,10 +54,9 @@ export default function QnaDetailsPage() {
             <div className="mt-[52px]">
               <div className="flex items-center justify-between rounded-[20px] border border-[#E5E7EB] bg-white px-[38px] py-[24px]">
                 <div className="flex items-center gap-[12px]">
-                  <img
-                    src={ProfileImage}
-                    alt="프로필 이미지"
-                    className="h-[48px] w-[48px]"
+                  <ProfileImage
+                    imageUrl={userInfo?.profile_img_url}
+                    size={48}
                   />
                   <div>
                     <span className="text-[12px] text-[#6201E0]">
