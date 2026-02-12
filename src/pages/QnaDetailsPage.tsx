@@ -43,9 +43,12 @@ export default function QnaDetailsPage() {
         currentUserId={userInfo?.id}
       />
       <DetailsContents content={data.content} />
+
+      {/* AI 답변 섹션 - 콘텐츠 바로 아래 위치 */}
+      <AiAnswerSection questionId={Number(id)} />
+
       {userInfo && data.author.id !== userInfo.id && (
         <>
-          <AiAnswerSection questionId={Number(id)} />
           {!showAnswerForm && (
             <div className="mt-[52px]">
               <div className="flex items-center justify-between rounded-[20px] border border-[#E5E7EB] bg-white px-[38px] py-[24px]">
