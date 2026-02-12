@@ -32,7 +32,7 @@ export default function ListItems({ item, searchQuery }: ListItemsProps) {
     <li key={item.id} className="list_items">
       <Link
         to={`/qnadetails/${item.id}`}
-        className="flex-center-between h-full gap-[20px]"
+        className="flex-center-between h-full"
       >
         <div className="flex h-full flex-1 flex-col justify-between">
           <div>
