@@ -31,15 +31,6 @@ export default function ChatMessageList({ messages, onSendSuggestion }: ChatMess
             {messages.map((msg, idx) => (
                 <ChatMessage key={idx} message={msg} />
             ))}
-
-            {messages.length > 0 && (
-                <button
-                    onClick={() => { }}
-                    className="text-sm text-purple-600 underline hover:text-purple-700 font-medium"
-                >
-                    추가 질문하기
-                </button>
-            )}
         </div>
     );
 }
