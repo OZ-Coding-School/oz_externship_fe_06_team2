@@ -1,5 +1,5 @@
 import ProfileThumb from '@/assets/images/svg/ProfileThumb.svg?react'
-
+import useLazyImages from '@/utils/lazyImages'
 interface ProfileImageProps {
   imageUrl?: string | null | undefined
   alt?: string
@@ -11,19 +11,22 @@ export default function ProfileImage({
   alt = '프로필 이미지',
   size = 24,
 }: ProfileImageProps) {
+  const imgRef = useLazyImages()
   return (
     <>
       {imageUrl ? (
         <img
-          className={`h-[${size}px] w-[${size}px] rounded-full object-cover`}
-          src={imageUrl}
+          ref={imgRef}
+          data-src={imageUrl}
+          style={{ width: `${size}px`, height: `${size}px` }}
+          className="rounded-full object-cover"
           alt={alt}
           onError={(e) => {
             e.currentTarget.src = '/src/assets/images/svg/ProfileThumb.svg'
           }}
         />
       ) : (
-        <ProfileThumb className={`h-[${size}px] w-[${size}px]`} />
+        <ProfileThumb style={{ width: `${size}px`, height: `${size}px` }} />
       )}
     </>
   )
