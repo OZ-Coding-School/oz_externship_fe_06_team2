@@ -51,12 +51,12 @@ function App() {
       <Suspense fallback={<Loading />}>
         <Routes>
           <Route path="/" element={<Layout />}>
-            <Route path="/qna" element={<QnaListPage />} />
+            <Route index element={<QnaListPage />} />
             <Route path="/qnadetails/:id" element={<QnaDetailsPage />} />
             <Route path="/qnacreate" element={<QnaCreatePage />} />
             <Route path="/qnamodify/:id" element={<QnaModifyPage />} />
           </Route>
-          <Route path="/guide" element={<GuidePage />} />
+          <Route path="guide" element={<GuidePage />} />
         </Routes>
       </Suspense>
     </>
