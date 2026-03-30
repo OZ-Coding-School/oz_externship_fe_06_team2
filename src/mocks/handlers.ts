@@ -4,7 +4,7 @@ import type { QnaListResponse, QnaDetailResponse } from '@/types'
 
 export const handlers = [
   // QnA 리스트 API 모킹
-  http.get('/api/qna', () => {
+  http.get('*/api/v1/qna/questions', () => {
     const mockData: QnaListResponse = {
       count: 152,
       next: null,
@@ -58,7 +58,7 @@ export const handlers = [
     return HttpResponse.json(mockData)
   }),
   // QnA 상세 API 모킹
-  http.get('/api/qna/:id', () => {
+  http.get('*/api/v1/qna/questions/:id', () => {
     const mockData: QnaDetailResponse = {
       id: 10501,
       title: 'Django에서 ForeignKey 역참조는 어떻게 하나요?',
@@ -157,5 +157,24 @@ export const handlers = [
     }
 
     return HttpResponse.json(mockData)
+  }),
+  // Token Refresh API 모킹
+  http.post('*/api/v1/accounts/me/refresh/', () => {
+    return HttpResponse.json({
+      access_token: 'mock-access-token-123',
+      refresh_token: 'mock-refresh-token-456',
+    })
+  }),
+  // User Profiling API 모킹
+  http.get('*/api/v1/accounts/me/', () => {
+    return HttpResponse.json({
+      id: 1,
+      email: 'test@example.com',
+      nickname: 'TestUser',
+      name: 'Test Name',
+      profile_image_url: null,
+      created_at: '2025-01-01T00:00:00Z',
+      updated_at: '2025-01-01T00:00:00Z',
+    })
   }),
 ]
